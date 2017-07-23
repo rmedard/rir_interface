@@ -1,0 +1,6 @@
+name: RIR Interface Module
+type: module
+description: 'This RIR module handles all GUI manipulations.'
+package: RIR Custom Modules
+core: 8.x
+version: '8.x-1.0'

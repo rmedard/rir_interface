@@ -1,0 +1,25 @@
+<?php
+/**
+* @file
+* A description of what your module does.
+*/
+
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_entity_insert().
+ */
+function rir_interface_entity_insert(EntityInterface $entity) {
+  if ($entity->bundle('advert')){
+    Drupal::cache('render')->deleteAll();
+  }
+}
+
+/**
+ * Implements hook_entity_update().
+ */
+function rir_interface_entity_update(EntityInterface $entity) {
+  if ($entity->bundle('advert')){
+    Drupal::cache('render')->deleteAll();
+  }
+}
