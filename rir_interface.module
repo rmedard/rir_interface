@@ -10,7 +10,7 @@ use Drupal\Core\Entity\EntityInterface;
  * Implements hook_entity_insert().
  */
 function rir_interface_entity_insert(EntityInterface $entity) {
-  if ($entity->bundle('advert')){
+  if ($entity->bundle() == 'advert'){
     Drupal::cache('render')->deleteAll();
   }
 }
@@ -19,7 +19,7 @@ function rir_interface_entity_insert(EntityInterface $entity) {
  * Implements hook_entity_update().
  */
 function rir_interface_entity_update(EntityInterface $entity) {
-  if ($entity->bundle('advert')){
+  if ($entity->bundle() == 'advert'){
     Drupal::cache('render')->deleteAll();
   }
 }
