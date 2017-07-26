@@ -5,7 +5,7 @@
 */
 
 use Drupal\Core\Entity\EntityInterface;
-use \Drupal\node\NodeInterface;
+use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_entity_insert().
@@ -20,7 +20,7 @@ function rir_interface_entity_insert(EntityInterface $entity) {
  * Implements hook_entity_update().
  */
 function rir_interface_entity_update(EntityInterface $entity) {
-  if ($entity->bundle() == 'advert'){
+  if ($entity instanceof NodeInterface and $entity->bundle() == 'advert'){
     Drupal::cache('render')->deleteAll();
   }
 }
@@ -40,7 +40,7 @@ function generateRandomStr(){
   $chars = array('1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
     'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
-  for ($rand = 0; $rand <= 8; $rand++) {
+  for ($rand = 0; $rand <= 9; $rand++) {
     $random = rand(0, count($chars) - 1);
     $randomPart .= $chars[$random];
   }
