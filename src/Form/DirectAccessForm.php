@@ -72,7 +72,7 @@ class DirectAccessForm extends FormBase {
     $node = $nodeQuery->execute();
     if (isset($node)){
       $url = Url::fromUri('internal:/advert/'.$reference);
-      kint("dore " .$url);
+      kint($url);
       $form_state->setRedirectUrl($url);
     } else {
       drupal_set_message($this->t("Sorry, no advert found"), 'error');
