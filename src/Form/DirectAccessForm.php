@@ -78,7 +78,7 @@ class DirectAccessForm extends FormBase {
    *   The current state of the form.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    parent::submitForm($form, $form_state);
+//    parent::submitForm($form, $form_state);
     $reference = $form_state->getValue('reference_number');
 //    kint($form_state);
 //    die();
