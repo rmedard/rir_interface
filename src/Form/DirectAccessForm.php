@@ -14,6 +14,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\t;
 use \Drupal\Core\Form\drupal_set_message;
 use \Drupal\Core\Url;
+use Drupal\node\NodeInterface;
 
 class DirectAccessForm extends FormBase {
 
@@ -78,16 +79,13 @@ class DirectAccessForm extends FormBase {
    *   The current state of the form.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-//    parent::submitForm($form, $form_state);
     $reference = $form_state->getValue('reference_number');
-//    kint($form_state);
-//    die();
     $nodeQuery = \Drupal::entityQuery('node')
       ->condition('type', 'advert')
       ->condition('status', 1)
       ->condition('field_advert_reference', $reference);
     $node = $nodeQuery->execute();
-    if (isset($node)){
+    if (isset($node) and node instanceof NodeInterface){
       $url = Url::fromUri('internal:/advert/'.$reference);
       $form_state->setRedirectUrl($url);
     } else {
