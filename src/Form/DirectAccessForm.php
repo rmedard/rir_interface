@@ -71,9 +71,9 @@ class DirectAccessForm extends FormBase {
       ->condition('status', 1)
       ->condition('field_advert_reference', $reference);
     $node = $nodeQuery->execute();
-    kint($node);
-    die();
-    if (isset($node) and node instanceof EntityInterface){
+//    kint($node);
+//    die();
+    if (isset($node) and !empty($node)){
       $url = Url::fromUri('internal:/advert/'.$reference);
       $form_state->setRedirectUrl($url);
     } else {
