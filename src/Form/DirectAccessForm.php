@@ -44,7 +44,8 @@ class DirectAccessForm extends FormBase {
       '#type' => 'textfield',
 //      '#title' => $this->t('Reference'),
       '#attributes' => array(
-        'placeholder' => $this->t('Reference number')
+        'placeholder' => $this->t('Reference number'),
+        'size' => 50
       ));
     $form['submit'] = array(
       '#type' => 'submit',
