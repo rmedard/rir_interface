@@ -65,7 +65,7 @@ class DirectAccessForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $reference = $form_state->get('reference_number');
-    $nodeQuery = Drupal::entityQuery('node')
+    $nodeQuery = \Drupal::entityQuery('node')
       ->condition('type', 'advert')
       ->condition('status', 1)
       ->condition('field_advert_reference', $reference);
