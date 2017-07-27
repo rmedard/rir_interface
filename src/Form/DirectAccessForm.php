@@ -52,6 +52,9 @@ class DirectAccessForm extends FormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     if ($form_state->isValueEmpty('reference_number')){
       $form_state->setErrorByName('reference_number', t('Provide reference number'));
+    } else {
+      $url = Url::fromUri('internal:/advert/QL7XT9TBN');
+      $form_state->setRedirectUrl($url);
     }
   }
 
