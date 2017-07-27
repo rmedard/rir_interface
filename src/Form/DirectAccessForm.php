@@ -53,8 +53,18 @@ class DirectAccessForm extends FormBase {
     if ($form_state->isValueEmpty('reference_number')){
       $form_state->setErrorByName('reference_number', t('Provide reference number'));
     } else {
-      $url = Url::fromUri('internal:/advert/QL7XT9TBN');
-      $form_state->setRedirectUrl($url);
+      $reference = $form_state->get('reference_number');
+      $nodeQuery = \Drupal::entityQuery('node')
+        ->condition('type', 'advert')
+        ->condition('status', 1)
+        ->condition('field_advert_reference', $reference);
+      $node = $nodeQuery->execute();
+      if (isset($node)){
+        $url = Url::fromUri('internal:/advert/'.$reference);
+        $form_state->setRedirectUrl($url);
+      } else {
+        drupal_set_message($this->t("Sorry, no advert found"), 'error');
+      }
     }
   }
 
@@ -67,19 +77,20 @@ class DirectAccessForm extends FormBase {
    *   The current state of the form.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $reference = $form_state->get('reference_number');
-    kint($form_state);
-    die();
-    $nodeQuery = \Drupal::entityQuery('node')
-      ->condition('type', 'advert')
-      ->condition('status', 1)
-      ->condition('field_advert_reference', $reference);
-    $node = $nodeQuery->execute();
-    if (isset($node)){
-      $url = Url::fromUri('internal:/advert/QL7XT9TBN');
-      $form_state->setRedirectUrl($url);
-    } else {
-      drupal_set_message($this->t("Sorry, no advert found"), 'error');
-    }
+    parent::submitForm($form, $form_state);
+//    $reference = $form_state->get('reference_number');
+//    kint($form_state);
+//    die();
+//    $nodeQuery = \Drupal::entityQuery('node')
+//      ->condition('type', 'advert')
+//      ->condition('status', 1)
+//      ->condition('field_advert_reference', $reference);
+//    $node = $nodeQuery->execute();
+//    if (isset($node)){
+//      $url = Url::fromUri('internal:/advert/QL7XT9TBN');
+//      $form_state->setRedirectUrl($url);
+//    } else {
+//      drupal_set_message($this->t("Sorry, no advert found"), 'error');
+//    }
   }
 }
