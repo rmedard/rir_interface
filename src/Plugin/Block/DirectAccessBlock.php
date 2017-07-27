@@ -11,6 +11,16 @@ namespace Drupal\rir_interface\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 
+/**
+ * Class DirectAccessBlock
+ *
+ * @package Drupal\rir_interface\Plugin\Block
+ * @Block(
+ *   id = "direct_access_block",
+ *   admin_label = @Translation("Direct Access Block"),
+ *   category = @Translation("Custom RIR Blocks")
+ * )
+ */
 class DirectAccessBlock extends BlockBase {
 
   /**
