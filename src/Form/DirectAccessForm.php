@@ -11,6 +11,7 @@ namespace Drupal\rir_interface\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Entity\t;
 
 class DirectAccessForm extends FormBase {
 
@@ -44,6 +45,12 @@ class DirectAccessForm extends FormBase {
       '#value' => $this->t('Find')
     );
     return $form;
+  }
+
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    if ($form_state->isValueEmpty('reference_number')){
+      $form_state->setErrorByName('reference_number', t('Provide reference number'));
+    }
   }
 
   /**
