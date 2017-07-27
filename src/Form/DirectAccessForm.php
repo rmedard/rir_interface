@@ -9,12 +9,12 @@
 namespace Drupal\rir_interface\Form;
 
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\t;
 use \Drupal\Core\Form\drupal_set_message;
 use \Drupal\Core\Url;
-use Drupal\node\NodeInterface;
 
 class DirectAccessForm extends FormBase {
 
@@ -71,7 +71,7 @@ class DirectAccessForm extends FormBase {
       ->condition('status', 1)
       ->condition('field_advert_reference', $reference);
     $node = $nodeQuery->execute();
-    if (isset($node) and node instanceof NodeInterface){
+    if (isset($node) and node instanceof EntityInterface){
       $url = Url::fromUri('internal:/advert/'.$reference);
       $form_state->setRedirectUrl($url);
     } else {
