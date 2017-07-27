@@ -65,6 +65,8 @@ class DirectAccessForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $reference = $form_state->get('reference_number');
+    var_dump("dore" .$reference);
+    die();
     $nodeQuery = \Drupal::entityQuery('node')
       ->condition('type', 'advert')
       ->condition('status', 1)
