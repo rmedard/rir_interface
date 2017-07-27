@@ -54,20 +54,6 @@ class DirectAccessForm extends FormBase {
     if ($form_state->isValueEmpty('reference_number')){
       $form_state->setErrorByName('reference_number', t('Provide reference number'));
     }
-//    else {
-//      $reference = $form_state->get('reference_number');
-//      $nodeQuery = \Drupal::entityQuery('node')
-//        ->condition('type', 'advert')
-//        ->condition('status', 1)
-//        ->condition('field_advert_reference', $reference);
-//      $node = $nodeQuery->execute();
-//      if (isset($node)){
-//        $url = Url::fromUri('internal:/advert/'.$reference);
-//        $form_state->setRedirectUrl($url);
-//      } else {
-//        drupal_set_message($this->t("Sorry, no advert found"), 'error');
-//      }
-//    }
   }
 
   /**
