@@ -71,7 +71,7 @@ class DirectAccessForm extends FormBase {
       ->condition('field_advert_reference', $reference);
     $node = $nodeQuery->execute();
     if (isset($node)){
-      $url = Url::fromUri('/advert/'.$reference);
+      $url = Url::fromUri('internal:/advert/'.$reference);
       $form_state->setRedirectUrl($url);
     } else {
       drupal_set_message($this->t("Sorry, no advert found"), 'error');
