@@ -6,7 +6,7 @@
  * Time: 22:13
  */
 
-namespace Drupal\rir_interface\Plugin\Block\DirectAccessBlock;
+namespace Drupal\rir_interface\Plugin\Block;
 
 
 use Drupal\Core\Block\BlockBase;
@@ -27,7 +27,7 @@ class DirectAccessBlock extends BlockBase {
    * @see \Drupal\block\BlockViewBuilder
    */
   public function build() {
-    $form = Drupal::formBuilder()->getForm('Drupal\rir_interface\Form\DirectAccessForm');
+    $form = \Drupal::formBuilder()->getForm('Drupal\rir_interface\Form\DirectAccessForm');
     return $form;
   }
 }
