@@ -42,7 +42,10 @@ class DirectAccessForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form['reference_number'] = array(
       '#type' => 'textfield',
-      '#title' => $this->t('Reference'));
+//      '#title' => $this->t('Reference'),
+      '#attributes' => array(
+        'placeholder' => $this->t('Reference number')
+      ));
     $form['submit'] = array(
       '#type' => 'submit',
       '#value' => $this->t('Find')
@@ -71,8 +74,6 @@ class DirectAccessForm extends FormBase {
       ->condition('status', 1)
       ->condition('field_advert_reference', $reference);
     $node = $nodeQuery->execute();
-//    kint($node);
-//    die();
     if (isset($node) and !empty($node)){
       $url = Url::fromUri('internal:/advert/'.$reference);
       $form_state->setRedirectUrl($url);
