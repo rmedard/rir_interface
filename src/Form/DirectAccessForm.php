@@ -8,9 +8,6 @@
 
 namespace Drupal\rir_interface\Form;
 
-
-//use \Drupal\Core\Entity\t;
-//use \Drupal\Core\Form\drupal_set_message;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
