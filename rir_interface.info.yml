@@ -3,4 +3,6 @@ type: module
 description: 'This RIR module handles all GUI manipulations.'
 package: RIR Custom Modules
 core: 8.x
+dependencies:
+  - smart_ip: smart_ip
 version: '8.x-1.0'
