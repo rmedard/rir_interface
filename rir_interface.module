@@ -1,8 +1,8 @@
 <?php
 /**
-* @file
-* A description of what your module does.
-*/
+ * @file
+ * A description of what your module does.
+ */
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\node\NodeInterface;
@@ -12,41 +12,93 @@ use Drupal\smart_ip\SmartIpLocation;
  * Implements hook_entity_insert().
  */
 function rir_interface_entity_insert(EntityInterface $entity) {
-  if ($entity instanceof NodeInterface and $entity->bundle() == 'advert'){
-    Drupal::cache('render')->deleteAll();
-  }
+    if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
+        Drupal::cache('render')->deleteAll();
+    }
 }
 
 /**
  * Implements hook_entity_update().
  */
 function rir_interface_entity_update(EntityInterface $entity) {
-  if ($entity instanceof NodeInterface and $entity->bundle() == 'advert'){
-    Drupal::cache('render')->deleteAll();
-  }
+    if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
+        Drupal::cache('render')->deleteAll();
+    }
 }
 
 /**
  * Implements hook_entity_create().
  */
 function rir_interface_entity_create(EntityInterface $entity) {
-  if ($entity instanceof NodeInterface and $entity->bundle() == 'advert'){
-    $entity->set('field_advert_reference', generateRandomStr());
-    $locationObj = new SmartIpLocation();
-    $location = $locationObj->get('city') . ', ' . $locationObj->get('country') . '(' .$locationObj->get('countryCode') . ')';
-    $entity->set('field_advert_creator_location', $location);
-  }
+    if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
+        $entity->set('field_advert_reference', generateRandomStr());
+
+        $locationObj = new SmartIpLocation();
+        $location = $locationObj->get('city') . ', ' . $locationObj->get('country') . '(' . $locationObj->get('countryCode') . ')';
+        $entity->set('field_advert_creator_location', $location);
+    }
 }
 
-function generateRandomStr(){
-  $randomPart = '';
-  srand((double) microtime(TRUE) * 1000000);
-  $chars = array('1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
-    'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+function generateRandomStr() {
+    $randomPart = '';
+    srand((double) microtime(TRUE) * 1000000);
+    $chars = [
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
+      '8',
+      '9',
+      'A',
+      'B',
+      'C',
+      'D',
+      'E',
+      'F',
+      'G',
+      'H',
+      'I',
+      'J',
+      'K',
+      'L',
+      'M',
+      'N',
+      'O',
+      'P',
+      'Q',
+      'R',
+      'S',
+      'T',
+      'U',
+      'V',
+      'W',
+      'X',
+      'Y',
+      'Z',
+    ];
 
-  for ($rand = 0; $rand <= 9; $rand++) {
-    $random = rand(0, count($chars) - 1);
-    $randomPart .= $chars[$random];
-  }
-  return $randomPart;
+    for ($rand = 0; $rand <= 9; $rand++) {
+        $random = rand(0, count($chars) - 1);
+        $randomPart .= $chars[$random];
+    }
+    return $randomPart;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function rir_interface_theme($existing, $type, $theme, $path) {
+    return [
+      'rir_copyright' => [
+        'variables' => [
+          'year' => date('Y'),
+          'terms' => t('Terms of use'),
+          'privacy' => t('Privacy policy'),
+          'admin' => t('Site Management'),
+        ],
+      ],
+    ];
 }
