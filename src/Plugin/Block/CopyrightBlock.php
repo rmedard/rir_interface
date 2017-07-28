@@ -38,7 +38,7 @@ class CopyrightBlock extends BlockBase {
      */
     public function build() {
         return [
-          '#theme' => 'rir_copyright'
+          '#theme' => 'rir_copyright',
         ];
     }
 }
