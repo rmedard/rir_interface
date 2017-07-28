@@ -69,11 +69,11 @@ class DirectAccessForm extends FormBase {
    *   The current state of the form.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $reference = $form_state->getValue('reference_number');
+    $reference = trim($form_state->getValue('reference_number'));
     $nodeQuery = \Drupal::entityQuery('node')
       ->condition('type', 'advert')
       ->condition('status', 1)
-      ->condition('field_advert_reference', trim($reference));
+      ->condition('field_advert_reference', $reference);
     $node = $nodeQuery->execute();
     if (isset($node) and !empty($node)){
       $url = Url::fromUri('internal:/advert/'.$reference);
