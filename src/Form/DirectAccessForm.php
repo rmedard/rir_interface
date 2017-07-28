@@ -9,12 +9,11 @@
 namespace Drupal\rir_interface\Form;
 
 
-use Drupal\Core\Entity\EntityInterface;
+//use \Drupal\Core\Entity\t;
+//use \Drupal\Core\Form\drupal_set_message;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Entity\t;
-use \Drupal\Core\Form\drupal_set_message;
-use \Drupal\Core\Url;
+use Drupal\Core\Url;
 
 class DirectAccessForm extends FormBase {
 
@@ -74,13 +73,13 @@ class DirectAccessForm extends FormBase {
     $nodeQuery = \Drupal::entityQuery('node')
       ->condition('type', 'advert')
       ->condition('status', 1)
-      ->condition('field_advert_reference', $reference);
+      ->condition('field_advert_reference', trim($reference));
     $node = $nodeQuery->execute();
     if (isset($node) and !empty($node)){
       $url = Url::fromUri('internal:/advert/'.$reference);
       $form_state->setRedirectUrl($url);
     } else {
-      drupal_set_message($this->t("Sorry, no advert found"), 'error');
+      drupal_set_message($this->t("Sorry, no advert found!"), 'error');
     }
   }
 }
