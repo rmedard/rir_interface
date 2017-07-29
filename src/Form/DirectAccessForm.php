@@ -40,7 +40,7 @@ class DirectAccessForm extends FormBase {
       '#type' => 'textfield',
 //      '#title' => $this->t('Reference'),
       '#attributes' => array(
-        'placeholder' => $this->t('Reference number'),
+        'placeholder' => $this->t('Quickaccess: type reference here'),
         'size' => 30,
         'maxlength' => 30
       ));
