@@ -104,6 +104,11 @@ function rir_interface_theme($existing, $type, $theme, $path) {
         'variables' => [
           'title' => t('Get in touch'),
         ]
+      ],
+      'rir_services' => [
+        'variables' => [
+          'title' => t('Our services'),
+        ]
       ]
     ];
 }
