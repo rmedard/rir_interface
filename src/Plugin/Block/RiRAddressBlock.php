@@ -11,6 +11,16 @@ namespace Drupal\rir_interface\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 
+/**
+ * Class RiRAddressBlock
+ *
+ * @package Drupal\rir_interface\Plugin\Block
+ * @Block(
+ *   id = "rir_address_block",
+ *   admin_label = @Translation("RiR Address Block"),
+ *   category = @Translation("Custom RIR Blocks")
+ * )
+ */
 class RiRAddressBlock extends BlockBase {
 
   /**
