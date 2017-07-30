@@ -91,6 +91,20 @@ function generateRandomStr() {
  * Implements hook_theme().
  */
 function rir_interface_theme($existing, $type, $theme, $path) {
+  $rent = Drupal::entityQuery('node')
+    ->condition('type', 'advert')
+    ->condition('status', 1)
+    ->condition('field_advert_type', ['rent', 'short_rent'], 'IN')
+    ->count();
+  $rent_count = $rent->execute();
+
+  $sale = Drupal::entityQuery('node')
+    ->condition('type', 'advert')
+    ->condition('status', 1)
+    ->condition('field_advert_type', 'buy', 'IN')
+    ->count();
+  $sale_count = $sale->execute();
+
     return [
       'rir_copyright' => [
         'variables' => [
@@ -108,6 +122,13 @@ function rir_interface_theme($existing, $type, $theme, $path) {
       'rir_services' => [
         'variables' => [
           'title' => t('Our services'),
+        ]
+      ],
+      'rir_realtime' => [
+        'variables' => [
+          'title' => t('Realtime Figures'),
+          'rent' => $rent_count,
+          'sale' => $sale_count
         ]
       ]
     ];
