@@ -100,5 +100,10 @@ function rir_interface_theme($existing, $type, $theme, $path) {
           'admin' => t('Site Management'),
         ],
       ],
+      'rir_address' => [
+        'variables' => [
+          'title' => t('Get in touch'),
+        ]
+      ]
     ];
 }
