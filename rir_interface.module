@@ -93,14 +93,12 @@ function generateRandomStr() {
 function rir_interface_theme($existing, $type, $theme, $path) {
   $rent = Drupal::entityQuery('node')
     ->condition('type', 'advert')
-    ->condition('status', 1)
     ->condition('field_advert_type', ['rent', 'short_rent'], 'IN')
     ->count();
   $rent_count = $rent->execute();
 
   $sale = Drupal::entityQuery('node')
     ->condition('type', 'advert')
-    ->condition('status', 1)
     ->condition('field_advert_type', 'buy', 'IN')
     ->count();
   $sale_count = $sale->execute();
