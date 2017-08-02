@@ -18,7 +18,7 @@ use Drupal\Core\Url;
 
 class ModalExampleController extends ControllerBase {
   public function page(){
-    $link_url = Url::fromRoute('modal-example.modal', ['js' => 'nojs']);
+    $link_url = Url::fromRoute('modal_example.modal', ['js' => 'nojs']);
     $link_url->setOptions([
       'attributes' => [
         'class' => ['use-ajax', 'button', 'button--small'],
