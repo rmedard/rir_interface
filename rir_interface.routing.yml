@@ -1,12 +1,12 @@
 rir_interface.page:
-  path: 'modal-example'
+  path: 'rir-interface'
   dafaults:
     _title: 'Modal Example'
     _controller: '\Drupal\rir_interface\Controller\ModalExampleController::page'
   requirements:
     _permission: 'access content'
 rir_interface.modal:
-  path: 'modal-example/modal/{js}'
+  path: 'rir-interface/modal/{js}'
   defaults:
     _title: 'Modal'
     _controller: '\Drupal\rir_interface\Controller\ModalExampleController::modal'
