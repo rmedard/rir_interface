@@ -137,13 +137,13 @@ function rir_interface_theme($existing, $type, $theme, $path) {
  */
 function rir_interface_entity_presave(EntityInterface $entity) {
   if ($entity instanceof NodeInterface and $entity->bundle() == 'advert'){
-    $response = Unirest\Request::get("https://currency-exchange.p.mashape.com/exchange?from=EUR&q=1.0&to=RWF",
+    $response = Unirest\Request::get("https://currency-exchange.p.mashape.com/exchange?from=USD&q=1.0&to=RWF",
       array(
         "X-Mashape-Key" => "G9T1txjJzbmshj9pPAEB2d0k79G5p1m3Xjgjsn5PO0gQ09UvDw",
         "Accept" => "text/plain"
       )
     );
-    $converted = $entity->get('field_advert_price')->value * $response;
+    $converted = $entity->get('field_advert_price')->getValue() * $response;
     $entity->set('field_price_in_rwf', $converted);
   }
 }
