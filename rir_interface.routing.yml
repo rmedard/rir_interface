@@ -1,5 +1,5 @@
 rir_interface.page:
-  path: 'rir-interface'
+  path: 'modal-example'
   dafaults:
     _title: 'Modal Example'
     _controller: '\Drupal\rir_interface\Controller\ModalExampleController::page'
