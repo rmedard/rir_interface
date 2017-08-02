@@ -131,3 +131,12 @@ function rir_interface_theme($existing, $type, $theme, $path) {
       ]
     ];
 }
+
+/**
+ * Implements hook_entity_presave().
+ */
+function rir_interface_entity_presave(EntityInterface $entity) {
+  if ($entity instanceof NodeInterface and $entity->bundle() == 'advert'){
+    $entity->set('field_price_in_rwf', 120000);
+  }
+}
