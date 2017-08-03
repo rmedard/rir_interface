@@ -146,6 +146,8 @@ function rir_interface_entity_presave(EntityInterface $entity) {
       )->body;
       $converted = $entity->get('field_advert_price')->value * $response;
       $entity->set('field_price_in_rwf', $converted);
+    } else {
+      $entity->set('field_price_in_rwf', $entity->get('field_advert_price')->value);
     }
   }
 }
