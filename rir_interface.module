@@ -142,14 +142,8 @@ function rir_interface_entity_presave(EntityInterface $entity) {
         "X-Mashape-Key" => "G9T1txjJzbmshj9pPAEB2d0k79G5p1m3Xjgjsn5PO0gQ09UvDw",
         "Accept" => "text/plain"
       )
-    );
+    )->body;
     $converted = $entity->get('field_advert_price')->value * $response;
-    kint([
-      'reponse' => $response->body,
-      'rwf' => $entity->get('field_advert_price')->value,
-      'avunje' => $converted
-    ]);
-    die();
     $entity->set('field_price_in_rwf', $converted);
   }
 }
