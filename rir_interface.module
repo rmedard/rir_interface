@@ -144,7 +144,11 @@ function rir_interface_entity_presave(EntityInterface $entity) {
       )
     );
     $converted = $entity->get('field_advert_price')->value * $response;
-    kint([$response,  $entity->get('field_advert_price')->value]);
+    kint([
+      'reponse' => $response,
+      'rwf' => $entity->get('field_advert_price')->value,
+      'avunje' => $converted
+    ]);
     die();
     $entity->set('field_price_in_rwf', $converted);
   }
