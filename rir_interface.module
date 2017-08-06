@@ -103,6 +103,11 @@ function rir_interface_theme($existing, $type, $theme, $path) {
     ->count();
   $sale_count = $sale->execute();
 
+  $agents = Drupal::entityQuery('node')
+    ->condition('type', 'agent')
+    ->count();
+  $agents_count = $agents->execute();
+
     return [
       'rir_copyright' => [
         'variables' => [
@@ -126,7 +131,8 @@ function rir_interface_theme($existing, $type, $theme, $path) {
         'variables' => [
           'title' => t('Realtime Figures'),
           'rent' => $rent_count,
-          'sale' => $sale_count
+          'sale' => $sale_count,
+          'agents' => $agents_count
         ]
       ]
     ];
