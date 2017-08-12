@@ -159,17 +159,12 @@ function rir_interface_entity_presave(EntityInterface $entity) {
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
- */
-function rir_interface_form_FORM_ID_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  $form_state->setValue('interest_contact_email', 'medard.rebero@gmail.com');
-}
-
-/**
  * Implements hook_form_alter().
  */
 function rir_interface_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
   if ($form_id == 'webform_submission_interest_form_form'){
+    kint($form_state);
+    die();
     $form_state->setValue('interest_contact_email', 'medard.rebero@gmail.com');
   }
 }
