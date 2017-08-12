@@ -172,6 +172,5 @@ function rir_interface_entity_presave(EntityInterface $entity) {
  * Implements hook_form_FORM_ID_alter().
  */
 function rir_interface_form_webform_submission_interest_form_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  kint($form);
-  die();
+  $form['elements']['interest_contact_email'] = 'medard.rebero@gmail.com';
 }
