@@ -164,6 +164,6 @@ function rir_interface_entity_presave(EntityInterface $entity) {
 function rir_interface_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
   if ($form_id == 'webform_submission_interest_form_form'){
     $form['interest_contact_email']['widget'][0]['value']['#default_value'] ='medard.rebero@gmail.com';
-    $form_state->setValue('interest_contact_email', 'medard.rebero@gmail.com');
+//    $form_state->setValue('interest_contact_email', 'medard.rebero@gmail.com');
   }
 }
