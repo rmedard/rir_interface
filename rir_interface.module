@@ -5,6 +5,7 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\NodeInterface;
 use Drupal\smart_ip\SmartIpLocation;
 
@@ -161,17 +162,14 @@ function rir_interface_entity_presave(EntityInterface $entity) {
 /**
  * Implements hook_form_alter().
  */
-function rir_interface_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function rir_interface_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   if ($form_id == 'webform_submission_interest_form_form'){
+    $node = \Drupal::routeMatch()->getParameter('node');
+    if (isset($node)){
+      $contactEmail = $node->getValue('field_advert_contact_email');
+      kint($contactEmail);
+      die();
+    }
     $form['elements']['interest_contact_email']['#value'] = 'medard.rebero@gmail.com';
   }
 }
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-//function rir_interface_form_webform_submission_interest_form_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-////  kint($form);
-////  die();
-//  $form['elements']['interest_contact_email']['#value'] = 'medard.rebero@gmail.com';
-//}
