@@ -16,8 +16,17 @@ function rir_interface_entity_insert(EntityInterface $entity) {
     if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
         Drupal::cache('render')->deleteAll();
     } elseif ($entity instanceof WebformSubmissionInterface and $entity->getWebform()->id() == 'notification_subscription'){
-      kint($entity->getData());
-      die();
+      $districts = $entity->getData('notif_districts');
+      $notifType = $entity->getData('notif_advert_type');
+      $nbrRooms = $entity->getData('notif_nbr_rooms');
+      $propertyType = $entity->getData('notif_property_type');
+      $price = $entity->getData('notif_price');
+      $referenceNbr = getRequestCategoryReference($districts, $notifType, $nbrRooms, $propertyType, $price);
+      $requestCategoryCount = Drupal::entityQuery('node')
+        ->condition('type', 'details_request_category')
+        ->condition('field_dr_reference', $referenceNbr)
+        ->count();
+      // TODO Continue here...
     }
 }
 
@@ -160,4 +169,10 @@ function rir_interface_entity_presave(EntityInterface $entity) {
       $entity->set('field_price_in_rwf', $entity->get('field_advert_price')->value);
     }
   }
+}
+
+function getRequestCategoryReference($districts, $notificationType, $nbrRooms, $propertyType, $price ){
+  $districtValues = implode('_', $districts);
+  $advertTypeValue = $notificationType == 'buy' ? 'SALE' : 'RENT';
+  return $districtValues . '-' . $advertTypeValue . '-' . $nbrRooms . '-' . $propertyType . '-' .$price;
 }
