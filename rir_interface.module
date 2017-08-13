@@ -17,6 +17,7 @@ function rir_interface_entity_insert(EntityInterface $entity) {
         Drupal::cache('render')->deleteAll();
     } elseif ($entity instanceof WebformSubmissionInterface){
         kint($entity);
+        die();
     }
 }
 
