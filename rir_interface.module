@@ -157,9 +157,3 @@ function rir_interface_entity_presave(EntityInterface $entity) {
     }
   }
 }
-
-function getRequestCategoryReference($districts, $notificationType, $nbrRooms, $propertyType, $price ){
-  $districtValues = implode('_', $districts);
-  $advertTypeValue = $notificationType == 'buy' ? 'SALE' : 'RENT';
-  return $districtValues . '-' . $advertTypeValue . '-' . $nbrRooms . '-' . $propertyType . '-' .$price;
-}
