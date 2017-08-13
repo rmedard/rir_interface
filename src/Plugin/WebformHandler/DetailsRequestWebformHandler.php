@@ -8,7 +8,6 @@
 
 namespace Drupal\rir_interface\Plugin\WebformHandler;
 
-
 use Drupal\webform\Plugin\WebformHandler\EmailWebformHandler;
 use Drupal\webform\WebformSubmissionInterface;
 
@@ -31,7 +30,9 @@ class DetailsRequestWebformHandler extends EmailWebformHandler {
     $node = \Drupal::routeMatch()->getParameter('node');
     if (isset($node)){
       $recipient = $node->get('field_advert_contact_email')->value;
+      $reference = $node->get('field_advert_reference')->value;
       $message['to_mail'] = $recipient;
+      $message['subject'] = $this->t('Request for details: Ref.' . $reference);
     }
     return parent::sendMessage($webform_submission, $message);
   }
