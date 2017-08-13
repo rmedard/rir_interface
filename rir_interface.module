@@ -16,7 +16,9 @@ function rir_interface_entity_insert(EntityInterface $entity) {
     if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
         Drupal::cache('render')->deleteAll();
     } elseif ($entity instanceof WebformSubmissionInterface){
-        if ($entity->get('webform_id')->value == 'notification_subscription'){
+      kint($entity->values->webform_id);
+      die();
+      if ($entity->values->webform_id == 'notification_subscription'){
           kint($entity->entityKeys->id);
           die();
         }
