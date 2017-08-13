@@ -7,7 +7,6 @@
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\node\NodeInterface;
 use Drupal\smart_ip\SmartIpLocation;
-use Drupal\webform\WebformSubmissionInterface;
 
 /**
  * Implements hook_entity_insert().
@@ -15,8 +14,6 @@ use Drupal\webform\WebformSubmissionInterface;
 function rir_interface_entity_insert(EntityInterface $entity) {
     if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
         Drupal::cache('render')->deleteAll();
-    } elseif ($entity instanceof WebformSubmissionInterface){
-      drupal_set_message('Oyeeee', 'warning');
     }
 }
 
