@@ -5,10 +5,8 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\NodeInterface;
 use Drupal\smart_ip\SmartIpLocation;
-use Drupal\webform\WebformInterface;
 
 /**
  * Implements hook_entity_insert().
@@ -158,77 +156,4 @@ function rir_interface_entity_presave(EntityInterface $entity) {
       $entity->set('field_price_in_rwf', $entity->get('field_advert_price')->value);
     }
   }
-}
-
-/**
- * Implements hook_form_alter().
- */
-//function rir_interface_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-//  if ($form_id == 'webform_submission_interest_form_form'){
-////    $node = \Drupal::routeMatch()->getParameter('node');
-////    if (isset($node)){
-////      $contactEmail = $node->getValue('field_advert_contact_email');
-////      kint($contactEmail);
-////      die();
-////    }
-//    $form['elements']['interest_contact_email']['#value'] = 'medard.rebero@gmail.com';
-//  }
-//}
-
-/**
- * Implements hook_webform_submission_form_alter().
- */
-function rir_interface_webform_submission_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
-  if ($form_id == 'webform_submission_interest_form_form'){
-    //    $node = \Drupal::routeMatch()->getParameter('node');
-    //    if (isset($node)){
-    //      $contactEmail = $node->getValue('field_advert_contact_email');
-    //      kint($contactEmail);
-    //      die();
-    //    }
-    $form['elements']['interest_contact_email']['#value'] = 'medard.rebero@gmail.com';
-  }
-}
-
-/**
- * Implements hook_entity_insert().
- */
-function rir_interface_webform_insert(WebformInterface $webform) {
-  kint($webform);
-  die();
-  $webform_handler_manager = Drupal::service('plugin.manager.webform.handler');
-  $webform_handler = $webform_handler_manager->createInstance('email');
-  $webform_handler->setConfiguration([
-    'id' => 'email',
-    'label' => 'Email',
-    'handler_id' => 'email',
-    'status' => TRUE,
-    'weight' => 0,
-    'settings' => [
-      'states' => ['completed'],
-//      'to_mail' => '[webform_submission:values:email:raw]',
-      'to_email' => 'medard.rebero@gmail.com',
-      'to_options' => array(),
-      'cc_mail' => '',
-      'cc_options' => array(),
-      'bcc_mail' => '',
-      'bcc_options' => array(),
-      'from_mail' => 'default',
-      'from_options' => array(),
-      'from_name' => 'default',
-//      'subject' => '[webform_submission:values:subject:value]',
-//      'body' => '[webform_submission:values:message:value]',
-      'subject' => 'Test subject',
-      'body' => 'Test body',
-      'excluded_elements' => [],
-      'html' => TRUE,
-      'attachments' => FALSE,
-      'debug' => 0,
-      'reply_to' => '',
-      'return_path' => '',
-    ],
-  ]);
-
-  $webform->setOriginalId($webform->id());
-  $webform->addWebformHandler($webform_handler);
 }
