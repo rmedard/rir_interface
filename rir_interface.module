@@ -15,14 +15,9 @@ use Drupal\webform\WebformSubmissionInterface;
 function rir_interface_entity_insert(EntityInterface $entity) {
     if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
         Drupal::cache('render')->deleteAll();
-    } elseif ($entity instanceof WebformSubmissionInterface){
-//      kint($entity->getData());
-      kint($entity->getWebform());
+    } elseif ($entity instanceof WebformSubmissionInterface and $entity->getWebform()->id() == 'notification_subscription'){
+      kint($entity->getData());
       die();
-      if ($entity->values->webform_id == 'notification_subscription'){
-          kint($entity->entityKeys->id);
-          die();
-        }
     }
 }
 
