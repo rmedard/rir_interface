@@ -5,11 +5,3 @@ rir_interface.page:
     _controller: '\Drupal\rir_interface\Controller\ModalExampleController::page'
   requirements:
     _permission: 'access content'
-rir_interface.modal:
-  path: '/rir-interface/modal/{js}'
-  defaults:
-    _title: 'Modal'
-    _controller: '\Drupal\rir_interface\Controller\ModalExampleController::modal'
-  requirements:
-    _permission: 'access content'
-    js: 'nojs|ajax'
