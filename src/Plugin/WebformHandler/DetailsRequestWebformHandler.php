@@ -33,6 +33,11 @@ class DetailsRequestWebformHandler extends EmailWebformHandler {
       $reference = $node->get('field_advert_reference')->value;
       $message['to_mail'] = $recipient;
       $message['subject'] = $this->t('Request for details: Ref.' . $reference);
+      $message['html'] = TRUE;
+      $message['body'] = 'Names: ' . $webform_submission->getData('visitor_names') . '<br/>' .
+        'Telephone: ' . $webform_submission->getData('visitor_phone_number') . '<br/>' .
+        'Email: ' . $webform_submission->getData('visitor_email') . '<br/>' .
+        'Message: ' . $webform_submission->getData('visitor_message');
     }
     return parent::sendMessage($webform_submission, $message);
   }
