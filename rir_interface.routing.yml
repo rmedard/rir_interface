@@ -1,0 +1,7 @@
+rir_interface.page:
+  path: '/rir-interface'
+  dafaults:
+    _title: 'Modal Example'
+    _controller: '\Drupal\rir_interface\Controller\ModalExampleController::page'
+  requirements:
+    _permission: 'access content'

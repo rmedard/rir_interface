@@ -103,6 +103,11 @@ function rir_interface_theme($existing, $type, $theme, $path) {
     ->count();
   $sale_count = $sale->execute();
 
+  $agents = Drupal::entityQuery('node')
+    ->condition('type', 'agent')
+    ->count();
+  $agents_count = $agents->execute();
+
   $advert = Drupal::routeMatch()->getParameter('node');
     return [
       'rir_copyright' => [
@@ -127,7 +132,8 @@ function rir_interface_theme($existing, $type, $theme, $path) {
         'variables' => [
           'title' => t('Realtime Figures'),
           'rent' => $rent_count,
-          'sale' => $sale_count
+          'sale' => $sale_count,
+          'agents' => $agents_count
         ]
       ],
       'rir_advert_details' => [
@@ -136,4 +142,24 @@ function rir_interface_theme($existing, $type, $theme, $path) {
         ]
       ]
     ];
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function rir_interface_entity_presave(EntityInterface $entity) {
+  if ($entity instanceof NodeInterface and $entity->bundle() == 'advert'){
+    if ($entity->get('field_advert_currency')->value == 'usd'){
+      $response = Unirest\Request::get("https://currency-exchange.p.mashape.com/exchange?from=USD&q=1.0&to=RWF",
+        array(
+          "X-Mashape-Key" => "G9T1txjJzbmshj9pPAEB2d0k79G5p1m3Xjgjsn5PO0gQ09UvDw",
+          "Accept" => "text/plain"
+        )
+      )->body;
+      $converted = $entity->get('field_advert_price')->value * $response;
+      $entity->set('field_price_in_rwf', $converted);
+    } else {
+      $entity->set('field_price_in_rwf', $entity->get('field_advert_price')->value);
+    }
+  }
 }
