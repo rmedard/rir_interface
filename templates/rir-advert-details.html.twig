@@ -3,11 +3,24 @@
         <div class="panel-heading">Property details</div>
         <div class="panel-body">
             <dl class="dl-horizontal">
-                <dt>ID</dt><dd>{{ advert.nid.value }}</dd>
-                <dt>Advert type</dt><dd>{{ advert.field_advert_type.value }}</dd>
-                <dt>Price</dt><dd>{{ advert.field_advert_price.value }}</dd>
-                <dt>Bedrooms</dt><dd>{{ advert.field_advert_bedrooms.value }}</dd>
-
+                {#<dt>ID</dt><dd>{{ advert.nid.value }}</dd>#}
+                <div class="row">
+                    <div class="col-md-6">
+                        <dt>Advert type</dt><dd>{{ advert.field_advert_type.value }}</dd>
+                        <dt>Price</dt><dd>{{ advert.field_advert_price.value }}</dd>
+                        <dt>Bedrooms</dt><dd>{{ advert.field_advert_bedrooms.value }}</dd>
+                        <dt>Total floors</dt><dd>{{ advert.field_advert_total_floors.value }}</dd>
+                        <dt>Address</dt><dd>{{ advert.field_advert_district.entity.name }}, {{ advert.field_advert_sector.value }}, {{ advert.field_advert_village.value }} {{ advert.field_advert_street.value }} {{ advert.field_advert_housenumber.value }}</dd>
+                    </div>
+                    <div class="col-md-6">
+                        <dt>Property type</dt><dd>{{ advert.field_advert_property_type.value }}</dd>
+                        <dt>Currency</dt><dd>{{ advert.field_advert_currency.value }}</dd>
+                        <dt>Bathrooms</dt><dd>{{ advert.field_advert_bathrooms.value }}</dd>
+                        <dt>Size</dt><dd>{{ advert.field_advert_size.value }}</dd>
+                        <dt>Living area</dt><dd>{{ advert.field_advert_living_area.value }}</dd>
+                    </div>
+                    <dt>Expiry date</dt><dd>{{ advert.field_advert_expirydate.value }}</dd>
+                </div>
             </dl>
         </div>
     </div>
