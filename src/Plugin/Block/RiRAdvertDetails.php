@@ -43,6 +43,8 @@ class RiRAdvertDetails extends BlockBase {
       $advert = NULL;
       if (isset($node)){
         $advert = Node::load($node->id());
+        kint($advert->toArray());
+        die();
       }
 
       $output = array();
