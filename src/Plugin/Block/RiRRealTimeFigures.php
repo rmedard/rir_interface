@@ -9,6 +9,7 @@
 namespace Drupal\rir_interface\Plugin\Block;
 
 
+use Drupal;
 use Drupal\Core\Block\BlockBase;
 
 /**
@@ -37,8 +38,26 @@ class RiRRealTimeFigures extends BlockBase {
    * @see \Drupal\block\BlockViewBuilder
    */
   public function build() {
-    return [
-      '#theme' => 'rir_realtime',
-    ];
+    $rent = Drupal::entityQuery('node')
+      ->condition('type', 'advert')
+      ->condition('field_advert_type', ['rent', 'short_rent'], 'IN')
+      ->count();
+    $rent_count = $rent->execute();
+
+    $sale = Drupal::entityQuery('node')
+      ->condition('type', 'advert')
+      ->condition('field_advert_type', 'buy', 'IN')
+      ->count();
+    $sale_count = $sale->execute();
+
+    $agents = Drupal::entityQuery('node')
+      ->condition('type', 'agent')
+      ->count();
+    $agents_count = $agents->execute();
+
+    $output = array();
+    $output[]['#cache']['max-age'] = 0; // No cache
+    $output[] = [ '#theme' => 'rir_realtime', '#rent' => $rent_count, '#sale' => $sale_count, '#agents' => $agents_count];
+    return $output;
   }
 }
