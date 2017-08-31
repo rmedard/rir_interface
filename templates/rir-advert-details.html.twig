@@ -5,21 +5,21 @@
             <dl class="dl-horizontal" style="margin-bottom: 0">
                 <div class="row">
                     <div class="col-md-6">
-                        <dt>Advert type</dt><dd>{{ advert.field_advert_type.value }}</dd>
-                        <dt>Price</dt><dd>{{ advert.field_advert_price.value }}</dd>
-                        <dt>Bedrooms</dt><dd>{{ advert.field_advert_bedrooms.value }}</dd>
-                        <dt>Total floors</dt><dd>{{ advert.field_advert_total_floors.value }}</dd>
-                        <dt>Address</dt><dd>{{ advert.field_advert_district.entity.name.value }}, {{ advert.field_advert_sector.value }}, {{ advert.field_advert_village.value }} {{ advert.field_advert_street.value }} {{ advert.field_advert_housenumber.value }}</dd>
+                        <strong>Advert type:</strong> {{ advert.field_advert_type.value }} <br>
+                        <strong>Price:</strong> {{ advert.field_advert_price.value }} <br>
+                        <strong>Bedrooms:</strong> {{ advert.field_advert_bedrooms.value }} <br>
+                        <strong>Total floors:</strong> {{ advert.field_advert_total_floors.value }} <br>
+                        <strong>Address:</strong> {{ advert.field_advert_district.entity.name.value }}, {{ advert.field_advert_sector.value }}, {{ advert.field_advert_village.value }} {{ advert.field_advert_street.value }} {{ advert.field_advert_housenumber.value }} <br>
                     </div>
                     <div class="col-md-6">
-                        <dt>Property type</dt><dd>{{ advert.field_advert_property_type.value }}</dd>
-                        <dt>Currency</dt><dd>{{ advert.field_advert_currency.value }}</dd>
-                        <dt>Bathrooms</dt><dd>{{ advert.field_advert_bathrooms.value }}</dd>
-                        <dt>Size</dt><dd>{{ advert.field_advert_size.value }}</dd>
-                        <dt>Living area</dt><dd>{{ advert.field_advert_living_area.value }}</dd>
+                        <strong>Property type:</strong> {{ advert.field_advert_property_type.value }} <br>
+                        <strong>Currency:</strong> {{ advert.field_advert_currency.value }} <br>
+                        <strong>Bathrooms:</strong> {{ advert.field_advert_bathrooms.value }} <br>
+                        <strong>Size:</strong> {{ advert.field_advert_size.value }} <br>
+                        <strong>Living area:</strong> {{ advert.field_advert_living_area.value }} <br>
                     </div>
                     <div class="col-md-12">
-                        <dt>Expiry date</dt><dd>{{ advert.field_advert_expirydate.value }}</dd>
+                        <strong>Expiry date:</strong> {{ advert.field_advert_expirydate.value }} <br>
                     </div>
                 </div>
             </dl>
@@ -60,12 +60,16 @@
                             <img src="{{ file_url(advert.field_advert_advertiser.entity.field_agent_logo.entity.uri.value) }}" width="90" height="auto" class="img-thumbnail"/>
                         </div>
                         <div class="col-md-5">
-                            <dt>District</dt><dd>{{ advert.field_advert_advertiser.entity.field_agent_district.entity.name.value }}</dd>
-                            <dt>Sector</dt><dd>{{ advert.field_advert_advertiser.entity.field_agent_sector.value }}</dd>
-                            <dt>Street</dt><dd>{{ advert.field_advert_advertiser.entity.field_agent_street.value }}</dd>
+                            <strong>District:</strong> {{ advert.field_advert_advertiser.entity.field_agent_district.entity.name.value }}
+                            <br>
+                            <strong>Sector:</strong> {{ advert.field_advert_advertiser.entity.field_agent_sector.value }}
+                            <br>
+                            <strong>Street:</strong> {{ advert.field_advert_advertiser.entity.field_agent_street.value }}
+                            <br>
                         </div>
                         <div class="col-md-5">
-                            <dt>Website</dt><dd>{{ advert.field_advert_advertiser.entity.field_agent_website.value }}</dd>
+                            <strong>Website:</strong> {{ advert.field_advert_advertiser.entity.field_agent_website.value }}
+                            <br>
                         </div>
                     </div>
                 </dl>
