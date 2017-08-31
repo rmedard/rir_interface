@@ -110,7 +110,7 @@ function rir_interface_theme($existing, $type, $theme, $path) {
   $agents_count = $agents->execute();
 
   $advert = Drupal::routeMatch()->getParameter('node');
-  Drupal::logger('rir_interface')->debug('advert: ' . json_encode(Node::load($advert->id()), TRUE));
+  Drupal::logger('rir_interface')->debug('advert: ' . json_decode(json_encode(Node::load($advert->id()), TRUE)));
     return [
       'rir_copyright' => [
         'variables' => [
