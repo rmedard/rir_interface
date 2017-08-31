@@ -3,10 +3,10 @@
         <div class="panel-heading">Property details</div>
         <div class="panel-body">
             <dl class="dl-horizontal">
-                <dt style="visibility: hidden">ID</dt><dd>{{ advert.nid.value }}</dd>
+                <dt style="display: none">ID</dt><dd style="display: none">{{ advert.nid.value }}</dd>
                 <div class="row">
                     <div class="col-md-6">
-                        <dt>Advert type</dt><dd>{{ advert.field_advert_type.value }}</dd>
+                        <dt>Advert type</dt><dd>{{ advert.field_advert_type.name.value }}</dd>
                         <dt>Price</dt><dd>{{ advert.field_advert_price.value }}</dd>
                         <dt>Bedrooms</dt><dd>{{ advert.field_advert_bedrooms.value }}</dd>
                         <dt>Total floors</dt><dd>{{ advert.field_advert_total_floors.value }}</dd>
