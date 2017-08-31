@@ -1,9 +1,8 @@
 <div id="advert-details-block">
     <div class="panel panel-default">
-        <div class="panel-heading">Property details</div>
+        <div class="panel-heading">Property details<span style="visibility: hidden">{{ advert.nid.value }}</span>></div>
         <div class="panel-body">
             <dl class="dl-horizontal">
-                <dt style="display: none">ID</dt><dd style="display: none">{{ advert.nid.value }}</dd>
                 <div class="row">
                     <div class="col-md-6">
                         <dt>Advert type</dt><dd>{{ advert.field_advert_type }}</dd>
