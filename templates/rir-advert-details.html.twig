@@ -39,6 +39,23 @@
         </div>
     </div>
     {% endif %}
+    <div class="panel panel-default">
+        <div class="panel-heading">Contact details</div>
+        <div class="panel-body">
+            <blockquote>
+                <p>Please use the details below to book a visit of the property</p>
+            </blockquote>
+            <dl class="dl-horizontal">
+                <div class="row">
+                    <div class="col-md-12">
+                        <dt>Contact name</dt><dd>{{ advert.field_advert_contact_name.value }}</dd>
+                        <dt>Contact phone number</dt><dd>{{ advert.field_advert_contact_tel.value }}</dd>
+                        <dt>Contact email</dt><dd>{{ advert.field_advert_contact_email.value }}</dd>
+                    </div>
+                </div>
+            </dl>
+        </div>
+    </div>
     {% if advert.field_advert_is_agent.value == 'Yes' or advert.field_advert_is_agent.value == '1' or advert.field_advert_is_agent.value == 'true' or advert.field_advert_is_agent.value == 'On' %}
         <div class="panel panel-default">
             <div class="panel-heading">Advertiser agency</div>
