@@ -3,7 +3,7 @@
         <div class="panel-heading">Property details</div>
         <div class="panel-body">
             <dl class="dl-horizontal">
-                <dt>ID</dt><dd>{{ advert.nid.value }}</dd>
+                <dt style="visibility: hidden">ID</dt><dd>{{ advert.nid.value }}</dd>
                 <div class="row">
                     <div class="col-md-6">
                         <dt>Advert type</dt><dd>{{ advert.field_advert_type.value }}</dd>
@@ -19,7 +19,9 @@
                         <dt>Size</dt><dd>{{ advert.field_advert_size.value }}</dd>
                         <dt>Living area</dt><dd>{{ advert.field_advert_living_area.value }}</dd>
                     </div>
-                    <dt>Expiry date</dt><dd>{{ advert.field_advert_expirydate.value }}</dd>
+                    <div class="col-md-12">
+                        <dt>Expiry date</dt><dd>{{ advert.field_advert_expirydate.value }}</dd>
+                    </div>
                 </div>
             </dl>
         </div>
