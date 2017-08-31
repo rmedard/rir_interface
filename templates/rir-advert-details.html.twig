@@ -45,15 +45,9 @@
             <blockquote>
                 <p>Please use the details below to book a visit of the property</p>
             </blockquote>
-            <dl class="dl-horizontal" style="margin-bottom: 0">
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <dt>Contact name</dt><dd>{{ advert.field_advert_contact_name.value }}</dd>
-                        <dt>Contact phone number</dt><dd>{{ advert.field_advert_contact_tel.value }}</dd>
-                        <dt>Contact email</dt><dd>{{ advert.field_advert_contact_email.value }}</dd>
-                    </div>
-                </div>
-            </dl>
+            <strong>Contact name:</strong> {{ advert.field_advert_contact_name.value }}
+            <strong>Contact phone number:</strong> {{ advert.field_advert_contact_tel.value }}
+            <strong>Contact email:</strong> {{ advert.field_advert_contact_email.value }}
         </div>
     </div>
     {% if advert.field_advert_is_agent.value == 'Yes' or advert.field_advert_is_agent.value == '1' or advert.field_advert_is_agent.value == 'true' or advert.field_advert_is_agent.value == 'On' %}
