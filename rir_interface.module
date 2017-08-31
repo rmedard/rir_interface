@@ -110,7 +110,7 @@ function rir_interface_theme($existing, $type, $theme, $path) {
   $agents_count = $agents->execute();
 
   $advert = Drupal::routeMatch()->getParameter('node');
-  kint(Node::load(98)->get('field_advert_type'));
+  kint($advert);
   die();
     return [
       'rir_copyright' => [
