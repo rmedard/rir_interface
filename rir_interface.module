@@ -110,7 +110,7 @@ function rir_interface_theme($existing, $type, $theme, $path) {
   $agents_count = $agents->execute();
 
   $advert = Drupal::routeMatch()->getParameter('node');
-  kint($advert);
+  kint($advert->toArray());
   die();
     return [
       'rir_copyright' => [
