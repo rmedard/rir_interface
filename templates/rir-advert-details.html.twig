@@ -61,9 +61,10 @@
             <div class="panel-heading">Advertiser agency</div>
             <div class="panel-body">
                 <dl class="dl-horizontal">
+                    {{ advert.field_advert_advertiser.entity.field_agent_logo.url }}
                     <div class="row">
                         <div class="col-md-2">
-                            <img src="{{ advert.field_advert_advertiser.entity.field_agent_logo.url }}" width="90" class="img-thumbnail" />
+                            <img src="{{ advert.field_advert_advertiser.entity.field_agent_logo.url }}" width="90" class="img-thumbnail"/>
                         </div>
                         <div class="col-md-5">
                             <dt>District</dt><dd>{{ advert.field_advert_advertiser.entity.field_agent_district.entity.name.value }}</dd>
