@@ -109,7 +109,11 @@ function rir_interface_theme($existing, $type, $theme, $path) {
       ->count();
     $agents_count = $agents->execute();
 
-    $advert = Drupal::routeMatch()->getParameter('node');
+    $node = Drupal::routeMatch()->getParameter('node');
+    $advert = NULL;
+    if (isset($node)){
+        $advert = Node::load($node->id());
+    }
     return [
       'rir_copyright' => [
         'variables' => [
@@ -139,7 +143,7 @@ function rir_interface_theme($existing, $type, $theme, $path) {
       ],
       'rir_advert_details' => [
         'variables' => [
-          'advert' => Node::load($advert->id()),
+          'advert' => $advert,
         ],
       ],
     ];
