@@ -9,7 +9,9 @@
 namespace Drupal\rir_interface\Plugin\Block;
 
 
+use Drupal;
 use Drupal\Core\Block\BlockBase;
+use Drupal\node\Entity\Node;
 
 /**
  * Class RiRAdvertDetails
