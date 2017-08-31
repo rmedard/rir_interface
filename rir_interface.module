@@ -169,3 +169,10 @@ function rir_interface_entity_presave(EntityInterface $entity) {
         }
     }
 }
+
+/**
+ * Implements hook_block_build_alter().
+ */
+function rir_interface_block_build_alter(array &$build, \Drupal\Core\Block\BlockPluginInterface $block) {
+
+}
