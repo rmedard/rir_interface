@@ -92,6 +92,7 @@ function generateRandomStr() {
  * Implements hook_theme().
  */
 function rir_interface_theme($existing, $type, $theme, $path) {
+
     return [
       'rir_copyright' => [
         'variables' => [
@@ -114,6 +115,9 @@ function rir_interface_theme($existing, $type, $theme, $path) {
       'rir_realtime' => [
         'variables' => [
           'title' => t('Realtime Figures'),
+          'rent' => 0,
+          'sale' => 0,
+          'agents' => 0,
         ],
       ],
       'rir_advert_details' => [
