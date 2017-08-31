@@ -103,6 +103,7 @@ function rir_interface_theme($existing, $type, $theme, $path) {
     ->count();
   $sale_count = $sale->execute();
 
+  $advert = Drupal::routeMatch()->getParameter('node');
     return [
       'rir_copyright' => [
         'variables' => [
@@ -127,6 +128,11 @@ function rir_interface_theme($existing, $type, $theme, $path) {
           'title' => t('Realtime Figures'),
           'rent' => $rent_count,
           'sale' => $sale_count
+        ]
+      ],
+      'rir_advert_details' => [
+        'variables' => [
+          'advert' => $advert
         ]
       ]
     ];
