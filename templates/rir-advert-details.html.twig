@@ -47,7 +47,7 @@
             </blockquote>
             <dl class="dl-horizontal">
                 <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-12">
                         <dt>Contact name</dt><dd>{{ advert.field_advert_contact_name.value }}</dd>
                         <dt>Contact phone number</dt><dd>{{ advert.field_advert_contact_tel.value }}</dd>
                         <dt>Contact email</dt><dd>{{ advert.field_advert_contact_email.value }}</dd>
@@ -62,12 +62,15 @@
             <div class="panel-body">
                 <dl class="dl-horizontal">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-2">
+                            <img src="{{ advert.field_advert_advertiser.entity.field_agent_logo.url }}" width="90"/>
+                        </div>
+                        <div class="col-md-5">
                             <dt>District</dt><dd>{{ advert.field_advert_advertiser.entity.field_agent_district.entity.name.value }}</dd>
                             <dt>Sector</dt><dd>{{ advert.field_advert_advertiser.entity.field_agent_sector.value }}</dd>
                             <dt>Street</dt><dd>{{ advert.field_advert_advertiser.entity.field_agent_street.value }}</dd>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <dt>Website</dt><dd>{{ advert.field_advert_advertiser.entity.field_agent_website.value }}</dd>
                         </div>
                     </div>
