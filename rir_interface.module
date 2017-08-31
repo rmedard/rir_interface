@@ -5,6 +5,7 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\smart_ip\SmartIpLocation;
 
@@ -109,7 +110,7 @@ function rir_interface_theme($existing, $type, $theme, $path) {
   $agents_count = $agents->execute();
 
   $advert = Drupal::routeMatch()->getParameter('node');
-  Drupal::logger('rir_interface')->debug('advert: ' . json_encode($advert, TRUE));
+  Drupal::logger('rir_interface')->debug('advert: ' . json_encode(Node::load($advert->nid->value), TRUE));
     return [
       'rir_copyright' => [
         'variables' => [
@@ -139,7 +140,7 @@ function rir_interface_theme($existing, $type, $theme, $path) {
       ],
       'rir_advert_details' => [
         'variables' => [
-          'advert' => $advert
+          'advert' => Node::load($advert->nid->value)
         ]
       ]
     ];
