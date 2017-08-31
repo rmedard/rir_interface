@@ -63,10 +63,9 @@
                 <dl class="dl-horizontal">
                     <div class="row">
                         <div class="col-md-2">
-                            <img src="{{ advert.field_advert_advertiser.entity.field_agent_logo.url }}" width="90" class="img-thumbnail"/>
+                            <img src="{{ file_url(advert.field_advert_advertiser.entity.field_agent_logo.uri.value) }}" width="90" height="auto" class="img-thumbnail"/>
                         </div>
                         <div class="col-md-5">
-                            <p>{{ advert.field_advert_advertiser.entity.field_agent_logo.url }}</p>
                             <dt>District</dt><dd>{{ advert.field_advert_advertiser.entity.field_agent_district.entity.name.value }}</dd>
                             <dt>Sector</dt><dd>{{ advert.field_advert_advertiser.entity.field_agent_sector.value }}</dd>
                             <dt>Street</dt><dd>{{ advert.field_advert_advertiser.entity.field_agent_street.value }}</dd>
