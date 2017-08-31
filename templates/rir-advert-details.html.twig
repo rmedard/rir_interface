@@ -2,7 +2,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">Property details</div>
         <div class="panel-body">
-            <dl class="dl-horizontal">
+            <dl class="dl-horizontal" style="margin-bottom: 0">
                 <div class="row">
                     <div class="col-md-6">
                         <dt>Advert type</dt><dd>{{ advert.field_advert_type.value }}</dd>
@@ -29,7 +29,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">Property description</div>
         <div class="panel-body">
-            <dl class="dl-horizontal">
+            <dl class="dl-horizontal" style="margin-bottom: 0">
                 <div class="row">
                     <div class="col-md-12">
                         <p>{{ advert.field_property_description.value }}</p>
@@ -45,7 +45,7 @@
             <blockquote>
                 <p>Please use the details below to book a visit of the property</p>
             </blockquote>
-            <dl class="dl-horizontal">
+            <dl class="dl-horizontal" style="margin-bottom: 0">
                 <div class="row">
                     <div class="col-md-12">
                         <dt>Contact name</dt><dd>{{ advert.field_advert_contact_name.value }}</dd>
@@ -60,7 +60,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">Advertiser agency</div>
             <div class="panel-body">
-                <dl class="dl-horizontal">
+                <dl class="dl-horizontal" style="margin-bottom: 0">
                     <div class="row">
                         <div class="col-md-2">
                             <img src="{{ file_url(advert.field_advert_advertiser.entity.field_agent_logo.entity.uri.value) }}" width="90" height="auto" class="img-thumbnail"/>
