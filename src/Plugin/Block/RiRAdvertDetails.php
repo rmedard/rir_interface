@@ -37,8 +37,13 @@ class RiRAdvertDetails extends BlockBase {
      * @see \Drupal\block\BlockViewBuilder
      */
     public function build() {
-        return[
-          '#theme' => 'rir_advert_details'
-        ];
+      $output = array();
+      $output[]['#cache']['max-age'] = 0; // No cache
+      $output[] = [ '#theme' => 'rir_advert_details',];
+      return $output;
+//        return[
+//          '#theme' => 'rir_advert_details',
+//          ''
+//        ];
     }
 }
