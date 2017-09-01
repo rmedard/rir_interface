@@ -160,3 +160,12 @@ function rir_interface_form_interest_form_alter(&$form, FormStateInterface $form
     $form['visitor_message']['widget'][0]['value']['#default_value'] = 'default...';
   }
 }
+
+/**
+ * Implements hook_form_alter().
+ */
+function rir_interface_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'interest_form'){
+    Drupal::logger('rir_interface')->debug('form triggered...2');
+  }
+}
