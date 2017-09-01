@@ -148,3 +148,9 @@ function rir_interface_entity_presave(EntityInterface $entity) {
         }
     }
 }
+
+function rir_interface_preprocess_swiftmailer(&$variables){
+  if ($variables['key'] == 'email_details_request_email'){
+   Drupal::logger('rir_interface')->debug('swiftmailer called...');
+  }
+}
