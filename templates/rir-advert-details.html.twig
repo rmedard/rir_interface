@@ -19,7 +19,7 @@
                         <strong>Living area:</strong> {{ advert.field_advert_living_area.value }} <br>
                     </div>
                     <div class="col-md-12">
-                        <strong>Expiry date:</strong> {{ advert.field_advert_expirydate.value }} <br>
+                        <strong>Expiry date:</strong> {{ advert.field_advert_expirydate.value is empty ? "" : advert.field_advert_expirydate.value|date("d-m-Y") }} <br>
                     </div>
                 </div>
             </dl>
