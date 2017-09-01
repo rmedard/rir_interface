@@ -61,15 +61,17 @@
                             {% endif %}
                         </div>
                         <div class="col-md-5">
+                            <strong>Name:</strong> {{ advert.field_advert_advertiser.entity.field_agent_district.entity.title.value }}
+                            <br>
+                            <strong>Website:</strong> {{ advert.field_advert_advertiser.entity.field_agent_website.value }}
+                            <br>
+                        </div>
+                        <div class="col-md-5">
                             <strong>District:</strong> {{ advert.field_advert_advertiser.entity.field_agent_district.entity.name.value }}
                             <br>
                             <strong>Sector:</strong> {{ advert.field_advert_advertiser.entity.field_agent_sector.value }}
                             <br>
                             <strong>Street:</strong> {{ advert.field_advert_advertiser.entity.field_agent_street.value }}
-                            <br>
-                        </div>
-                        <div class="col-md-5">
-                            <strong>Website:</strong> {{ advert.field_advert_advertiser.entity.field_agent_website.value }}
                             <br>
                         </div>
                     </div>
