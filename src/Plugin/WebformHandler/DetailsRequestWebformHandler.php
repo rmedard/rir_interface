@@ -8,6 +8,7 @@
 
 namespace Drupal\rir_interface\Plugin\WebformHandler;
 
+use Drupal;
 use Drupal\webform\Plugin\WebformHandler\EmailWebformHandler;
 use Drupal\webform\WebformSubmissionInterface;
 
@@ -27,7 +28,7 @@ use Drupal\webform\WebformSubmissionInterface;
 class DetailsRequestWebformHandler extends EmailWebformHandler {
 
   public function sendMessage(WebformSubmissionInterface $webform_submission, array $message) {
-    $node = \Drupal::routeMatch()->getParameter('node');
+    $node = Drupal::routeMatch()->getParameter('node');
     if (isset($node)){
       $recipient = $node->get('field_advert_contact_email')->value;
       $reference = $node->get('field_advert_reference')->value;
