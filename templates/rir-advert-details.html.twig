@@ -60,7 +60,7 @@
                             {% if advert.field_advert_advertiser.entity.field_agent_logo.entity.uri.value is not empty %}
                                 <img src="{{ file_url(advert.field_advert_advertiser.entity.field_agent_logo.entity.uri.value) }}" width="90" height="auto" class="img-thumbnail"/>
                             {% else %}
-                                <img src="/{{ base_path }}/default_images/unknown.jpg" width="90" height="auto" class="img-thumbnail"/>
+                                <img src="public://default_images/unknown.jpg" width="90" height="auto" class="img-thumbnail"/>
                             {% endif %}
                         </div>
                         <div class="col-md-5">
