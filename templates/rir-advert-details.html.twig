@@ -5,14 +5,14 @@
             <dl class="dl-horizontal" style="margin-bottom: 0">
                 <div class="row">
                     <div class="col-md-6">
-                        <strong>Advert type:</strong> {{ advert.field_advert_type.value }} <br>
+                        <strong>Advert type:</strong> {% if advert.field_advert_type.value == 'buy' %} Sale {% else %} {{ advert.field_advert_type.value|capitalize }} {% endif %} <br>
                         <strong>Price:</strong> {{ advert.field_advert_price.value }} <br>
                         <strong>Bedrooms:</strong> {{ advert.field_advert_bedrooms.value }} <br>
                         <strong>Total floors:</strong> {{ advert.field_advert_total_floors.value }} <br>
                         <strong>Address:</strong> {{ advert.field_advert_district.entity.name.value }}, {{ advert.field_advert_sector.value }}, {{ advert.field_advert_village.value }} {{ advert.field_advert_street.value }} {{ advert.field_advert_housenumber.value }} <br>
                     </div>
                     <div class="col-md-6">
-                        <strong>Property type:</strong> {{ advert.field_advert_property_type.value }} <br>
+                        <strong>Property type:</strong> {% if advert.field_advert_property_type.value == 'shared_room' %} Shared room {% else %} {{ advert.field_advert_property_type.value|capitalize }} {% endif %} <br>
                         <strong>Currency:</strong> {{ advert.field_advert_currency.value }} <br>
                         <strong>Bathrooms:</strong> {{ advert.field_advert_bathrooms.value }} <br>
                         <strong>Size:</strong> {{ advert.field_advert_size.value }} <br>
