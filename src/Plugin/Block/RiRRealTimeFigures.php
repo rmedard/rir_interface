@@ -24,40 +24,53 @@ use Drupal\Core\Block\BlockBase;
  */
 class RiRRealTimeFigures extends BlockBase {
 
-  /**
-   * Builds and returns the renderable array for this block plugin.
-   *
-   * If a block should not be rendered because it has no content, then this
-   * method must also ensure to return no content: it must then only return an
-   * empty array, or an empty array with #cache set (with cacheability metadata
-   * indicating the circumstances for it being empty).
-   *
-   * @return array
-   *   A renderable array representing the content of the block.
-   *
-   * @see \Drupal\block\BlockViewBuilder
-   */
-  public function build() {
-    $rent = Drupal::entityQuery('node')
-      ->condition('type', 'advert')
-      ->condition('field_advert_type', ['rent', 'short_rent'], 'IN')
-      ->count();
-    $rent_count = $rent->execute();
+    /**
+     * Builds and returns the renderable array for this block plugin.
+     *
+     * If a block should not be rendered because it has no content, then this
+     * method must also ensure to return no content: it must then only return
+     * an
+     * empty array, or an empty array with #cache set (with cacheability
+     * metadata indicating the circumstances for it being empty).
+     *
+     * @return array
+     *   A renderable array representing the content of the block.
+     *
+     * @see \Drupal\block\BlockViewBuilder
+     */
+    public function build() {
+        $rent = Drupal::entityQuery('node')
+          ->condition('type', 'advert')
+          ->condition('field_advert_type', 'rent')
+          ->count();
+        $rent_count = $rent->execute();
 
-    $sale = Drupal::entityQuery('node')
-      ->condition('type', 'advert')
-      ->condition('field_advert_type', 'buy', 'IN')
-      ->count();
-    $sale_count = $sale->execute();
+        $sale = Drupal::entityQuery('node')
+          ->condition('type', 'advert')
+          ->condition('field_advert_type', 'buy')
+          ->count();
+        $sale_count = $sale->execute();
 
-    $agents = Drupal::entityQuery('node')
-      ->condition('type', 'agent')
-      ->count();
-    $agents_count = $agents->execute();
+        $auction = Drupal::entityQuery('node')
+          ->condition('type', 'advert')
+          ->condition('field_advert_type', 'auction')
+          ->count();
+        $auction_count = $auction->execute();
 
-    $output = array();
-    $output[]['#cache']['max-age'] = 0; // No cache
-    $output[] = [ '#theme' => 'rir_realtime', '#rent' => $rent_count, '#sale' => $sale_count, '#agents' => $agents_count];
-    return $output;
-  }
+        $agents = Drupal::entityQuery('node')
+          ->condition('type', 'agent')
+          ->count();
+        $agents_count = $agents->execute();
+
+        $output = [];
+        $output[]['#cache']['max-age'] = 0; // No cache
+        $output[] = [
+          '#theme' => 'rir_realtime',
+          '#rent' => $rent_count,
+          '#sale' => $sale_count,
+          '#agents' => $agents_count,
+          '#auctions' => $auction_count,
+        ];
+        return $output;
+    }
 }

@@ -117,6 +117,7 @@ function rir_interface_theme($existing, $type, $theme, $path) {
           'rent' => 0,
           'sale' => 0,
           'agents' => 0,
+          'auctions' => 0,
         ],
       ],
       'rir_advert_details' => [
