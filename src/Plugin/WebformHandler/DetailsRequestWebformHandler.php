@@ -35,9 +35,9 @@ class DetailsRequestWebformHandler extends EmailWebformHandler {
       $message['to_mail'] = $recipient;
       $message['subject'] = $this->t('Request for details: Ref.' . $reference);
       $message['html'] = TRUE;
-      $message['body'] = 'Names: ' . $webform_submission->getData('visitor_names') . '<br/>' .
-        'Telephone: ' . $webform_submission->getData('visitor_phone_number') . '<br/>' .
-        'Email: ' . $webform_submission->getData('visitor_email') . '<br/>' .
+      $message['body'] = 'Reference: ' . $reference . '<br>  Names: ' . $webform_submission->getData('visitor_names') . '<br>' .
+        'Telephone: ' . $webform_submission->getData('visitor_phone_number') . '<br>' .
+        'Email: ' . $webform_submission->getData('visitor_email') . '<br>' .
         'Message: ' . $webform_submission->getData('visitor_message');
     }
     return parent::sendMessage($webform_submission, $message);
