@@ -6,19 +6,16 @@
                 <div class="row">
                     <div class="col-md-6">
                         <strong>Advert type:</strong> {% if advert.field_advert_type.value == 'buy' %} Sale {% else %} {{ advert.field_advert_type.value|capitalize }} {% endif %} <br>
-                        <strong>Price:</strong> {{ advert.field_advert_price.value }} <br>
+                        <strong>Price:</strong> {{ advert.field_advert_price.value }} {{ advert.field_advert_currency.value|upper }}<br>
                         <strong>Bedrooms:</strong> {{ advert.field_advert_bedrooms.value }} <br>
                         <strong>Total floors:</strong> {{ advert.field_advert_total_floors.value }} <br>
                         <strong>Address:</strong> {{ advert.field_advert_district.entity.name.value }}, {{ advert.field_advert_sector.value }}, {{ advert.field_advert_village.value }} {{ advert.field_advert_street.value }} {{ advert.field_advert_housenumber.value }} <br>
                     </div>
                     <div class="col-md-6">
                         <strong>Property type:</strong> {% if advert.field_advert_property_type.value == 'shared_room' %} Shared room {% else %} {{ advert.field_advert_property_type.value|capitalize }} {% endif %} <br>
-                        <strong>Currency:</strong> {{ advert.field_advert_currency.value|upper }} <br>
                         <strong>Bathrooms:</strong> {{ advert.field_advert_bathrooms.value }} <br>
                         <strong>Size:</strong> {{ advert.field_advert_size.value }} <br>
                         <strong>Living area:</strong> {{ advert.field_advert_living_area.value }} <br>
-                    </div>
-                    <div class="col-md-12">
                         <strong>Expiry date:</strong> {{ advert.field_advert_expirydate.value is empty ? "" : advert.field_advert_expirydate.value|date("d-m-Y") }} <br>
                     </div>
                 </div>
