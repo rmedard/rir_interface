@@ -8,6 +8,7 @@
 
 namespace Drupal\rir_interface\Form;
 
+use Drupal;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
@@ -67,7 +68,7 @@ class DirectAccessForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $reference = trim($form_state->getValue('reference_number'));
-    $nodeQuery = \Drupal::entityQuery('node')
+    $nodeQuery = Drupal::entityQuery('node')
       ->condition('type', 'advert')
       ->condition('status', 1)
       ->condition('field_advert_reference', $reference);
@@ -76,7 +77,7 @@ class DirectAccessForm extends FormBase {
       $url = Url::fromUri('internal:/advert/'.$reference);
       $form_state->setRedirectUrl($url);
     } else {
-      drupal_set_message($this->t("Sorry, no advert found!"), 'error');
+      drupal_set_message($this->t("Sorry, no advert found with reference number: " . $reference), 'error');
     }
   }
 }
