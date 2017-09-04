@@ -77,7 +77,7 @@ class DirectAccessForm extends FormBase {
       $url = Url::fromUri('internal:/advert/'.$reference);
       $form_state->setRedirectUrl($url);
     } else {
-      drupal_set_message($this->t("Sorry, no advert found with reference number: " . $reference), 'error');
+      drupal_set_message($this->t("Sorry, no advert found with reference number: ") . $reference, 'error');
     }
   }
 }
