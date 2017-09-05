@@ -14,7 +14,7 @@
                     <div class="col-md-6">
                         <strong>Property type:</strong> {% if advert.field_advert_property_type.value == 'shared_room' %} Shared room {% else %} {{ advert.field_advert_property_type.value|capitalize }} {% endif %} <br>
                         <strong>Bathrooms:</strong> {{ advert.field_advert_bathrooms.value }} <br>
-                        <strong>Size:</strong> {{ advert.field_advert_size.value|number_format(2, '.', ',') }} m² <br>
+                        <strong>Plot size:</strong> {{ advert.field_advert_size.value|number_format(2, '.', ',') }} m² <br>
                         <strong>Living area:</strong> {{ advert.field_advert_living_area.value|number_format(2, '.', ',') }} m²<br>
                         <strong>Expiry date:</strong> {{ advert.field_advert_expirydate.value is empty ? "" : advert.field_advert_expirydate.value|date("d-m-Y") }} <br>
                     </div>
