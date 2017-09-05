@@ -43,8 +43,8 @@
                 <small>Please use the details below to book a visit of the property</small>
             </blockquote>
             <strong>Contact name:</strong> {{ advert.field_advert_contact_name.value }} <br>
-            <strong>Contact phone number:</strong> {{ advert.field_advert_contact_tel.value }} <br>
-            <strong>Contact email:</strong> {{ advert.field_advert_contact_email.value }} <br>
+            <strong>Contact phone number:</strong> {{ advert.field_visit_cellphone.value }} <br>
+            <strong>Contact email:</strong> {{ advert.field_visit_email_address1.value }} <br>
         </div>
     </div>
     {% if advert.field_advert_is_agent.value == 'Yes' or advert.field_advert_is_agent.value == '1' or advert.field_advert_is_agent.value == 'true' or advert.field_advert_is_agent.value == 'On' %}
