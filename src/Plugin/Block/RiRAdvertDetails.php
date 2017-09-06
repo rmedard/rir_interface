@@ -40,6 +40,9 @@ class RiRAdvertDetails extends BlockBase {
      * @see \Drupal\block\BlockViewBuilder
      */
     public function build() {
+        $config = Drupal::config('mailchimp.settings');
+        $apiK = $config->get('api_key');
+        Drupal::logger('rir_notifier')->debug('Dore key: ' . $apiK);
         $node = Drupal::routeMatch()->getParameter('node');
         $advert = NULL;
         if (isset($node)) {
