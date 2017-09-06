@@ -47,7 +47,7 @@
             <strong>Contact email:</strong> {{ advert.field_visit_email_address1.value }} <br>
         </div>
     </div>
-    {% if advert.field_advert_is_agent.value == '1' and advert.field_advert_advertiser.entity.title.value is not empty %}
+    {% if advert.field_advert_is_agent.value == '1' %}
         <div class="panel panel-default">
             <div class="panel-heading">Advertiser agent</div>
             <div class="panel-body">
