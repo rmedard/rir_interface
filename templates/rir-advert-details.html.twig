@@ -55,9 +55,9 @@
                     <div class="row">
                         <div class="col-md-2 col-xs-12">
                             {% if advert.field_advert_advertiser.entity.field_agent_logo.entity.uri.value is not empty %}
-                                <img src="{{ file_url(advert.field_advert_advertiser.entity.field_agent_logo.entity.uri.value) }}" width="90" height="auto" class="img-thumbnail"/>
+                                <img src="{{ advert.field_advert_advertiser.entity.field_agent_logo.entity.uri.value|image_style('scaled_90x90') }}" class="img-thumbnail"/>
                             {% else %}
-                                <img src="{{ 'public://default_images/unknown.jpg'|image_style('scaled_90x90') }} " width="90" height="auto" class="img-thumbnail"/>
+                                <img src="{{ 'public://default_images/unknown.jpg'|image_style('scaled_90x90') }}" class="img-thumbnail"/>
                             {% endif %}
                         </div>
                         <div class="col-md-5 col-xs-6">
