@@ -35,11 +35,24 @@ class DetailsRequestWebformHandler extends EmailWebformHandler {
       $message['to_mail'] = $recipient;
       $message['subject'] = $this->t('Request for details: Ref.' . $reference);
       $message['html'] = TRUE;
-      $message['body'] = 'Reference: ' . $reference . '<br>  Names: ' . $webform_submission->getData('visitor_names') . '<br>' .
-        'Telephone: ' . $webform_submission->getData('visitor_phone_number') . '<br>' .
-        'Email: ' . $webform_submission->getData('visitor_email') . '<br>' .
-        'Message: ' . $webform_submission->getData('visitor_message');
+      $phone = $webform_submission->getData('visitor_phone_number');
+      $email = $webform_submission->getData('visitor_email');
+      $names = $webform_submission->getData('visitor_names');
+      $message = $webform_submission->getData('visitor_message');
+      $message['body'] = getHtmlContent($reference, $phone, $email, $names, $message);
     }
-    return parent::sendMessage($webform_submission, $message);
+    parent::sendMessage($webform_submission, $message);
   }
+}
+
+function getHtmlContent($reference, $phone, $email, $names, $message) {
+  $variables = [
+    'reference' => $reference,
+    'phone' => $phone,
+    'email' => $email,
+    'names' => $names,
+    'message' => $message
+  ];
+  $twig_service = Drupal::service('twig');
+  return $twig_service->loadTemplate(drupal_get_path('module', 'rir_interface') . '/templates/rir-request-info.html.twig')->render($variables);
 }
