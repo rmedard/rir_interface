@@ -555,11 +555,11 @@
 <span>A visitor has sent request for further information about your property.</span></pre>
 
                                 <ul>
-                                    <li>Property reference: <a href="#" target="_blank">{{ reference }}</a></li>
-                                    <li>Visitor&#39;s names: {{ names }}</li>
-                                    <li>Visitor&#39;s phone: {{ phone }}</li>
-                                    <li>Visitor&#39;s email: {{ email }}</li>
-                                    <li>Message: {{ message }}</li>
+                                    <li><strong>Property reference</strong>: <a href="{{ drupal_token('site:url') ~ 'advert/' ~ reference }}" target="_blank">{{ reference }}</a></li>
+                                    <li><strong>Visitor&#39;s names</strong>: {{ names }}</li>
+                                    <li><strong>Visitor&#39;s phone</strong>: {{ phone }}</li>
+                                    <li><strong>Visitor&#39;s email</strong>: {{ email }}</li>
+                                    <li><strong>Message</strong>: {{ message }}</li>
                                 </ul>
                             </div>
                             <!-- // END MODULE: BODY CONTENT -->
