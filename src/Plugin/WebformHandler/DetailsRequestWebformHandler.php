@@ -29,8 +29,8 @@ class DetailsRequestWebformHandler extends EmailWebformHandler {
 
   public function sendMessage(WebformSubmissionInterface $webform_submission, array $message) {
     $node = Drupal::routeMatch()->getParameter('node');
-    if (isset($node)){
-      $recipient = $node->get('field_advert_contact_email')->value;
+    $recipient = $node->get('field_visit_email_address1')->value;
+    if (isset($node) and isset($recipient)){
       $reference = $node->get('field_advert_reference')->value;
       $message['to_mail'] = $recipient;
       $message['subject'] = $this->t('Request for details: Ref.' . $reference);
