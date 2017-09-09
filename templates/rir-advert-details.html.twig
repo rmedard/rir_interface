@@ -17,7 +17,7 @@
                         <strong>Bathrooms:</strong> {{ advert.field_advert_bathrooms.value }} <br>
                         <strong>Plot size:</strong> {% if advert.field_advert_size is not empty and advert.field_advert_size.value != 0 %} {{ advert.field_advert_size.value|number_format(2, '.', ',') }} m² {% else %} n/a {% endif %}<br>
                         <strong>Living area:</strong> {% if advert.field_advert_living_area is not empty and advert.field_advert_living_area.value != 0 %}{{ advert.field_advert_living_area.value|number_format(2, '.', ',') }} m²{% else %} n/a {% endif %}<br>
-                        <strong>External reference: </strong> {{ advert.field_agent_side_reference.value }}
+                        <strong>External reference: </strong> {{ advert.field_agent_side_reference.value }}<br>
                         <strong>Expiry date:</strong> {{ advert.field_advert_expirydate.value is empty ? "" : advert.field_advert_expirydate.value|date("d-m-Y") }} <br>
                     </div>
                 </div>
