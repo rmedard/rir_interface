@@ -56,11 +56,13 @@
                 <dl class="dl-horizontal" style="margin-bottom: 0">
                     <div class="row">
                         <div class="col-md-2 col-xs-12">
+                            <a href="#">
                             {% if advert.field_advert_advertiser.entity.field_agent_logo.entity.uri.value is not empty %}
                                 <img src="{{ advert.field_advert_advertiser.entity.field_agent_logo.entity.uri.value|image_style('scaled_90x90') }}" class="img-thumbnail"/>
                             {% else %}
                                 <img src="{{ 'public://default_images/unknown.jpg'|image_style('scaled_90x90') }}" class="img-thumbnail"/>
                             {% endif %}
+                            </a>
                         </div>
                         <div class="col-md-5 col-xs-6">
                             <strong>Name:</strong> {{ advert.field_advert_advertiser.entity.title.value }}
