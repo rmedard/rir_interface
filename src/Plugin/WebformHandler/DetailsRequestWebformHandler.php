@@ -35,19 +35,21 @@ class DetailsRequestWebformHandler extends EmailWebformHandler {
       $message['to_mail'] = $recipient;
       $message['subject'] = $this->t('Request for details: Ref.' . $reference);
       $message['html'] = TRUE;
+      $contact_name = $node->get('field_visit_contact_name')->value;
       $phone = $webform_submission->getData('visitor_phone_number');
       $email = $webform_submission->getData('visitor_email');
       $names = $webform_submission->getData('visitor_names');
       $email_message = $webform_submission->getData('visitor_message');
-      $message['body'] = getHtmlContent($reference, $phone, $email, $names, $email_message);
+      $message['body'] = getHtmlContent($contact_name, $reference, $phone, $email, $names, $email_message);
       Drupal::logger('rir_interface')->debug('Request for further info sent by: ' . $email);
     }
     return parent::sendMessage($webform_submission, $message);
   }
 }
 
-function getHtmlContent($reference, $phone, $email, $names, $message) {
+function getHtmlContent($contact_name, $reference, $phone, $email, $names, $message) {
   $variables = [
+    'contact_name' => $contact_name,
     'reference' => $reference,
     'phone' => $phone,
     'email' => $email,
