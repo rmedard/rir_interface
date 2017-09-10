@@ -16,7 +16,7 @@ function rir_interface_entity_insert(EntityInterface $entity) {
         Drupal::cache('render')->deleteAll();
 
         $mailManager = Drupal::service('plugin.manager.mail');
-        $module = 'rir_interface';
+        $module = 'rir_notifier';
         $key = 'advert_insert_alert';
         $to = $entity->get('field_visit_email_address1')->value;
         $params['message'] = t('Dear @user, we have successfully received your advert. We are validating it before publishing.', array('@user' => $entity->get('field_visit_contact_name')->value));
