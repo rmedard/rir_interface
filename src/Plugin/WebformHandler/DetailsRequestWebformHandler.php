@@ -29,17 +29,33 @@ class DetailsRequestWebformHandler extends EmailWebformHandler {
 
   public function sendMessage(WebformSubmissionInterface $webform_submission, array $message) {
     $node = Drupal::routeMatch()->getParameter('node');
-    if (isset($node)){
-      $recipient = $node->get('field_advert_contact_email')->value;
+    $recipient = $node->get('field_visit_email_address1')->value;
+    if (isset($node) and isset($recipient)){
       $reference = $node->get('field_advert_reference')->value;
       $message['to_mail'] = $recipient;
       $message['subject'] = $this->t('Request for details: Ref.' . $reference);
       $message['html'] = TRUE;
-      $message['body'] = 'Reference: ' . $reference . '<br>  Names: ' . $webform_submission->getData('visitor_names') . '<br>' .
-        'Telephone: ' . $webform_submission->getData('visitor_phone_number') . '<br>' .
-        'Email: ' . $webform_submission->getData('visitor_email') . '<br>' .
-        'Message: ' . $webform_submission->getData('visitor_message');
+      $contact_name = $node->get('field_visit_contact_name')->value;
+      $phone = $webform_submission->getData('visitor_phone_number');
+      $email = $webform_submission->getData('visitor_email');
+      $names = $webform_submission->getData('visitor_names');
+      $email_message = $webform_submission->getData('visitor_message');
+      $message['body'] = getHtmlContent($contact_name, $reference, $phone, $email, $names, $email_message);
+      Drupal::logger('rir_interface')->debug('Request for further info sent by: ' . $email);
     }
     return parent::sendMessage($webform_submission, $message);
   }
+}
+
+function getHtmlContent($contact_name, $reference, $phone, $email, $names, $message) {
+  $variables = [
+    'contact_name' => $contact_name,
+    'reference' => $reference,
+    'phone' => $phone,
+    'email' => $email,
+    'names' => $names,
+    'message' => $message
+  ];
+  $twig_service = Drupal::service('twig');
+  return $twig_service->loadTemplate(drupal_get_path('module', 'rir_interface') . '/templates/rir-request-info.html.twig')->render($variables);
 }

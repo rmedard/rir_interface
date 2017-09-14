@@ -14,6 +14,24 @@ use Drupal\smart_ip\SmartIpLocation;
 function rir_interface_entity_insert(EntityInterface $entity) {
     if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
         Drupal::cache('render')->deleteAll();
+
+        $mailManager = Drupal::service('plugin.manager.mail');
+        $module = 'rir_notifier';
+        $key = 'advert_insert_alert';
+        $to = $entity->get('field_visit_email_address1')->value;
+        $params['message'] = t('Dear @user, we have successfully received your advert. We are validating it before publishing.', array('@user' => $entity->get('field_visit_contact_name')->value));
+        $params['advert_title'] = $entity->label();
+        $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
+        $langcode = Drupal::currentUser()->getPreferredLangcode();
+        $send = true;
+        $result = $mailManager->mail($module, $key, $to, $langcode, $params, NULL, $send);
+      if ($result['result'] !== true) {
+        $message = t('There was a problem sending alert email to @email for creating advert id: @id.', array('@email' => $to, '@id' => $entity->id()));
+        Drupal::logger('rir_interface')->error($message);
+        return;
+      }
+      $message = t('An email notification has been sent to @email for creating advert id: @id.', array('@email' => $to, '@id' => $entity->id()));
+      Drupal::logger('rir_interface')->notice($message);
     }
 }
 
@@ -147,10 +165,4 @@ function rir_interface_entity_presave(EntityInterface $entity) {
             $entity->set('field_price_in_rwf', $entity->get('field_advert_price')->value);
         }
     }
-}
-
-function rir_interface_preprocess_swiftmailer(&$variables){
-  if ($variables['key'] == 'email_details_request_email'){
-   Drupal::logger('rir_interface')->debug('swiftmailer called...');
-  }
 }
