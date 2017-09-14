@@ -39,12 +39,21 @@
     <div class="panel panel-default">
         <div class="panel-heading" style="font-weight: bolder; font-size: large">Contact details</div>
         <div class="panel-body">
-            <blockquote>
-                <small>Please use the details below to book a visit of the property</small>
-            </blockquote>
-            <strong>Contact name:</strong> {{ advert.field_advert_contact_name.value }} <br>
-            <strong>Contact phone number:</strong> {{ advert.field_visit_cellphone.value }} <br>
-            <strong>Contact email:</strong> {{ advert.field_visit_email_address1.value }} <br>
+            <div class="row">
+                <blockquote>
+                    <small>Please use the details below to book a visit of the property</small>
+                </blockquote>
+                <div class="col-md-6">
+                    <strong>Contact person:</strong> {{ advert.field_advert_contact_name.value }} <br>
+                    <strong>Phone number:</strong> {{ advert.field_visit_cellphone.value }} <br>
+                    <strong>Email:</strong> {{ advert.field_visit_email_address1.value }} <br>
+                </div>
+                <div class="col-md-6">
+                    <strong style="visibility: hidden"></strong> <br>
+                    <strong>Phone number 2:</strong> {{ advert.field_visit_cellphone_2.value }} <br>
+                    <strong>Email 2:</strong> {{ advert.field_visit_email_address2.value }} <br>
+                </div>
+            </div>
         </div>
     </div>
     {% if advert.field_advert_is_agent.value == '1' %}
