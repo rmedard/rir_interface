@@ -50,7 +50,6 @@ class RiRAdvertDetails extends BlockBase {
             $entityReference = $referenceItem->get('entity');
             $entityAdapter = $entityReference->getTarget();
             $advertiser = $entityAdapter->getValue();
-            $ratings = fivestar_get_votes('node', $advertiser->id());
         }
 
         $output = [];
