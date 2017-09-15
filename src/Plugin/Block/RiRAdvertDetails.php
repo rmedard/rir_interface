@@ -42,13 +42,20 @@ class RiRAdvertDetails extends BlockBase {
     public function build() {
         $node = Drupal::routeMatch()->getParameter('node');
         $advert = NULL;
+        $advertiser = NULL;
+        $ratings = '--';
         if (isset($node)) {
             $advert = Node::load($node->id());
+            $referenceItem = $advert->get('field_advert_advertiser')->first();
+            $entityReference = $referenceItem->get('entity');
+            $entityAdapter = $entityReference->getTarget();
+            $advertiser = $entityAdapter->getValue();
+            $ratings = fivestar_get_votes('node', $advertiser->id());
         }
 
         $output = [];
         $output[]['#cache']['max-age'] = 0; // No cache
-        $output[] = ['#theme' => 'rir_advert_details', '#advert' => $advert];
+        $output[] = ['#theme' => 'rir_advert_details', '#advert' => $advert, '#ratings' => $ratings];
         return $output;
     }
 }
