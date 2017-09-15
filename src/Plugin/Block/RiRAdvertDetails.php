@@ -55,7 +55,7 @@ class RiRAdvertDetails extends BlockBase {
 
         $output = [];
         $output[]['#cache']['max-age'] = 0; // No cache
-        $output[] = ['#theme' => 'rir_advert_details', '#advert' => $advert, '#ratings' => $ratings];
+        $output[] = ['#theme' => 'rir_advert_details', '#advert' => $advert];
         return $output;
     }
 }

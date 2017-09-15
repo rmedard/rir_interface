@@ -141,7 +141,6 @@ function rir_interface_theme($existing, $type, $theme, $path) {
       'rir_advert_details' => [
         'variables' => [
           'advert' => NULL,
-          'ratings' => ''
         ],
       ],
     ];
