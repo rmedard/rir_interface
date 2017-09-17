@@ -7,6 +7,6 @@ dependencies:
   - smart_ip:smart_ip
   - twig_tweak:twig_tweak
   - fivestar:fivestar
-  - votingapi:votingapi
+  - votingapi
   - block
 version: '8.x-1.0'
