@@ -6,5 +6,6 @@ core: 8.x
 dependencies:
   - smart_ip:smart_ip
   - twig_tweak:twig_tweak
+  - fivestar:fivestar
   - block
 version: '8.x-1.0'
