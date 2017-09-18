@@ -208,6 +208,7 @@ function rir_interface_form_node_advert_form_alter(&$form, FormStateInterface $f
       '#type' => 'date',
       '#description' => 'Any description...',
       '#date_date_format' => 'd-m-Y',
+      '#required' => TRUE,
       '#default_value' => \Drupal\Core\Datetime\DrupalDateTime::createFromTimestamp(time())
     ];
 }
