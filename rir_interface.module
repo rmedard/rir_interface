@@ -198,7 +198,6 @@ function rir_interface_form_node_advert_form_alter(&$form, FormStateInterface $f
 
     $form['field_advert_expirydate'] = [
       '#type' => 'date',
-      '#default_value' => strtotime('+4 days', date('d-m-Y')),
       '#description' => 'Any description...'
     ];
 }
