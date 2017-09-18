@@ -5,6 +5,7 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\smart_ip\SmartIpLocation;
@@ -188,4 +189,11 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
       }
     }
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function rir_interface_form_node_advert_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+    drupal_set_message('Edit...', 'warning');
 }
