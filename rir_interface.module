@@ -204,10 +204,14 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
  */
 function rir_interface_form_node_advert_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
+    $form['posting_plan_message'] = array(
+      '#type' => 'item',
+      '#markup' => t('Visible images...')
+    );
+
     $form['field_advert_expirydate'] = [
       '#type' => 'date',
       '#description' => 'Any description...',
-      '#date_date_format' => 'd-m-Y',
       '#required' => TRUE,
       '#default_value' => '25-10-2017'
     ];
