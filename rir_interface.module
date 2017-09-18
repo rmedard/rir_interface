@@ -7,6 +7,8 @@
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\node\NodeInterface;
 use Drupal\smart_ip\SmartIpLocation;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_entity_insert().
@@ -166,4 +168,13 @@ function rir_interface_entity_presave(EntityInterface $entity) {
             $entity->set('field_price_in_rwf', $entity->get('field_advert_price')->value);
         }
     }
+}
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  if ($view->storage->get('id') === 'adverts' && $view->current_display === 'block_advert_carousel'){
+    $query->setLimit(1);
+  }
 }
