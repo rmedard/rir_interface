@@ -201,11 +201,11 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function rir_interface_form_node_advert_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-
-    $form['posting_plan_message'] = array(
-      '#type' => 'item',
-      '#markup' => t('Visible images...'),
-      '#weight' => 16
-    );
-}
+//function rir_interface_form_node_advert_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+//
+//    $form['posting_plan_message'] = array(
+//      '#type' => 'item',
+//      '#markup' => t('Visible images...'),
+//      '#weight' => 16
+//    );
+//}
