@@ -196,7 +196,8 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
  */
 function rir_interface_form_node_advert_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
-    $form['field_advert_expirydate'] = array(
+    $form['field_advert_expirydate'] = [
+      '#type' => 'date',
       '#description' => 'Any description...'
-    );
+    ];
 }
