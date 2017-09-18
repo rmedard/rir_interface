@@ -209,13 +209,4 @@ function rir_interface_form_node_advert_form_alter(&$form, FormStateInterface $f
       '#markup' => t('Visible images...'),
       '#weight' => 16
     );
-
-    $form['field_advert_expirydate'] = [
-      '#type' => 'date',
-      '#description' => 'Any description...',
-      '#required' => TRUE,
-      '#default_value' => date('Y-m-d', strtotime('+4 days'))
-    ];
-
-    $form['#validate'][] = 'custom_date_validate';
 }
