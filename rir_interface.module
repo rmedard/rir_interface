@@ -214,6 +214,6 @@ function rir_interface_form_node_advert_form_alter(&$form, FormStateInterface $f
       '#type' => 'date',
       '#description' => 'Any description...',
       '#required' => TRUE,
-      '#default_value' => array('year' => 2018, 'month' => 2, 'day' => 15)
+      '#default_value' => array('2017-10-11')
     ];
 }
