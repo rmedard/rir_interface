@@ -12,8 +12,6 @@ namespace Drupal\rir_interface\Plugin\Block;
 use Drupal;
 use Drupal\Core\Block\BlockBase;
 use Drupal\node\Entity\Node;
-use function fivestar_get_votes;
-use function fivestar_theme;
 
 /**
  * Class RiRAdvertDetails
@@ -45,43 +43,13 @@ class RiRAdvertDetails extends BlockBase {
         $node = Drupal::routeMatch()->getParameter('node');
         $advert = NULL;
         $advertiser = NULL;
-        $ratings = '--';
         if (isset($node)) {
             $advert = Node::load($node->id());
-            $referenceItem = $advert->get('field_advert_advertiser')->first();
-            if (isset($referenceItem)){
-              $entityReference = $referenceItem->get('entity');
-              $entityAdapter = $entityReference->getTarget();
-              $advertiser = $entityAdapter->getValue();
-
-
-              $settings = array(
-                'content_type' => 'node',
-                'content_id' => $advertiser->id(),
-                'entity' => $advertiser,
-                'stars' => 5,
-                'field_name' => 'field_agent_rating',
-                'autosubmit' => TRUE,
-                'allow_clear' => FALSE,
-                'langcode' => Drupal::currentUser()->getPreferredLangcode(),
-                'text' => 'none',
-                'tag' => 'vote',
-                'style' => 'average',
-                'widget' => array( 'name' => 'oxygen', 'css' => drupal_get_path('module', 'fivestar') . '/widgets/oxygen/oxygen.css' )
-              );
-
-
-
-//              $fivestar_values = fivestar_get_votes('node', $advertiser->id());
-////              //$render_form = drupal_get_form('fivestar_custom_widget', $fivestar_values, $settings);
-//
-//              $ratings = \Drupal::formBuilder()->getForm('fivestar_custom_widget', $fivestar_values, $settings);
-            }
         }
 
         $output = [];
         $output[]['#cache']['max-age'] = 0; // No cache
-        $output[] = ['#theme' => 'rir_advert_details', '#advert' => $advert, '#ratings' => $ratings];
+        $output[] = ['#theme' => 'rir_advert_details', '#advert' => $advert];
         return $output;
     }
 }
