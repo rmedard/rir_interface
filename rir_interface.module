@@ -23,19 +23,25 @@ function rir_interface_entity_insert(EntityInterface $entity) {
         $module = 'rir_notifier';
         $key = 'advert_insert_alert';
         $to = $entity->get('field_visit_email_address1')->value;
-        $params['message'] = t('Dear @user, we have successfully received your advert. We are validating it before publishing.', array('@user' => $entity->get('field_visit_contact_name')->value));
+        $params['message'] = t('Dear @user, we have successfully received your advert. We are validating it before publishing.', ['@user' => $entity->get('field_visit_contact_name')->value]);
         $params['advert_title'] = $entity->label();
         $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
         $langcode = Drupal::currentUser()->getPreferredLangcode();
-        $send = true;
+        $send = TRUE;
         $result = $mailManager->mail($module, $key, $to, $langcode, $params, NULL, $send);
-      if ($result['result'] !== true) {
-        $message = t('There was a problem sending alert email to @email for creating advert id: @id.', array('@email' => $to, '@id' => $entity->id()));
-        Drupal::logger('rir_interface')->error($message);
-        return;
-      }
-      $message = t('An email notification has been sent to @email for creating advert id: @id.', array('@email' => $to, '@id' => $entity->id()));
-      Drupal::logger('rir_interface')->notice($message);
+        if ($result['result'] !== TRUE) {
+            $message = t('There was a problem sending alert email to @email for creating advert id: @id.', [
+              '@email' => $to,
+              '@id' => $entity->id(),
+            ]);
+            Drupal::logger('rir_interface')->error($message);
+            return;
+        }
+        $message = t('An email notification has been sent to @email for creating advert id: @id.', [
+          '@email' => $to,
+          '@id' => $entity->id(),
+        ]);
+        Drupal::logger('rir_interface')->notice($message);
     }
 }
 
@@ -145,7 +151,7 @@ function rir_interface_theme($existing, $type, $theme, $path) {
       'rir_advert_details' => [
         'variables' => [
           'advert' => NULL,
-          'ratings' => ''
+          'ratings' => '',
         ],
       ],
     ];
@@ -176,19 +182,21 @@ function rir_interface_entity_presave(EntityInterface $entity) {
  * Implements hook_views_query_alter().
  */
 function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
-  if ($view->storage->get('id') === 'adverts' && $view->current_display === 'block_advert_carousel'){
-    $node = Drupal::routeMatch()->getParameter('node');
-    if (isset($node)){
-      $advert = Node::load($node->id());
-      if ($advert->get('field_advert_posting_plan')->value === 'standard') {
-        $query->setLimit(1);
-      } elseif ($advert->get('field_advert_posting_plan')->value === 'featured') {
-        $query->setLimit(5);
-      } elseif ($advert->get('field_advert_posting_plan')->value === 'full_service'){
-        $query->setLimit(10);
-      }
+    if ($view->storage->get('id') === 'adverts' && $view->current_display === 'block_advert_carousel') {
+        $node = Drupal::routeMatch()->getParameter('node');
+        if (isset($node)) {
+            $advert = Node::load($node->id());
+            if ($advert->get('field_advert_posting_plan')->value === 'standard') {
+                $query->setLimit(1);
+            }
+            elseif ($advert->get('field_advert_posting_plan')->value === 'featured') {
+                $query->setLimit(5);
+            }
+            elseif ($advert->get('field_advert_posting_plan')->value === 'full_service') {
+                $query->setLimit(10);
+            }
+        }
     }
-  }
 }
 
 /**
@@ -198,6 +206,7 @@ function rir_interface_form_node_advert_form_alter(&$form, FormStateInterface $f
 
     $form['field_advert_expirydate'] = [
       '#type' => 'date',
-      '#description' => 'Any description...'
+      '#description' => 'Any description...',
+      '#default_value' => new \Drupal\Core\Datetime\DrupalDateTime('now'),
     ];
 }
