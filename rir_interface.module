@@ -219,8 +219,3 @@ function rir_interface_form_node_advert_form_alter(&$form, FormStateInterface $f
 
     $form['#validate'][] = 'custom_date_validate';
 }
-
-function custom_date_validate(&$form, FormStateInterface $form_state){
-    Drupal::logger('rir_interface')->debug('Validator called...: ' . $form_state['values']['field_advert_expirydate']);
-}
-
