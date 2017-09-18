@@ -198,6 +198,7 @@ function rir_interface_form_node_advert_form_alter(&$form, FormStateInterface $f
 
     $form['field_advert_expirydate'] = [
       '#type' => 'date',
+      '#default_value' => strtotime('+4 days', \Drupal\Core\Datetime\DrupalDateTime::createFromTimestamp(time())),
       '#description' => 'Any description...'
     ];
 }
