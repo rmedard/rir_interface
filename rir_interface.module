@@ -168,7 +168,6 @@ function rir_interface_entity_presave(EntityInterface $entity) {
         $village = trim(strtolower($entity->get('field_advert_village')->value));
         $cell = trim(strtolower($entity->get('field_advert_cell')->value));
         $street = trim(strtolower($entity->get('field_advert_street')->value));
-        Drupal::logger('rir_interface')->debug('Dis: ' . $district . ', Sect: ' . $sector . ', Vil: ' . $village . ', Str: ' . $street);
         if (!empty($district) and !empty($sector) and !empty($village) and !empty($cell) and !empty($street)){
             $signature = hash('md5', $district . '_' . $sector . '_' . $village . '_' . $cell . '_' . $street);
             $entity->set('field_advert_signature', $signature);
