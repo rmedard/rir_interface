@@ -163,11 +163,11 @@ function rir_interface_entity_presave(EntityInterface $entity) {
     if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
 
         $term = Term::load($entity->get('field_advert_district')->target_id);
-        $district = trim(strtolower($term->getName()));
-        $sector = trim(strtolower($entity->get('field_advert_sector')->value));
-        $village = trim(strtolower($entity->get('field_advert_village')->value));
-        $cell = trim(strtolower($entity->get('field_advert_cell')->value));
-        $street = trim(strtolower($entity->get('field_advert_street')->value));
+        $district = str_replace(' ', '', strtolower($term->getName()));
+        $sector = str_replace(' ', '', strtolower($entity->get('field_advert_sector')->value));
+        $village = str_replace(' ', '', strtolower($entity->get('field_advert_village')->value));
+        $cell =  str_replace(' ', '', strtolower($entity->get('field_advert_cell')->value));
+        $street = str_replace(' ', '', strtolower($entity->get('field_advert_street')->value));
         if (!empty($district) and !empty($sector) and !empty($village) and !empty($cell) and !empty($street)){
             $signature = hash('md5', $district . '_' . $sector . '_' . $village . '_' . $cell . '_' . $street);
             $entity->set('field_advert_signature', $signature);
