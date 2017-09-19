@@ -9,6 +9,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\smart_ip\SmartIpLocation;
+use Drupal\taxonomy\Entity\Term;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\ViewExecutable;
 
@@ -162,10 +163,8 @@ function rir_interface_theme($existing, $type, $theme, $path) {
 function rir_interface_entity_presave(EntityInterface $entity) {
     if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
 
-        $referenceItem = $entity->get('field_advert_district')->first();
-        $entityReference = $referenceItem->get('entity');
-        $entityAdapter = $entityReference->getTarget();
-        $district = trim(strtolower($entityAdapter->getValue()));
+        $term = Term::load($entity->get('field_advert_district')->target_id);
+        $district = trim(strtolower($term->getName()));
         $sector = trim(strtolower($entity->get('field_advert_sector')->value));
         $village = trim(strtolower($entity->get('field_advert_village')->value));
         $cell = trim(strtolower($entity->get('field_advert_cell')->value));
