@@ -162,7 +162,7 @@ function rir_interface_theme($existing, $type, $theme, $path) {
 function rir_interface_entity_presave(EntityInterface $entity) {
     if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
 
-        $referenceItem = $advert->get('field_advert_district')->first();
+        $referenceItem = $entity->get('field_advert_district')->first();
         $entityReference = $referenceItem->get('entity');
         $entityAdapter = $entityReference->getTarget();
         $district = trim(strtolower($entityAdapter->getValue()));
