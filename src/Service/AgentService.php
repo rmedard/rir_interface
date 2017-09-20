@@ -1,0 +1,34 @@
+<?php
+
+use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\node\Entity\Node;
+
+/**
+ * Created by PhpStorm.
+ * User: reberme
+ * Date: 20/09/2017
+ * Time: 13:00
+ */
+
+class AgentService {
+    protected $entityTypeManager;
+
+    public function __construct(EntityTypeManager $entityTypeManager) {
+        $this->entityTypeManager = $entityTypeManager;
+    }
+
+    /**
+     * @param $agent_id
+     * @param int $status Status of the adverts. Defaults to PUBLISHED
+     *
+     * @return \Drupal\Core\Entity\EntityInterface[]|static[]
+     */
+    public function loadAdverts($agent_id, $status = Node::PUBLISHED){
+        $query = Drupal::entityQuery('node')
+          ->condition('type', 'advert')
+          ->condition('status', $status)
+          ->condition('field_advert_advertiser.entity.id', $agent_id);
+        $advert_ids = $query->execute();
+        return Node::loadMultiple($advert_ids);
+    }
+}

@@ -52,6 +52,19 @@ function rir_interface_entity_update(EntityInterface $entity) {
     if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
         Drupal::cache('render')->deleteAll();
     }
+
+    if ($entity instanceof NodeInterface and $entity->bundle() == 'agent'){
+        if (!$entity->isPublished()){
+            $agentService = Drupal::service('rir_interface.agent_service');
+            $adverts = $agentService->loadAdverts($entity->id());
+            if(count($adverts) > 0) {
+                foreach ($adverts as $advert){
+                    $advert->setPublished(FALSE);
+                    $advert->save();
+                }
+            }
+        }
+    }
 }
 
 /**

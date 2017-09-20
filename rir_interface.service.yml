@@ -1,0 +1,4 @@
+services:
+  rir_interface.agent_service:
+    class: \Drupal\rir_interface\Service\AgentService
+    arguments: ["@entity_type.manager"]
