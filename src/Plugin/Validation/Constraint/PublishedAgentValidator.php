@@ -9,6 +9,7 @@
 namespace Drupal\rir_interface\Plugin\Validation\Constraint;
 
 
+use Drupal;
 use Drupal\node\Entity\Node;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -25,6 +26,7 @@ class PublishedAgentValidator extends ConstraintValidator {
      */
     public function validate($values, Constraint $constraint) {
         foreach ($values as $value){
+            Drupal::logger('rir_interface')->debug('Value: ' . $value->value);
             if (!$this->isAgentPublished($value->value)){
                 $this->context->addViolation($constraint->not_published, ['%value' => $value->value]);
             }
@@ -33,6 +35,10 @@ class PublishedAgentValidator extends ConstraintValidator {
 
     private function isAgentPublished($value){
         $agent = Node::load($value);
-        return $agent->isPublished();
+        Drupal::logger('rir_interface')->debug('Validated value: ' . $value);
+        if (isset($agent)){
+            return $agent->isPublished();
+        }
+        return TRUE;
     }
 }
