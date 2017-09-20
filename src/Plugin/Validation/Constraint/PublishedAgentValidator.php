@@ -18,12 +18,16 @@ class PublishedAgentValidator extends ConstraintValidator {
     /**
      * Checks if the passed value is valid.
      *
-     * @param mixed $value The value that should be validated
+     * @param mixed $values
      * @param Constraint $constraint The constraint for the validation
+     *
+     * @internal param mixed $value The value that should be validated
      */
-    public function validate($value, Constraint $constraint) {
-        if (!$this->isAgentPublished($value)){
-            $this->context->addViolation($constraint->not_published, ['%value' => $value]);
+    public function validate($values, Constraint $constraint) {
+        foreach ($values as $value){
+            if (!$this->isAgentPublished($value->value)){
+                $this->context->addViolation($constraint->not_published, ['%value' => $value->value]);
+            }
         }
     }
 
