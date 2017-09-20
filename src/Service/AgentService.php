@@ -1,5 +1,7 @@
 <?php
 
+namespace Drupal\rir_interface\Service;
+
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\node\Entity\Node;
 
