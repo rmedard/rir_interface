@@ -36,7 +36,7 @@ class PublishedAgentValidator extends ConstraintValidator {
     private function isAgentPublished($value){
         $agent = Node::load($value);
         if (isset($agent)){
-            Drupal::logger('rir_interface')->debug('Validated value: ' . $agent->getTitle() . ' IsPublished: ' .$agent->isPublished());
+            Drupal::logger('rir_interface')->debug('Validated value: ' . $agent->getTitle() . ' IsPublished: ' . $agent->get('status')->value);
             return $agent->isPublished();
         }
         return TRUE;
