@@ -34,4 +34,22 @@ class AgentService {
         $advert_ids = $query->execute();
         return Node::loadMultiple($advert_ids);
     }
+
+    public function validate_advert_agent($advert){
+        $is_valid = TRUE;
+        if ($advert->get('field_advert_is_agent')->value === 1){
+            $agent_id = $advert->get('field_advert_advertiser')->target_id;
+            if (isset($agent_id)){
+                $status = $advert->get('field_advert_advertiser')->entity->get('status')->value;
+                if ($status !== 1){
+                    $is_valid = FALSE;
+                }
+            }
+        } else {
+            $advert->set('field_advert_advertiser', NULL);
+            $advert->save();
+            $is_valid = TRUE;
+        }
+        return $is_valid;
+    }
 }
