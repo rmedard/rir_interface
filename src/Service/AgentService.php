@@ -30,7 +30,7 @@ class AgentService {
         $query = Drupal::entityQuery('node')
           ->condition('type', 'advert')
           ->condition('status', $status)
-          ->condition('field_advert_advertiser.entity.target_id', $agent_id);
+          ->condition('field_advert_advertiser.target_id', $agent_id);
         $advert_ids = $query->execute();
         return Node::loadMultiple($advert_ids);
     }
