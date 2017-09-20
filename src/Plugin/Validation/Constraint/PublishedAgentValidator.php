@@ -10,7 +10,6 @@ namespace Drupal\rir_interface\Plugin\Validation\Constraint;
 
 
 use Drupal;
-use Drupal\node\Entity\Node;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -26,17 +25,11 @@ class PublishedAgentValidator extends ConstraintValidator {
      */
     public function validate($items, Constraint $constraint) {
         foreach ($items as $item){
-            if (!$this->isAgentPublished($item->target_id)){
+            if ($item->entity->get('status')->value === 0){
                 $this->context->addViolation($constraint->not_published, ['%value' => $item->entity->getTitle()]);
+                Drupal::logger('rir_interface')->debug('Advert publication failed: ' . $item->entity->getTitle());
             }
         }
     }
 
-    private function isAgentPublished($value){
-        $agent = Node::load($value);
-        if (isset($agent)){
-            return $agent->get('status')->value === 1 ? TRUE : FALSE;
-        }
-        return TRUE;
-    }
 }
