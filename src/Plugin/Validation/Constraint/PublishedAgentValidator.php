@@ -26,9 +26,8 @@ class PublishedAgentValidator extends ConstraintValidator {
      */
     public function validate($items, Constraint $constraint) {
         foreach ($items as $item){
-            Drupal::logger('rir_interface')->debug('Value: ' . $item->target_id);
             if (!$this->isAgentPublished($item->target_id)){
-                $this->context->addViolation($constraint->not_published, ['%value' => $item->target_id]);
+                $this->context->addViolation($constraint->not_published, ['%value' => $item->entity->getTitle()]);
             }
         }
     }
@@ -36,8 +35,7 @@ class PublishedAgentValidator extends ConstraintValidator {
     private function isAgentPublished($value){
         $agent = Node::load($value);
         if (isset($agent)){
-            Drupal::logger('rir_interface')->debug('Validated value: ' . $agent->getTitle() . ' IsPublished: ' . $agent->get('status')->value);
-            return $agent->isPublished();
+            return $agent->get('status')->value === 1 ? TRUE : FALSE;
         }
         return TRUE;
     }
