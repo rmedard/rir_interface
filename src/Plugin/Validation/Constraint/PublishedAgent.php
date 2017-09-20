@@ -8,7 +8,8 @@
 
 namespace Drupal\rir_interface\Plugin\Validation\Constraint;
 
-use Drupal\Core\Validation\Annotation\Constraint;
+use Symfony\Component\Validator\Constraint;
+
 
 /**
  * Class PublishedAgent
