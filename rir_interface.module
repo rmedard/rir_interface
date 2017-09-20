@@ -5,6 +5,7 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\smart_ip\SmartIpLocation;
@@ -175,15 +176,6 @@ function rir_interface_theme($existing, $type, $theme, $path) {
 function rir_interface_entity_presave(EntityInterface $entity) {
     if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
 
-        if (isset($entity->original)){
-            if (!$entity->original->isPublished() and $entity->isPublished()){
-                if (!$entity->get('field_advert_advertiser')->entity->isPublished()){
-                    drupal_set_message('Publishing failed. The agent of this advert is unpublished');
-                    return;
-                }
-            }
-        }
-
         /**
          * Update address signature
          */
@@ -236,6 +228,15 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
                 $query->setLimit(10);
             }
         }
+    }
+}
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function rir_interface_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
+    if ($bundle === 'advert'){
+        $fields['field_advert_advertiser']->addConstraint('published_agent', []);
     }
 }
 
