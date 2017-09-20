@@ -57,6 +57,7 @@ function rir_interface_entity_update(EntityInterface $entity) {
         if (!$entity->isPublished()){
             $agentService = Drupal::service('rir_interface.agent_service');
             $adverts = $agentService->loadAdverts($entity->id());
+            Drupal::logger('rir_interface')->debug('Found adverts: ' . count($adverts));
             if(count($adverts) > 0) {
                 foreach ($adverts as $advert){
                     $advert->setPublished(FALSE);
