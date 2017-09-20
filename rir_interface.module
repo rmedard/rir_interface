@@ -175,11 +175,13 @@ function rir_interface_theme($existing, $type, $theme, $path) {
 function rir_interface_entity_presave(EntityInterface $entity) {
     if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
 
-        $agentService = Drupal::service('rir_interface.agent_service');
-        $is_valid = $agentService->validate_advert_agent($entity);
-        if (!$is_valid){
-            drupal_set_message('Failed to save. The agent of this advert is unpublished');
-            return;
+        if (isset($entity->original)){
+            if (!$entity->original->isPublished() and $entity->isPublished()){
+                if (!$entity->get('field_advert_advertiser')->entity->isPublished()){
+                    drupal_set_message('Failed to save. The agent of this advert is unpublished');
+                    return;
+                }
+            }
         }
 
         /**
