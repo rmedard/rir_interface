@@ -178,7 +178,7 @@ function rir_interface_entity_presave(EntityInterface $entity) {
         if (isset($entity->original)){
             if (!$entity->original->isPublished() and $entity->isPublished()){
                 if (!$entity->get('field_advert_advertiser')->entity->isPublished()){
-                    drupal_set_message('Failed to save. The agent of this advert is unpublished');
+                    drupal_set_message('Publishing failed. The agent of this advert is unpublished');
                     return;
                 }
             }
