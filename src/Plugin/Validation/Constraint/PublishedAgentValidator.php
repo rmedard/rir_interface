@@ -19,24 +19,24 @@ class PublishedAgentValidator extends ConstraintValidator {
     /**
      * Checks if the passed value is valid.
      *
-     * @param mixed $values
+     * @param mixed $items
      * @param Constraint $constraint The constraint for the validation
      *
      * @internal param mixed $value The value that should be validated
      */
-    public function validate($values, Constraint $constraint) {
-        foreach ($values as $value){
-            Drupal::logger('rir_interface')->debug('Value: ' . $value->target_id);
-            if (!$this->isAgentPublished($value->target_id)){
-                $this->context->addViolation($constraint->not_published, ['%value' => $value->target_id]);
+    public function validate($items, Constraint $constraint) {
+        foreach ($items as $item){
+            Drupal::logger('rir_interface')->debug('Value: ' . $item->target_id);
+            if (!$this->isAgentPublished($item->target_id)){
+                $this->context->addViolation($constraint->not_published, ['%value' => $item->target_id]);
             }
         }
     }
 
     private function isAgentPublished($value){
         $agent = Node::load($value);
-        Drupal::logger('rir_interface')->debug('Validated value: ' . $value);
         if (isset($agent)){
+            Drupal::logger('rir_interface')->debug('Validated value: ' . $agent->getTitle() . ' IsPublished: ' .$agent->isPublished());
             return $agent->isPublished();
         }
         return TRUE;
