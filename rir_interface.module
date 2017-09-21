@@ -167,6 +167,9 @@ function rir_interface_theme($existing, $type, $theme, $path) {
           'advert' => NULL,
         ],
       ],
+      'hir_create_agent' => [
+        'variables' => [],
+      ],
     ];
 }
 
