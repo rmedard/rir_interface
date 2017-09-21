@@ -40,21 +40,23 @@ class DetailsRequestWebformHandler extends EmailWebformHandler {
       $email = $webform_submission->getData('visitor_email');
       $names = $webform_submission->getData('visitor_names');
       $email_message = $webform_submission->getData('visitor_message');
-      $message['body'] = getHtmlContent($contact_name, $reference, $phone, $email, $names, $email_message);
+      $advert_title = $node->getTitle();
+      $message['body'] = getHtmlContent($contact_name, $reference, $phone, $email, $names, $email_message, $advert_title);
       Drupal::logger('rir_interface')->debug('Request for further info sent by: ' . $email);
     }
     return parent::sendMessage($webform_submission, $message);
   }
 }
 
-function getHtmlContent($contact_name, $reference, $phone, $email, $names, $message) {
+function getHtmlContent($contact_name, $reference, $phone, $email, $names, $message, $advert_title) {
   $variables = [
     'contact_name' => $contact_name,
     'reference' => $reference,
     'phone' => $phone,
     'email' => $email,
     'names' => $names,
-    'message' => $message
+    'message' => $message,
+    'title' => $advert_title
   ];
   $twig_service = Drupal::service('twig');
   return $twig_service->loadTemplate(drupal_get_path('module', 'rir_interface') . '/templates/rir-request-info.html.twig')->render($variables);

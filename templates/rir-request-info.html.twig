@@ -532,15 +532,7 @@
                 <![endif]-->
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer">
 
-                    <!-- BEGIN HEADER // -->
-                    <tr>
-                        <td valign="top" id="templateHeader">
-                            <!-- BEGIN MODULE: HEADER IMAGE // -->
-                            <img src="{{ drupal_token('site:url') ~ 'public://default_images/email_banner.jpg'|image_style('email_banner') }}" class="templateImage" alt="email_banner">
-                            <!-- // END MODULE: HEADER IMAGE -->
-                        </td>
-                    </tr>
-                    <!-- // END HEADER -->
+
                     <!-- BEGIN BODY // -->
                     <tr>
                         <td valign="top" id="templateBody">
@@ -549,17 +541,20 @@
 
                                 <h3>Request for information</h3>
 
-                                <p><strong>Dear {{ contact_name }}!</strong></p>
+                                <p><strong>Hello {{ contact_name }}!</strong></p>
 
-                                <pre>
-<span>A visitor has sent request for further information about your property.</span></pre>
+                                <pre><span>{{ message }}</span></pre>
 
+                                <strong>My details:</strong>
                                 <ul>
-                                    <li><strong>Property reference</strong>: <a href="{{ drupal_token('site:url') ~ 'advert/' ~ reference }}" target="_blank">{{ reference }}</a></li>
-                                    <li><strong>Visitor&#39;s names</strong>: {{ names }}</li>
-                                    <li><strong>Visitor&#39;s phone</strong>: {{ phone }}</li>
-                                    <li><strong>Visitor&#39;s email</strong>: {{ email }}</li>
-                                    <li><strong>Message</strong>: {{ message }}</li>
+                                    <li><strong>My names</strong>: {{ names }}</li>
+                                    <li><strong>My mobile number</strong>: {{ phone }}</li>
+                                    <li><strong>My email</strong>: {{ email }}</li>
+                                </ul>
+                                <strong>The property I am interested in:</strong>
+                                <ul>
+                                    <li><strong>Reference</strong>: <a href="{{ drupal_token('site:url') ~ 'advert/' ~ reference }}" target="_blank">{{ reference }}</a></li>
+                                    <li><strong>Title</strong>: {{ title }}</li>
                                 </ul>
                             </div>
                             <!-- // END MODULE: BODY CONTENT -->
