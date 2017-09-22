@@ -235,8 +235,11 @@ function rir_interface_entity_presave(EntityInterface $entity) {
             $module = 'rir_notifier';
             $key = 'advert_first_published';
             $to = $entity->get('field_advert_contact_email')->value;
-//            $params['message'] = getEmailHtmlContent('advert_validated', $entity);
-            $params['message'] = 'Advert published... Test email!!';
+            $params['headers'] = [
+              'Content-Type' => 'text/html'
+            ];
+            $params['message'] = getEmailHtmlContent('advert_validated', $entity);
+            //$params['message'] = 'Advert published... Test email!!';
 
             $params['advert_title'] = $entity->label();
             $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
