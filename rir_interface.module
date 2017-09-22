@@ -210,6 +210,16 @@ function rir_interface_entity_presave(EntityInterface $entity) {
         } else {
             $entity->set('field_price_in_rwf', $entity->get('field_advert_price')->value);
         }
+
+        /**
+         * Check if agent is published
+         */
+        if (intval($entity->get('field_advert_is_agent')->value) === 1
+          and intval($entity->get('field_advert_advertiser')->entity->get('status')->value) === 0
+          and intval($entity->get('status')->value) === 1){
+            $entity->set('status', 0);
+            drupal_set_message('This advert has not been published because its agent is not published!', 'warning');
+        }
     }
 }
 
@@ -231,15 +241,6 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
                 $query->setLimit(10);
             }
         }
-    }
-}
-
-/**
- * Implements hook_entity_bundle_field_info_alter().
- */
-function rir_interface_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
-    if ($bundle === 'advert'){
-        $fields['field_advert_advertiser']->addConstraint('published_agent', []);
     }
 }
 
