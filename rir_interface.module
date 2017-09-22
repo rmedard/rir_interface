@@ -237,6 +237,10 @@ function rir_interface_entity_presave(EntityInterface $entity) {
             $to = $entity->get('field_advert_contact_email')->value;
 //            $params['message'] = getEmailHtmlContent('advert_validated', $entity);
             $params['message'] = 'Advert published... Test email!!';
+            $message['headers'] = array(
+              'content-type' => 'text/html',
+              'MIME-Version' => '1.0',
+            );
             $params['advert_title'] = $entity->label();
             $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
             $langcode = Drupal::currentUser()->getPreferredLangcode();
