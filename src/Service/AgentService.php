@@ -2,7 +2,6 @@
 
 namespace Drupal\rir_interface\Service;
 
-use Drupal;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\node\Entity\Node;
 
@@ -16,6 +15,11 @@ use Drupal\node\Entity\Node;
 class AgentService {
     protected $entityTypeManager;
 
+    /**
+     * AgentService constructor.
+     *
+     * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+     */
     public function __construct(EntityTypeManager $entityTypeManager) {
         $this->entityTypeManager = $entityTypeManager;
     }
@@ -27,7 +31,8 @@ class AgentService {
      * @return \Drupal\Core\Entity\EntityInterface[]|static[]
      */
     public function loadAdverts($agent_id, $status = Node::PUBLISHED){
-        $query = Drupal::entityQuery('node')
+        $storage = $this->entityTypeManager->getStorage('node');
+        $query = $storage->getQuery()
           ->condition('type', 'advert')
           ->condition('status', $status)
           ->condition('field_advert_advertiser.target_id', $agent_id); // Could be field_advert_advertiser.entity.field_name (other than id)
