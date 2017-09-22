@@ -246,7 +246,7 @@ function rir_interface_entity_presave(EntityInterface $entity) {
                   '@email' => $to,
                   '@id' => $entity->id(),
                 ]);
-                Drupal::logger('rir_interface')->error($message);
+                Drupal::logger('rir_interface')->error($message . ' Whole Error: ' . json_encode($result, TRUE));
                 return;
             }
             $message = t('An email notification has been sent to @email for creating advert id: @id.', [
