@@ -218,7 +218,7 @@ function rir_interface_entity_presave(EntityInterface $entity) {
           and intval($entity->get('field_advert_advertiser')->entity->get('status')->value) === 0
           and intval($entity->get('status')->value) === 1){
             $entity->set('status', 0);
-            drupal_set_message('This advert has not been published because its agent is not published!', 'warning');
+            drupal_set_message('Publishing failed: The agent of this advert is not published!', 'warning');
         }
     }
 }
