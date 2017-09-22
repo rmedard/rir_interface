@@ -238,7 +238,7 @@ function rir_interface_entity_presave(EntityInterface $entity) {
             $params['headers'] = [
               'Content-Type' => 'text/html'
             ];
-            $params['message'] = \Drupal\views\Plugin\views\field\Markup::create(getEmailHtmlContent('advert_validated', $entity));
+            $params['message'] = \Drupal\Core\Render\Markup::create(getEmailHtmlContent('advert_validated', $entity));
             //$params['message'] = 'Advert published... Test email!!';
 
             $params['advert_title'] = $entity->label();
