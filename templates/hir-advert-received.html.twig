@@ -541,23 +541,17 @@
 
                                 <h3>Advert reception confirmation</h3>
 
-                                <p><strong>Dear {{ advert.field_advert_contact_name }}!</strong></p>
+                                <p><strong>Dear {{ advert.field_advert_contact_name.value }}!</strong></p>
 
                                 <pre><span>A new property has been created. It is waiting to be validated.</span></pre>
 
                                 <strong>Property details:</strong>
                                 <ul>
-                                    <li><strong>Reference</strong>: {{ advert.field_advert_reference }}</li>
-                                    <li><strong>Property title</strong>: {{ advert.title }}</li>
-                                    <li><strong>Posting type</strong>: {{ advert.field_advert_posting_plan }}</li>
+                                    <li><strong>Reference</strong>: {{ advert.field_advert_reference.value }}</li>
+                                    <li><strong>Property title</strong>: {{ advert.title.value }}</li>
+                                    <li><strong>Posting type</strong>: {{ advert.field_advert_posting_plan.value }}</li>
                                 </ul>
 
-                                <strong>Advertiser's details:</strong>
-                                <ul>
-                                    <li><strong>Name</strong>: {{ advert.field_advert_reference }}</li>
-                                    <li><strong>Phone number</strong>: {{ advert.title }}</li>
-                                    <li><strong>Posting type</strong>: {{ advert.field_advert_posting_plan }}</li>
-                                </ul>
                                 <p>The advert needs validation before it appears online. Please check our Services/Posting options and make your payment as soon as possible(if applicable).</p>
                                 <br><br>
                                 <p>Thanks, <br>{{ drupal_token('site:name') }}</p>
