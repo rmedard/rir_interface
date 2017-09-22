@@ -5,7 +5,6 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\smart_ip\SmartIpLocation;
@@ -219,6 +218,16 @@ function rir_interface_entity_presave(EntityInterface $entity) {
           and intval($entity->get('status')->value) === 1){
             $entity->set('status', 0);
             drupal_set_message('Publishing failed: The agent of this advert is not published!', 'warning');
+        }
+
+        /**
+         * Send notification if published for the first time
+         */
+        if (isset($entity->get('field_advert_is_first_published')->value)
+          and intval($entity->get('field_advert_is_first_published')->value) === 0
+          and intval($entity->get('status')->value) === 1){
+            $entity->set('field_advert_is_first_published', 1);
+ //TODO Send email...
         }
     }
 }
