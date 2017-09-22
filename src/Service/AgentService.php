@@ -37,7 +37,7 @@ class AgentService {
           ->condition('status', $status)
           ->condition('field_advert_advertiser.target_id', $agent_id); // Could be field_advert_advertiser.entity.field_name (other than id)
         $advert_ids = $query->execute();
-        return Node::loadMultiple($advert_ids);
+        return $storage->loadMultiple($advert_ids);
     }
 
 }
