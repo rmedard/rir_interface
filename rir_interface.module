@@ -23,7 +23,7 @@ function rir_interface_entity_insert(EntityInterface $entity) {
         $module = 'rir_notifier';
         $key = 'advert_insert_alert';
         $to = $entity->get('field_visit_email_address1')->value;
-        $params['message'] = t('Dear @user, we have successfully received your advert. We are validating it before publishing.', ['@user' => $entity->get('field_visit_contact_name')->value]);
+        $params['message'] = getEmailHtmlContent('advert_received', $entity);
         $params['advert_title'] = $entity->label();
         $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
         $langcode = Drupal::currentUser()->getPreferredLangcode();
@@ -53,12 +53,12 @@ function rir_interface_entity_update(EntityInterface $entity) {
         Drupal::cache('render')->deleteAll();
     }
 
-    if ($entity instanceof NodeInterface and $entity->bundle() == 'agent'){
-        if (!$entity->isPublished()){
+    if ($entity instanceof NodeInterface and $entity->bundle() == 'agent') {
+        if (!$entity->isPublished()) {
             $agentService = Drupal::service('rir_interface.agent_service');
             $adverts = $agentService->loadAdverts($entity->id());
-            if(count($adverts) > 0) {
-                foreach ($adverts as $advert){
+            if (count($adverts) > 0) {
+                foreach ($adverts as $advert) {
                     $advert->setPublished(FALSE);
                     $advert->save();
                 }
@@ -185,12 +185,13 @@ function rir_interface_entity_presave(EntityInterface $entity) {
         $district = str_replace(' ', '', strtolower($term->getName()));
         $sector = str_replace(' ', '', strtolower($entity->get('field_advert_sector')->value));
         $village = str_replace(' ', '', strtolower($entity->get('field_advert_village')->value));
-        $cell =  str_replace(' ', '', strtolower($entity->get('field_advert_cell')->value));
+        $cell = str_replace(' ', '', strtolower($entity->get('field_advert_cell')->value));
         $street = str_replace(' ', '', strtolower($entity->get('field_advert_street')->value));
-        if (!empty($district) and !empty($sector) and !empty($village) and !empty($cell) and !empty($street)){
+        if (!empty($district) and !empty($sector) and !empty($village) and !empty($cell) and !empty($street)) {
             $signature = hash('md5', $district . '_' . $sector . '_' . $village . '_' . $cell . '_' . $street);
             $entity->set('field_advert_signature', $signature);
-        } else {
+        }
+        else {
             $entity->set('field_advert_signature', '');
         }
 
@@ -206,7 +207,8 @@ function rir_interface_entity_presave(EntityInterface $entity) {
             )->body;
             $converted = $entity->get('field_advert_price')->value * $response;
             $entity->set('field_price_in_rwf', $converted);
-        } else {
+        }
+        else {
             $entity->set('field_price_in_rwf', $entity->get('field_advert_price')->value);
         }
 
@@ -215,7 +217,7 @@ function rir_interface_entity_presave(EntityInterface $entity) {
          */
         if (intval($entity->get('field_advert_is_agent')->value) === 1
           and intval($entity->get('field_advert_advertiser')->entity->get('status')->value) === 0
-          and intval($entity->get('status')->value) === 1){
+          and intval($entity->get('status')->value) === 1) {
             $entity->set('status', 0);
             drupal_set_message('Publishing failed: The agent of this advert is not published!', 'warning');
         }
@@ -225,9 +227,33 @@ function rir_interface_entity_presave(EntityInterface $entity) {
          */
         if (isset($entity->get('field_advert_is_first_published')->value)
           and intval($entity->get('field_advert_is_first_published')->value) === 0
-          and intval($entity->get('status')->value) === 1){
+          and intval($entity->get('status')->value) === 1) {
+
             $entity->set('field_advert_is_first_published', 1);
- //TODO Send email...
+
+            $mailManager = Drupal::service('plugin.manager.mail');
+            $module = 'rir_notifier';
+            $key = 'advert_first_published';
+            $to = $entity->get('field_advert_contact_email')->value;
+            $params['message'] = getEmailHtmlContent('advert_validated', $entity);
+            $params['advert_title'] = $entity->label();
+            $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
+            $langcode = Drupal::currentUser()->getPreferredLangcode();
+            $send = TRUE;
+            $result = $mailManager->mail($module, $key, $to, $langcode, $params, NULL, $send);
+            if ($result['result'] !== TRUE) {
+                $message = t('There was a problem sending alert email to @email for creating advert id: @id.', [
+                  '@email' => $to,
+                  '@id' => $entity->id(),
+                ]);
+                Drupal::logger('rir_interface')->error($message);
+                return;
+            }
+            $message = t('An email notification has been sent to @email for creating advert id: @id.', [
+              '@email' => $to,
+              '@id' => $entity->id(),
+            ]);
+            Drupal::logger('rir_interface')->error($message);
         }
     }
 }
@@ -251,6 +277,27 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
             }
         }
     }
+}
+
+function getEmailHtmlContent($email_type, $entity){
+    $template_path = '';
+    $variables = [];
+    $twig_service = Drupal::service('twig');
+    switch ($email_type){
+        case 'advert_validated':
+            $variables = [
+              'advert' => $entity
+            ];
+            $template_path = '/templates/hir-advert-validated.html.twig';
+            break;
+        case 'advert_received':
+            $variables = [
+              'advert' => $entity
+            ];
+            $template_path = '/templates/hir-advert-received.html.twig';
+            break;
+    }
+    return $twig_service->loadTemplate(drupal_get_path('module', 'rir_interface') . $template_path)->render($variables);
 }
 
 /**
