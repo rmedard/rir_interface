@@ -5,6 +5,7 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Render\Markup;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\smart_ip\SmartIpLocation;
@@ -238,8 +239,7 @@ function rir_interface_entity_presave(EntityInterface $entity) {
             $params['headers'] = [
               'Content-Type' => 'text/html'
             ];
-            $params['message'] = getEmailHtmlContent('advert_validated', $entity);
-//              $params['message'] = 'Advert published... Test email!!';
+            $params['message'] = Markup::create(getEmailHtmlContent('advert_validated', $entity));
 
             $params['advert_title'] = $entity->label();
             $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
