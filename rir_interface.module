@@ -231,15 +231,26 @@ function rir_interface_entity_presave(EntityInterface $entity) {
           and intval($entity->get('field_advert_is_first_published')->value) === 0
           and intval($entity->get('status')->value) === 1) {
 
+            $contact_email = $entity->get('field_advert_contact_email')->value;
+            $visit_email_1 = $entity->get('field_visit_email_address1')->value;
+            $visit_email_2 = $entity->get('field_visit_email_address2')->value;
+            $recipients = $contact_email;
+
+            if (isset($visit_email_1) and !empty($visit_email_1)){
+                $recipients .= ','.$visit_email_1;
+            }
+            if (isset($visit_email_2) and !empty($visit_email_2)){
+                $recipients .= ','.$visit_email_2;
+            }
+
             $entity->set('field_advert_is_first_published', 1);
 
             $mailManager = Drupal::service('plugin.manager.mail');
             $module = 'rir_interface';
             $key = 'advert_first_published';
-            $to = $entity->get('field_advert_contact_email')->value;
-
+            $to = $recipients;
+            $params['cc'] = Drupal::config('system.site')->get('mail');
             $params['message'] = Markup::create(getEmailHtmlContent('advert_validated', $entity));
-
             $params['advert_title'] = $entity->label();
             $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
             $langcode = Drupal::currentUser()->getPreferredLangcode();
@@ -321,6 +332,7 @@ function rir_interface_mail($key, &$message, $params) {
             break;
         case 'advert_first_published':
             $message['from'] = Drupal::config('system.site')->get('mail');
+            $message['headers']['Cc'] = $params['cc'];
             $message['subject'] = t('Your advert at ' . Drupal::config('system.site')->get('name') . ' has been validated');
             $message['body'][] = $params['message'];
             break;
