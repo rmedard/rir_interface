@@ -20,7 +20,7 @@ function rir_interface_entity_insert(EntityInterface $entity) {
         Drupal::cache('render')->deleteAll();
 
         $mailManager = Drupal::service('plugin.manager.mail');
-        $module = 'rir_notifier';
+        $module = 'rir_interface';
         $key = 'advert_insert_alert';
         $to = $entity->get('field_visit_email_address1')->value;
         $params['message'] = getEmailHtmlContent('advert_received', $entity);
@@ -232,17 +232,17 @@ function rir_interface_entity_presave(EntityInterface $entity) {
             $entity->set('field_advert_is_first_published', 1);
 
             $mailManager = Drupal::service('plugin.manager.mail');
-            $module = 'rir_notifier';
+            $module = 'rir_interface';
             $key = 'advert_first_published';
             $to = $entity->get('field_advert_contact_email')->value;
-//            $params['headers'] = [
-//              'Content-Type' => 'text/html'
-//            ];
+            $params['headers'] = [
+              'Content-Type' => 'text/html'
+            ];
 //            $params['message'] = \Drupal\Core\Render\Markup::create(getEmailHtmlContent('advert_validated', $entity));
               $params['message'] = 'Advert published... Test email!!';
 
-//            $params['advert_title'] = $entity->label();
-//            $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
+            $params['advert_title'] = $entity->label();
+            $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
             $langcode = Drupal::currentUser()->getPreferredLangcode();
             $send = TRUE;
             $result = $mailManager->mail($module, $key, $to, $langcode, $params, NULL, $send);
@@ -305,6 +305,28 @@ function getEmailHtmlContent($email_type, $entity){
     return $twig_service->loadTemplate(drupal_get_path('module', 'rir_interface') . $template_path)->render($variables);
 }
 
+
+/**
+ * Implements hook_mail().
+ */
+function rir_interface_mail($key, &$message, $params) {
+    $options = array(
+      'langcode' => $message['langcode'],
+    );
+
+    switch ($key) {
+        case 'advert_insert_alert':
+            $message['from'] = Drupal::config('system.site')->get('mail');
+            $message['subject'] = t('Ticket created: @title', array('@title' => $params['advert_title']), $options);
+            $message['body'][] = $params['message'];
+            break;
+        case 'advert_first_published':
+            $message['from'] = Drupal::config('system.site')->get('mail');
+            $message['subject'] = t('Your advert at ' . Drupal::config('system.site')->get('name') . ' has been validated');
+            $message['body'][] = $params['message'];
+            break;
+    }
+}
 /**
  * Implements hook_form_FORM_ID_alter().
  */
