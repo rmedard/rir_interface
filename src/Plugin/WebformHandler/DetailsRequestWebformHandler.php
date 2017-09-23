@@ -37,13 +37,18 @@ class DetailsRequestWebformHandler extends EmailWebformHandler {
         $names = $webform_submission->getData('visitor_names');
         $email_message = $webform_submission->getData('visitor_message');
 
+        $options = array(
+          'langcode' => Drupal::currentUser()->getPreferredLangcode(),
+        );
+
         $recipients = $node->get('field_visit_email_address1')->value;
         if (isset($node->get('field_visit_email_address2')->value) and !empty($node->get('field_visit_email_address2')->value)){
             $recipients .= ',' . $node->get('field_visit_email_address2')->value;
         }
         $message['to_mail'] = $recipients;
         $message['reply_to'] = $email;
-        $message['subject'] = $this->t('Request for details: Ref.' . $reference);
+        $message['subject'] = $this->t('Request for more details about your property on @site',
+          array('@site' => Drupal::config('system.site')->get('name')), $options);
         $message['html'] = TRUE;
 
         $advert_title = $node->getTitle();
