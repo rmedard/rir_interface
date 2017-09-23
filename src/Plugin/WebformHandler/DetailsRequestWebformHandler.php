@@ -31,18 +31,21 @@ class DetailsRequestWebformHandler extends EmailWebformHandler {
     $node = Drupal::routeMatch()->getParameter('node');
     $recipient = $node->get('field_visit_email_address1')->value;
     if (isset($node) and isset($recipient)){
-      $reference = $node->get('field_advert_reference')->value;
-      $message['to_mail'] = $recipient;
-      $message['subject'] = $this->t('Request for details: Ref.' . $reference);
-      $message['html'] = TRUE;
-      $contact_name = $node->get('field_visit_contact_name')->value;
-      $phone = $webform_submission->getData('visitor_phone_number');
-      $email = $webform_submission->getData('visitor_email');
-      $names = $webform_submission->getData('visitor_names');
-      $email_message = $webform_submission->getData('visitor_message');
-      $advert_title = $node->getTitle();
-      $message['body'] = getHtmlContent($contact_name, $reference, $phone, $email, $names, $email_message, $advert_title);
-      Drupal::logger('rir_interface')->debug('Request for further info sent by: ' . $email);
+        $reference = $node->get('field_advert_reference')->value;
+        $contact_name = $node->get('field_visit_contact_name')->value;
+        $phone = $webform_submission->getData('visitor_phone_number');
+        $email = $webform_submission->getData('visitor_email');
+        $names = $webform_submission->getData('visitor_names');
+        $email_message = $webform_submission->getData('visitor_message');
+
+        $message['to_mail'] = $recipient;
+        $message['reply_to'] = $email;
+        $message['subject'] = $this->t('Request for details: Ref.' . $reference);
+        $message['html'] = TRUE;
+
+        $advert_title = $node->getTitle();
+        $message['body'] = getHtmlContent($contact_name, $reference, $phone, $email, $names, $email_message, $advert_title);
+        Drupal::logger('rir_interface')->debug('Request for further info sent by: ' . $email);
     }
     return parent::sendMessage($webform_submission, $message);
   }
