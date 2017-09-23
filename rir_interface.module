@@ -33,7 +33,7 @@ function rir_interface_entity_insert(EntityInterface $entity) {
         $to = $entity->get('field_advert_contact_email')->value;
         $reply = Drupal::config('system.site')->get('mail');
         $params['cc'] = $cc_recipients;
-        $params['message'] = getEmailHtmlContent('advert_received', $entity);
+        $params['message'] = Markup::create(getEmailHtmlContent('advert_received', $entity));
         $params['advert_title'] = $entity->label();
         $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
         $langcode = Drupal::currentUser()->getPreferredLangcode();
