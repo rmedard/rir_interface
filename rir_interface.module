@@ -31,13 +31,14 @@ function rir_interface_entity_insert(EntityInterface $entity) {
         $module = 'rir_interface';
         $key = 'advert_insert_alert';
         $to = $entity->get('field_advert_contact_email')->value;
+        $reply = Drupal::config('system.site')->get('mail');
         $params['cc'] = $cc_recipients;
         $params['message'] = getEmailHtmlContent('advert_received', $entity);
         $params['advert_title'] = $entity->label();
         $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
         $langcode = Drupal::currentUser()->getPreferredLangcode();
         $send = TRUE;
-        $result = $mailManager->mail($module, $key, $to, $langcode, $params, NULL, $send);
+        $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
         if ($result['result'] !== TRUE) {
             $message = t('There was a problem sending alert email to @email for creating advert id: @id.', [
               '@email' => $to,
@@ -256,13 +257,14 @@ function rir_interface_entity_presave(EntityInterface $entity) {
             $module = 'rir_interface';
             $key = 'advert_first_published';
             $to = $recipients;
+            $reply = Drupal::config('system.site')->get('mail');
             $params['cc'] = Drupal::config('system.site')->get('mail');
             $params['message'] = Markup::create(getEmailHtmlContent('advert_validated', $entity));
             $params['advert_title'] = $entity->label();
             $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
             $langcode = Drupal::currentUser()->getPreferredLangcode();
             $send = TRUE;
-            $result = $mailManager->mail($module, $key, $to, $langcode, $params, NULL, $send);
+            $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
             if ($result['result'] !== TRUE) {
                 $message = t('There was a problem sending alert email to @email for creating advert id: @id.', [
                   '@email' => $to,
