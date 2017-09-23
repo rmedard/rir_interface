@@ -4,6 +4,7 @@
  * A description of what your module does.
  */
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\node\Entity\Node;
@@ -243,7 +244,7 @@ function rir_interface_entity_presave(EntityInterface $entity) {
                 'X-Mailer' => 'Drupal',
             ];
 
-            $params['message'] = Markup::create(getEmailHtmlContent('advert_validated', $entity));
+            $params['message'] = Html::escape(Markup::create(getEmailHtmlContent('advert_validated', $entity)));
 
             $params['advert_title'] = $entity->label();
             $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
