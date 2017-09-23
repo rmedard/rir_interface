@@ -552,9 +552,46 @@
                                     <li><strong>Posting type</strong>: {{ advert.field_advert_posting_plan.value }}</li>
                                 </ul>
 
+                                <strong>Advertiser's details:</strong>
+                                <ul>
+                                    <li><strong>Name</strong>: {{ advert.field_advert_contact_name.value }}</li>
+                                    <li><strong>Phone number</strong>: {{ advert.field_advert_contact_tel.value }}</li>
+                                {% if advert.field_advert_is_agent.value == '1' %}
+                                    <li><strong>Agent/commissioner</strong>: {{ advert.field_advert_advertiser.entity.title.value }}</li>
+                                    <li><strong>Company TIN</strong>: {{ advert.field_advert_advertiser.entity.field_agent_tin_nbr.value }}</li>
+                                {% endif %}
+                                </ul>
+
+                                <strong>Contact details to book a visit:</strong>
+                                <ul>
+                                    <li><strong>Contact name</strong>: {{ advert.field_visit_contact_name.value }}</li>
+                                    <li><strong>Contact phone number 1</strong>: {{ advert.field_visit_cellphone.value }}</li>
+                                    <li><strong>Contact phone number 2</strong>: {{ advert.field_visit_cellphone_2.value }}</li>
+                                    <li><strong>Contact email 1</strong>: {{ advert.field_visit_email_address1.value }}</li>
+                                    <li><strong>Contact email 2</strong>: {{ advert.field_visit_email_address2.value }}</li>
+                                </ul>
+
                                 <p>The advert needs validation before it appears online. Please check our Services/Posting options and make your payment as soon as possible(if applicable).</p>
                                 <br><br>
-                                <p>Thanks, <br>{{ drupal_token('site:name') }}</p>
+                                <strong>Payment options:</strong>
+                                <p>To make your payment, please click <a href="{{ drupal_token('site:url') ~ 'page/services' }}" target="_blank">here</a> and choose an option:</p>
+                                <ul>
+                                    <li>You can pay by Mobile Money to this number 078831xxxxxx</li>
+                                    <li>Or by bringing your cash/cheque to our offices at Kimihurura</li>
+                                    <li>Or by making a bank transfer to our bank account number: 211-208517-1-5100-0</li>
+                                </ul>
+
+                                <strong>Our services/Posting options:</strong>
+                                <ul>
+                                    <li><strong>Standard</strong>: Your adverts appear online for up to 2 weeks and only one picture of the property is displayed.</li>
+                                    <li><strong>Featured 2W</strong>: Your adverts appear online for up to 2 weeks and up to 5 pictures of the property are displayed.</li>
+                                    <li><strong>Featured 1M</strong>: Your adverts appear online for up to 1 month and up to 10 pictures of the property are displayed.</li>
+                                    <li><strong>Full service</strong>: We asses your property, we take as many pictures as needed, we post them,
+                                        we organise visits and select best candidates</li>
+                                </ul>
+
+                                <br><br>
+                                <p>Best regards, <br>{{ drupal_token('site:name') }}</p>
                             </div>
                             <!-- // END MODULE: BODY CONTENT -->
                         </td>

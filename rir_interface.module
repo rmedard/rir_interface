@@ -21,10 +21,17 @@ function rir_interface_entity_insert(EntityInterface $entity) {
     if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
         Drupal::cache('render')->deleteAll();
 
+        $cc_recipients = $entity->get('field_visit_email_address1')->value;
+        if (isset($entity->get('field_visit_email_address2')->value) and !empty($entity->get('field_visit_email_address2')->value)){
+            $cc_recipients .= ',' . $entity->get('field_visit_email_address2')->value;
+        }
+        $cc_recipients .= ',' . Drupal::config('system.site')->get('mail');
+
         $mailManager = Drupal::service('plugin.manager.mail');
         $module = 'rir_interface';
         $key = 'advert_insert_alert';
-        $to = $entity->get('field_visit_email_address1')->value;
+        $to = $entity->get('field_advert_contact_email')->value;
+        $params['cc'] = $cc_recipients;
         $params['message'] = getEmailHtmlContent('advert_received', $entity);
         $params['advert_title'] = $entity->label();
         $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
@@ -327,13 +334,14 @@ function rir_interface_mail($key, &$message, $params) {
     switch ($key) {
         case 'advert_insert_alert':
             $message['from'] = Drupal::config('system.site')->get('mail');
-            $message['subject'] = t('Ticket created: @title', array('@title' => $params['advert_title']), $options);
+            $message['headers']['Cc'] = $params['cc'];
+            $message['subject'] = t('Your advert was posted on @site', array('@site' => Drupal::config('system.site')->get('name')), $options);
             $message['body'][] = $params['message'];
             break;
         case 'advert_first_published':
             $message['from'] = Drupal::config('system.site')->get('mail');
             $message['headers']['Cc'] = $params['cc'];
-            $message['subject'] = t('Your advert at ' . Drupal::config('system.site')->get('name') . ' has been validated');
+            $message['subject'] = t('Your advert at @site has been validated', array('@site' => Drupal::config('system.site')->get('name')), $options);
             $message['body'][] = $params['message'];
             break;
     }
