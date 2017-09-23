@@ -245,7 +245,7 @@ function rir_interface_entity_presave(EntityInterface $entity) {
             ];
 
 //            $params['message'] = Markup::create(getEmailHtmlContent('advert_validated', $entity));
-            $params['message'] = 'Test email... <h3>Formatted...</h3>';
+            $params['message'] = Markup::create('Test email... <h3>Formatted...</h3>');
 
             $params['advert_title'] = $entity->label();
             $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
