@@ -29,8 +29,7 @@ class DetailsRequestWebformHandler extends EmailWebformHandler {
 
   public function sendMessage(WebformSubmissionInterface $webform_submission, array $message) {
     $node = Drupal::routeMatch()->getParameter('node');
-    $recipient = $node->get('field_visit_email_address1')->value;
-    if (isset($node) and isset($recipient)){
+    if (isset($node)){
         $reference = $node->get('field_advert_reference')->value;
         $contact_name = $node->get('field_visit_contact_name')->value;
         $phone = $webform_submission->getData('visitor_phone_number');
@@ -38,7 +37,11 @@ class DetailsRequestWebformHandler extends EmailWebformHandler {
         $names = $webform_submission->getData('visitor_names');
         $email_message = $webform_submission->getData('visitor_message');
 
-        $message['to_mail'] = $recipient;
+        $recipients = $node->get('field_visit_email_address1')->value;
+        if (isset($node->get('field_visit_email_address2')->value) and !empty($node->get('field_visit_email_address2')->value)){
+            $recipients .= ',' . $node->get('field_visit_email_address2')->value;
+        }
+        $message['to_mail'] = $recipients;
         $message['reply_to'] = $email;
         $message['subject'] = $this->t('Request for details: Ref.' . $reference);
         $message['html'] = TRUE;
