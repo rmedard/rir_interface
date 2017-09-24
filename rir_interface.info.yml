@@ -3,7 +3,7 @@ type: module
 description: 'This RIR module handles all GUI manipulations.'
 package: RIR Custom Modules
 core: 8.x
-configure: rir_interface.admin_settings
+
 dependencies:
   - smart_ip:smart_ip
   - twig_tweak:twig_tweak
