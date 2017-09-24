@@ -1,5 +1,5 @@
 rir_interface.admin_settings:
-  path: '/admin/config/hir_interface'
+  path: '/admin/config/rir_interface'
   defaults:
     _form: '\Drupal\rir_interface\Form\MailchimpAlertsConfigForm'
     _title: 'rir_interface configuration screen'
