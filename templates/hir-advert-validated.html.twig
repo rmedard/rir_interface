@@ -537,15 +537,14 @@
                     <tr>
                         <td valign="top" id="templateBody">
                             <!-- BEGIN MODULE: BODY CONTENT // -->
-                            <div><h1 style="text-align:center;">{{ drupal_token('site:name') }}</h1>
-
+                            <div>
                                 <h3>Advert validation confirmation</h3>
 
                                 <p><strong>Dear {{ advert.field_advert_contact_name.value }}!</strong></p>
 
-                                <pre><span>Your advert reference {{ advert.field_advert_reference.value }} is online: <a href="{{ drupal_token('site:url') ~ 'advert/' ~ advert.field_advert_reference.value }}" target="_blank">Here</a></span></pre>
-                                <pre><span>Would you please double check that the number of pictures of pictures of your property and the expiry date correspond to the service option you have selected?</span></pre>
-                                <pre><span>Thank you. For a kind reminder, our services are as listed below.</span></pre>
+                                <pre>Your advert reference {{ advert.field_advert_reference.value }} is online: <a href="{{ drupal_token('site:url') ~ 'advert/' ~ advert.field_advert_reference.value }}" target="_blank">Here</a></pre>
+                                <pre>Would you please double check that the number of pictures of pictures of your property and the expiry date correspond to the service option you have selected?</pre>
+                                <pre>Thank you. For a kind reminder, our services are as listed below.</pre>
 
                                 <strong>Our Services:</strong>
                                 <ul>
@@ -556,7 +555,6 @@
                                         we organise visits and select best candidates</li>
                                 </ul>
 
-                                <br><br>
                                 <p>Best regards, <br>{{ drupal_token('site:name') }}</p>
                             </div>
                             <!-- // END MODULE: BODY CONTENT -->

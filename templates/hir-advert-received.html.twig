@@ -537,13 +537,12 @@
                     <tr>
                         <td valign="top" id="templateBody">
                             <!-- BEGIN MODULE: BODY CONTENT // -->
-                            <div><h1 style="text-align:center;">{{ drupal_token('site:name') }}</h1>
-
+                            <div>
                                 <h3>Advert reception confirmation</h3>
 
                                 <p><strong>Dear {{ advert.field_advert_contact_name.value }}!</strong></p>
 
-                                <pre><span>A new property has been created. It is waiting to be validated.</span></pre>
+                                <pre>A new property has been created. It is waiting to be validated.</pre>
 
                                 <strong>Property details:</strong>
                                 <ul>
@@ -572,13 +571,14 @@
                                 </ul>
 
                                 <p>The advert needs validation before it appears online. Please check our Services/Posting options and make your payment as soon as possible(if applicable).</p>
-                                <br><br>
+                                <br>
                                 <strong>Payment options:</strong>
-                                <p>To make your payment, please click <a href="{{ drupal_token('site:url') ~ 'page/services' }}" target="_blank">here</a> and choose an option:</p>
+                                <p>To make your payment, please choose an option:</p>
                                 <ul>
-                                    <li>You can pay by Mobile Money to this number 078831xxxxxx</li>
-                                    <li>Or by bringing your cash/cheque to our offices at Kimihurura</li>
-                                    <li>Or by making a bank transfer to our bank account number: 211-208517-1-5100-0</li>
+                                    <li>Mobile Money to this number 078831xxxxxx</li>
+                                    <li>Cash/cheque to our offices at Kimihurura</li>
+                                    <li>Bank transfer to our bank account number: 211-208517-1-5100-0</li>
+                                    <li>Paypal to info@houseinrwanda</li>
                                 </ul>
 
                                 <strong>Our services/Posting options:</strong>
