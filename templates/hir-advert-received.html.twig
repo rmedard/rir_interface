@@ -548,7 +548,16 @@
                                 <ul>
                                     <li><strong>Reference</strong>: {{ advert.field_advert_reference.value }}</li>
                                     <li><strong>Property title</strong>: {{ advert.title.value }}</li>
-                                    <li><strong>Posting type</strong>: {{ advert.field_advert_posting_plan.value }}</li>
+                                    <li><strong>Property address:</strong> {{ advert.field_advert_district.entity.name.value }}, {{ advert.field_advert_sector.value }}, {{ advert.field_advert_village.value }} {{ advert.field_advert_street.value }}</li>
+                                    {% if advert.field_advert_posting_plan.value == 'standard' %}
+                                        <li><strong>Posting type</strong>: Standard</li>
+                                    {% elseif advert.field_advert_posting_plan.value == 'featured' %}
+                                        <li><strong>Posting type</strong>: Featured 2W - 25,000 Rwf</li>
+                                    {% elseif advert.field_advert_posting_plan.value == 'full_service' %}
+                                        <li><strong>Posting type</strong>: Featured 1M - 40,000 Rwf</li>
+                                    {% elseif advert.field_advert_posting_plan.value == 'property_mngt' %}
+                                        <li><strong>Posting type</strong>: Full Service - 200,000 Rwf</li>
+                                    {% endif %}
                                 </ul>
 
                                 <strong>Advertiser's details:</strong>
@@ -578,7 +587,7 @@
                                     <li>Mobile Money to this number 078831xxxxxx</li>
                                     <li>Cash/cheque to our offices at Kimihurura</li>
                                     <li>Bank transfer to our bank account number: 211-208517-1-5100-0</li>
-                                    <li>Paypal to info@houseinrwanda</li>
+                                    <li>Paypal to info@houseinrwanda.com</li>
                                 </ul>
 
                                 <strong>Our services/Posting options:</strong>
@@ -586,8 +595,7 @@
                                     <li><strong>Standard</strong>: Your adverts appear online for up to 2 weeks and only one picture of the property is displayed.</li>
                                     <li><strong>Featured 2W</strong>: Your adverts appear online for up to 2 weeks and up to 5 pictures of the property are displayed.</li>
                                     <li><strong>Featured 1M</strong>: Your adverts appear online for up to 1 month and up to 10 pictures of the property are displayed.</li>
-                                    <li><strong>Full service</strong>: We assess your property, we take as many pictures as needed, we post them,
-                                        we organise visits</li>
+                                    <li><strong>Full service</strong>: We assess your property, we take as many pictures as needed, we post them and we help organising the visits</li>
                                 </ul>
 
                                 <br><br>
