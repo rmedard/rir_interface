@@ -39,7 +39,7 @@ function rir_interface_entity_insert(EntityInterface $entity) {
         $send = TRUE;
         $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
         if ($result['result'] !== TRUE) {
-            $message = t('There was a problem sending alert email to @email for creating advert id: @id.', [
+            $message = t('There was a problem sending notification email to @email for creating advert id: @id.', [
               '@email' => $to,
               '@id' => $entity->id(),
             ]);
@@ -47,6 +47,30 @@ function rir_interface_entity_insert(EntityInterface $entity) {
             return;
         }
         $message = t('An email notification has been sent to @email for creating advert id: @id.', [
+          '@email' => $to,
+          '@id' => $entity->id(),
+        ]);
+        Drupal::logger('rir_interface')->notice($message);
+    } elseif ($entity instanceof NodeInterface and $entity->bundle() == 'agent'){
+        $mailManager = Drupal::service('plugin.manager.mail');
+        $module = 'rir_interface';
+        $key = 'agent_insert_alert';
+        $to = $entity->get('field_agent_email')->value;
+        $reply = Drupal::config('system.site')->get('mail');
+        $params['cc'] = $reply;
+        $params['message'] = Markup::create(getEmailHtmlContent('agent_received', $entity));
+        $langcode = Drupal::currentUser()->getPreferredLangcode();
+        $send = TRUE;
+        $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
+        if ($result['result'] !== TRUE){
+            $message = t('There was a problem sending notification email to @email after creating agent id: @id', [
+              '@email' => $to,
+              '@id' => $entity->id()
+            ]);
+            Drupal::logger('rir_interface')->error($message);
+            return;
+        }
+        $message = t('An email notification has been sent to @email for creating agent id: @id.', [
           '@email' => $to,
           '@id' => $entity->id(),
         ]);
@@ -319,6 +343,13 @@ function getEmailHtmlContent($email_type, $entity){
             ];
             $template_path = '/templates/hir-advert-received.html.twig';
             break;
+        case 'agent_received':
+            $variables = [
+              'agent' => $entity
+            ];
+            $template_path = '/templates/hir-agent-received.html.twig';
+            break;
+
     }
     return $twig_service->loadTemplate(drupal_get_path('module', 'rir_interface') . $template_path)->render($variables);
 }
@@ -343,6 +374,12 @@ function rir_interface_mail($key, &$message, $params) {
             $message['from'] = Drupal::config('system.site')->get('mail');
             $message['headers']['Cc'] = $params['cc'];
             $message['subject'] = t('Your advert at @site has been validated', array('@site' => Drupal::config('system.site')->get('name')), $options);
+            $message['body'][] = $params['message'];
+            break;
+        case 'agent_insert_alert':
+            $message['from'] = Drupal::config('system.site')->get('mail');
+            $message['headers']['Cc'] = $params['cc'];
+            $message['subject'] = t('Confirmation: Your profile was created on  @site', array('@site' => Drupal::config('system.site')->get('name')), $options);
             $message['body'][] = $params['message'];
             break;
     }
