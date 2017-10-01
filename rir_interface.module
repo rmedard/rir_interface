@@ -341,7 +341,8 @@ function getEmailHtmlContent($email_type, $entity){
             break;
         case 'advert_received':
             $variables = [
-              'advert' => $entity
+              'advert' => $entity,
+              'phone' => Drupal::config('system.site')->get('phone')
             ];
             $template_path = '/templates/hir-advert-received.html.twig';
             break;
