@@ -179,6 +179,7 @@ function rir_interface_theme($existing, $type, $theme, $path) {
       'rir_address' => [
         'variables' => [
           'title' => t('Get in touch'),
+          'phone' => Drupal::config('system.site')->get('phone')
         ],
       ],
       'rir_services' => [
