@@ -394,7 +394,8 @@ function rir_interface_form_system_site_information_settings_alter(&$form, FormS
     $form['site_phone'] = array(
       '#type' => 'tel',
       '#title' => t('Site phone'),
-      '#default_value' => Drupal::config('system.site')->get('phone')
+      '#default_value' => Drupal::config('system.site')->get('phone'),
+      '#group' => 'site-information'
     );
     $form['#submit'][] = 'rir_interface_site_information_phone_submit';
 }
