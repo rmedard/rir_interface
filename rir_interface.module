@@ -5,6 +5,7 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
@@ -384,14 +385,26 @@ function rir_interface_mail($key, &$message, $params) {
             break;
     }
 }
+
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-//function rir_interface_form_node_advert_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-//
-//    $form['posting_plan_message'] = array(
-//      '#type' => 'item',
-//      '#markup' => t('Visible images...'),
-//      '#weight' => 16
-//    );
-//}
+function rir_interface_form_system_site_information_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+    $form['site_phone'] = array(
+      '#type' => 'tel',
+      '#title' => t('Site phone'),
+      '#default_value' => Drupal::config('system.site')->get('phone')
+    );
+    $form['#submit'][] = 'rir_interface_site_information_phone_submit';
+}
+
+/**
+ * Form callback to save site phone
+ * @param array $form
+ * @param \Drupal\Core\Form\FormStateInterface $formState
+ */
+function rir_interface_site_information_phone_submit(array &$form, FormStateInterface $formState){
+    $config = Drupal::configFactory()->getEditable('system.site');
+    $config->set('phone', $formState->getValue('site_phone'))->save();
+}
