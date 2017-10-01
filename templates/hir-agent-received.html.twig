@@ -538,49 +538,43 @@
                         <td valign="top" id="templateBody">
                             <!-- BEGIN MODULE: BODY CONTENT // -->
                             <div>
-                                <h3>Request for more details about a property</h3>
+                                <h3>Advert validation confirmation</h3>
 
-                                <p><strong>Dear {{ contact_name }}!</strong></p>
+                                <p><strong>Dear {{ agent.title.value }}!</strong></p>
 
-                                <span>{{ message }}</span>
-
-                                <strong>My details:</strong>
+                                <p>Your real estate agent/Commissioner profile has been created and it is online:
+                                    <a href="{{ drupal_token('site:url') ~ path('entity.node.canonical', {'node':agent.id}) }}">Here</a><br>
+                                        Would you please double check that your details below are correct? </p>
+                                <strong>Your public details:</strong>
                                 <ul>
-                                    <li><strong>My names</strong>: {{ names }}</li>
-                                    <li><strong>My mobile number</strong>: {{ phone }}</li>
-                                    <li><strong>My email</strong>: {{ email }}</li>
+                                    <li><strong>Full name</strong>: {{ agent.title.value }}</li>
+                                    <li><strong>Location of interest</strong>: {{ agent.field_agent_operations_area.value }}</li>
+                                    <li><strong>Website</strong>: {{ agent.field_agent_website.value }}</li>
+                                    <li><strong>Email</strong>: {{ agent.field_agent_email.value }}</li>
                                 </ul>
-                                <strong>The property I am interested in:</strong>
+                                <strong>Your private details:</strong>
                                 <ul>
-                                    <li><strong>Reference</strong>: <a href="{{ drupal_token('site:url') ~ 'advert/' ~ reference }}" target="_blank">{{ reference }}</a></li>
-                                    <li><strong>Title</strong>: {{ title }}</li>
+                                    <li><strong>Phone number</strong>: {{ agent.field_agent_phone.value }}</li>
+                                    <li><strong>TIN</strong>: {{ agent.field_agent_tin_nbr.value }}</li>
                                 </ul>
-                                <br><br>
-                                <p>Best regards, <br>{{ names }}</p>
+                                <p>Thank you.</p>
+                                <br>
+                                <strong>Our Services:</strong>
+                                <p>Please ask us about our property advertising services below.</p>
+                                <ul>
+                                    <li><strong>Standard</strong>: Your adverts appear online for up to 2 weeks and only one picture of the property is displayed.</li>
+                                    <li><strong>Featured 2W</strong>: Your adverts appear online for up to 2 weeks and up to 5 pictures of the property are displayed.</li>
+                                    <li><strong>Featured 1M</strong>: Your adverts appear online for up to 1 month and up to 10 pictures of the property are displayed.</li>
+                                    <li><strong>Full service</strong>: We assess your property, we take as many pictures as needed, we post them,
+                                        we organise visits</li>
+                                </ul>
+
+                                <p>Best regards, <br>{{ drupal_token('site:name') }}</p>
                             </div>
                             <!-- // END MODULE: BODY CONTENT -->
                         </td>
                     </tr>
                     <!-- // END BODY -->
-                    <!-- BEGIN FOOTER // -->
-                    <tr>
-                        <td valign="top" id="templateFooter">
-                            <!-- BEGIN MODULE: STANDARD FOOTER // -->
-                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                                <tr>
-                                    <td valign="top" id="socialBar">
-                                        <div>
-                                            <a href="*|TWITTER:PROFILEURL|*" class="utilityLink">Follow on Twitter</a><span class="mobileHide">   |   </span><a href="*|FACEBOOK:PROFILEURL|*" class="utilityLink">Friend on Facebook</a>
-                                            <span class="mobileHide">   |   </span><a href="*|FORWARD|*" class="utilityLink">Forward to a Friend</a>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                            </table>
-                            <!-- // BEGIN MODULE: STANDARD FOOTER -->
-                        </td>
-                    </tr>
-                    <!-- // END FOOTER -->
                 </table>
                 <!--[if gte mso 9]>
                 </td>
