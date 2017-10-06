@@ -368,20 +368,19 @@ function rir_interface_mail($key, &$message, $params) {
 
     switch ($key) {
         case 'advert_insert_alert':
-            $message['from'] = Drupal::config('system.site')->get('mail');
+            $message['from'] = Drupal::config('system.site')->get('name') . ' <'. Drupal::config('system.site')->get('mail') . '>';
             $message['headers']['Cc'] = $params['cc'];
             $message['subject'] = t('Your advert was posted on @site', array('@site' => Drupal::config('system.site')->get('name')), $options);
             $message['body'][] = $params['message'];
             break;
         case 'advert_first_published':
             $message['from'] = Drupal::config('system.site')->get('name') . ' <'. Drupal::config('system.site')->get('mail') . '>';
-//            $message['from'] = Drupal::config('system.site')->get('mail');
             $message['headers']['Cc'] = $params['cc'];
             $message['subject'] = t('Your advert at @site has been validated', array('@site' => Drupal::config('system.site')->get('name')), $options);
             $message['body'][] = $params['message'];
             break;
         case 'agent_insert_alert':
-            $message['from'] = Drupal::config('system.site')->get('mail');
+            $message['from'] = Drupal::config('system.site')->get('name') . ' <'. Drupal::config('system.site')->get('mail') . '>';
             $message['headers']['Cc'] = $params['cc'];
             $message['subject'] = t('Confirmation: Your profile was created on  @site', array('@site' => Drupal::config('system.site')->get('name')), $options);
             $message['body'][] = $params['message'];
