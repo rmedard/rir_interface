@@ -374,8 +374,8 @@ function rir_interface_mail($key, &$message, $params) {
             $message['body'][] = $params['message'];
             break;
         case 'advert_first_published':
-//            $message['from'] = Drupal::config('system.site')->get('name') . ' <'. Drupal::config('system.site')->get('mail') . '>';
-            $message['from'] = Drupal::config('system.site')->get('mail');
+            $message['from'] = Drupal::config('system.site')->get('name') . ' <'. Drupal::config('system.site')->get('mail') . '>';
+//            $message['from'] = Drupal::config('system.site')->get('mail');
             $message['headers']['Cc'] = $params['cc'];
             $message['subject'] = t('Your advert at @site has been validated', array('@site' => Drupal::config('system.site')->get('name')), $options);
             $message['body'][] = $params['message'];
