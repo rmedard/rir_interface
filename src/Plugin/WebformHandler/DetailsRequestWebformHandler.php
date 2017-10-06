@@ -54,6 +54,8 @@ class DetailsRequestWebformHandler extends EmailWebformHandler {
         $advert_title = $node->getTitle();
         $message['body'] = getHtmlContent($contact_name, $reference, $phone, $email, $names, $email_message, $advert_title);
         Drupal::logger('rir_interface')->debug('Request for further info sent by: ' . $email);
+    } else {
+        Drupal::logger('rir_interface')->warning("Request for info sent with empty advert node.");
     }
     return parent::sendMessage($webform_submission, $message);
   }
