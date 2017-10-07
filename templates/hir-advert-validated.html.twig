@@ -542,7 +542,7 @@
 
                                 <p><strong>Dear {{ advert.field_advert_contact_name.value }}!</strong></p>
 
-                                <p>Your advert reference {{ advert.field_advert_reference.value }} is online: <a href="{{ drupal_token('site:url') ~ 'advert/' ~ advert.field_advert_reference.value }}" target="_blank">Here</a></p>
+                                <p>Your advert reference {{ advert.field_advert_reference.value }} is online: <a href="{{ drupal_token('site:url') ~ path('entity.node.canonical', {'node':advert.id}) }}" target="_blank">Here</a></p>
                                 <p>Would you please double check that the number of pictures of pictures of your property and the expiry date correspond to the service option you have selected?</p>
                                 <p>Thank you. For a kind reminder, our services are as listed below.</p>
 
