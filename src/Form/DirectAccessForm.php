@@ -80,9 +80,12 @@ class DirectAccessForm extends FormBase {
     $node_ids = $nodeQuery->execute();
     if (isset($node_ids) and !empty($node_ids)){
         if (count($node_ids) == 1){
-            Drupal::logger('rir_interface')->debug('Quick access: reference = ' . $reference . ' id = ' . json_encode($node_ids, TRUE));
-            $advert_url = Url::fromRoute('entity.node.canonical', ['node' => intval($node_ids[0])]);
-            $form_state->setRedirectUrl($advert_url);
+            foreach ($node_ids as $node_id){
+                $node = Node::load($node_id);
+                $advert_url = Url::fromRoute('entity.node.canonical', ['node' => $node->id()]);
+                $form_state->setRedirectUrl($advert_url);
+                break;
+            }
         } else {
             // Should not happen
             drupal_set_message($this->t("Oops, more than one advert has reference number: @reference . Please report this issue to the admin.",
