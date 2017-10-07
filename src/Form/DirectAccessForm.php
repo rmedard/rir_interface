@@ -16,6 +16,7 @@ use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 use function drupal_set_message;
 use function intval;
+use function json_encode;
 
 class DirectAccessForm extends FormBase {
 
@@ -79,7 +80,7 @@ class DirectAccessForm extends FormBase {
     $node_ids = $nodeQuery->execute();
     if (isset($node_ids) and !empty($node_ids)){
         if (count($node_ids) == 1){
-            Drupal::logger('rir_interface')->debug('Quick access: reference = ' . $reference . ' id = ' . $node_ids);
+            Drupal::logger('rir_interface')->debug('Quick access: reference = ' . $reference . ' id = ' . json_encode($node_ids, TRUE));
             $advert_url = Url::fromRoute('entity.node.canonical', ['node' => intval($node_ids[0])]);
             $form_state->setRedirectUrl($advert_url);
         } else {
