@@ -8,10 +8,13 @@
 
 namespace Drupal\rir_interface\Form;
 
+use function count;
 use Drupal;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\node\Entity\Node;
+use function drupal_set_message;
 
 class DirectAccessForm extends FormBase {
 
@@ -72,15 +75,18 @@ class DirectAccessForm extends FormBase {
       ->condition('type', 'advert')
       ->condition('status', 1)
       ->condition('field_advert_reference', $reference);
-    $node = $nodeQuery->execute();
-    if (isset($node) and !empty($node)){
-//        $advert_alias = Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $node->id());
-        $advert_url = Url::fromRoute('entity.node.canonical', ['node' => $node->id()]);
-
-//      $url = Url::fromUri('internal:/advert/'.$reference);
-      $form_state->setRedirectUrl($advert_url);
+    $node_ids = $nodeQuery->execute();
+    if (isset($node_ids) and !empty($node_ids)){
+        if (count($node_ids) == 1){
+            $advert_url = Url::fromRoute('entity.node.canonical', ['node' => $node_ids[0]]);
+            $form_state->setRedirectUrl($advert_url);
+        } else {
+            // Should not happen
+            drupal_set_message($this->t("Oops, more than one advert has reference number: @reference . Please report this issue to the admin.",
+              array('@reference' => $reference)), 'error');
+        }
     } else {
-      drupal_set_message($this->t("Sorry, no advert found with reference number: ") . $reference, 'error');
+      drupal_set_message($this->t("Sorry, no advert found with reference number: @reference", array('@reference' => $reference)), 'error');
     }
   }
 }
