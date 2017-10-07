@@ -86,7 +86,6 @@ class DirectAccessForm extends FormBase {
                 $form_state->setRedirectUrl($advert_url);
                 break;
             }
-
         } else {
             // Should not happen
             drupal_set_message($this->t("Oops, more than one advert has reference number: @reference . Please report this issue to the admin.",
