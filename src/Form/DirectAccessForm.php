@@ -79,6 +79,7 @@ class DirectAccessForm extends FormBase {
     $node_ids = $nodeQuery->execute();
     if (isset($node_ids) and !empty($node_ids)){
         if (count($node_ids) == 1){
+            Drupal::logger('rir_interface')->debug('Quick access: reference = ' . $reference . ' id = ' . intval($node_ids[0]));
             $advert_url = Url::fromRoute('entity.node.canonical', ['node' => intval($node_ids[0])]);
             $form_state->setRedirectUrl($advert_url);
         } else {
