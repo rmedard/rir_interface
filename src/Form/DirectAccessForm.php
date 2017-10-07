@@ -74,8 +74,11 @@ class DirectAccessForm extends FormBase {
       ->condition('field_advert_reference', $reference);
     $node = $nodeQuery->execute();
     if (isset($node) and !empty($node)){
-      $url = Url::fromUri('internal:/advert/'.$reference);
-      $form_state->setRedirectUrl($url);
+//        $advert_alias = Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $node->id());
+        $advert_url = Url::fromRoute('entity.node.canonical', ['node' => $node->id()]);
+
+//      $url = Url::fromUri('internal:/advert/'.$reference);
+      $form_state->setRedirectUrl($advert_url);
     } else {
       drupal_set_message($this->t("Sorry, no advert found with reference number: ") . $reference, 'error');
     }
