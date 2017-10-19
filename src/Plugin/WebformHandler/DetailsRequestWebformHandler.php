@@ -25,52 +25,52 @@ use Drupal\webform\WebformSubmissionInterface;
  *   results = \Drupal\webform\Plugin\WebformHandlerInterface::RESULTS_PROCESSED,
  * )
  */
-class DetailsRequestWebformHandler extends EmailWebformHandler {
+class DetailsRequestWebformHandler extends EmailWebformHandler
+{
 
-  public function sendMessage(WebformSubmissionInterface $webform_submission, array $message) {
-    $node = Drupal::routeMatch()->getParameter('node');
-    if (isset($node)){
-        $reference = $node->get('field_advert_reference')->value;
-        $contact_name = $node->get('field_visit_contact_name')->value;
-        $phone = $webform_submission->getData('visitor_phone_number');
-        $email = $webform_submission->getData('visitor_email');
-        $names = $webform_submission->getData('visitor_names');
-        $email_message = $webform_submission->getData('visitor_message');
+    public function sendMessage(WebformSubmissionInterface $webform_submission, array $message)
+    {
+        $node = Drupal::routeMatch()->getParameter('node');
+        if (isset($node)) {
+            $contact_name = $node->get('field_visit_contact_name')->value;
+            $phone = $webform_submission->getData('visitor_phone_number');
+            $email = $webform_submission->getData('visitor_email');
+            $names = $webform_submission->getData('visitor_names');
+            $email_message = $webform_submission->getData('visitor_message');
 
-        $options = array(
-          'langcode' => Drupal::currentUser()->getPreferredLangcode(),
-        );
+            $options = array(
+                'langcode' => Drupal::currentUser()->getPreferredLangcode(),
+            );
 
-        $recipients = $node->get('field_visit_email_address1')->value;
-        if (isset($node->get('field_visit_email_address2')->value) and !empty($node->get('field_visit_email_address2')->value)){
-            $recipients .= ',' . $node->get('field_visit_email_address2')->value;
+            $recipients = $node->get('field_visit_email_address1')->value;
+            if (isset($node->get('field_visit_email_address2')->value) and !empty($node->get('field_visit_email_address2')->value)) {
+                $recipients .= ',' . $node->get('field_visit_email_address2')->value;
+            }
+            $message['to_mail'] = $recipients;
+            $message['reply_to'] = $email;
+            $message['subject'] = $this->t('Request for more details about your property on @site',
+                array('@site' => Drupal::config('system.site')->get('name')), $options);
+            $message['html'] = TRUE;
+
+            $message['body'] = getHtmlContent($node, $contact_name, $phone, $email, $names, $email_message);
+            Drupal::logger('rir_interface')->debug('Request for further info sent by: ' . $email);
+        } else {
+            Drupal::logger('rir_interface')->warning("Request for info sent with empty advert node.");
         }
-        $message['to_mail'] = $recipients;
-        $message['reply_to'] = $email;
-        $message['subject'] = $this->t('Request for more details about your property on @site',
-          array('@site' => Drupal::config('system.site')->get('name')), $options);
-        $message['html'] = TRUE;
-
-        $advert_title = $node->getTitle();
-        $message['body'] = getHtmlContent($contact_name, $reference, $phone, $email, $names, $email_message, $advert_title);
-        Drupal::logger('rir_interface')->debug('Request for further info sent by: ' . $email);
-    } else {
-        Drupal::logger('rir_interface')->warning("Request for info sent with empty advert node.");
+        return parent::sendMessage($webform_submission, $message);
     }
-    return parent::sendMessage($webform_submission, $message);
-  }
 }
 
-function getHtmlContent($contact_name, $reference, $phone, $email, $names, $message, $advert_title) {
-  $variables = [
-    'contact_name' => $contact_name,
-    'reference' => $reference,
-    'phone' => $phone,
-    'email' => $email,
-    'names' => $names,
-    'message' => $message,
-    'title' => $advert_title
-  ];
-  $twig_service = Drupal::service('twig');
-  return $twig_service->loadTemplate(drupal_get_path('module', 'rir_interface') . '/templates/rir-request-info.html.twig')->render($variables);
+function getHtmlContent($advert, $contact_name, $phone, $email, $names, $message)
+{
+    $variables = [
+        'advert' => $advert,
+        'contact_name' => $contact_name,
+        'phone' => $phone,
+        'email' => $email,
+        'names' => $names,
+        'message' => $message
+    ];
+    $twig_service = Drupal::service('twig');
+    return $twig_service->loadTemplate(drupal_get_path('module', 'rir_interface') . '/templates/rir-request-info.html.twig')->render($variables);
 }
