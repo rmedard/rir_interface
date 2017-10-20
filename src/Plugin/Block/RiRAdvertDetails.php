@@ -44,12 +44,14 @@ class RiRAdvertDetails extends BlockBase {
         $node = Drupal::routeMatch()->getParameter('node');
         $advert = NULL;
         $advertiser = NULL;
-        if (isset($node) and $node instanceof NodeInterface and $node->bundle() == 'advert') {
+        if (isset($node)) {
             $advert = Node::load($node->id());
-            $output = [];
-            $output[]['#cache']['max-age'] = 0; // No cache
-            $output[] = ['#theme' => 'rir_advert_details', '#advert' => $advert];
-            return $output;
+            if ($node->bundle() == 'advert'){
+                $output = [];
+                $output[]['#cache']['max-age'] = 0; // No cache
+                $output[] = ['#theme' => 'rir_advert_details', '#advert' => $advert];
+                return $output;
+            }
         }
         return array();
     }
