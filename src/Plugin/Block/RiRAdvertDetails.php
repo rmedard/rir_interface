@@ -12,6 +12,7 @@ namespace Drupal\rir_interface\Plugin\Block;
 use Drupal;
 use Drupal\Core\Block\BlockBase;
 use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
 
 /**
  * Class RiRAdvertDetails
@@ -43,7 +44,7 @@ class RiRAdvertDetails extends BlockBase {
         $node = Drupal::routeMatch()->getParameter('node');
         $advert = NULL;
         $advertiser = NULL;
-        if (isset($node)) {
+        if (isset($node) and $node instanceof NodeInterface and $node->bundle() == 'advert') {
             $advert = Node::load($node->id());
             $output = [];
             $output[]['#cache']['max-age'] = 0; // No cache
