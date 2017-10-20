@@ -552,8 +552,8 @@
                                 </ul>
                                 <strong>The property I am interested in:</strong>
                                 <ul>
-                                    <li><strong>Reference</strong>: <a href="{{ drupal_token('site:url') ~ 'advert/' ~ reference }}" target="_blank">{{ reference }}</a></li>
-                                    <li><strong>Title</strong>: {{ title }}</li>
+                                    <li><strong>Reference</strong>: <a href="{{ drupal_token('site:url') ~ path('entity.node.canonical', {'node':advert.id}) }}" target="_blank">{{ advert.field_advert_reference.value }}</a></li>
+                                    <li><strong>Title</strong>: {{ advert.title.value }}</li>
                                 </ul>
                                 <br><br>
                                 <p>Best regards, <br>{{ names }}</p>
