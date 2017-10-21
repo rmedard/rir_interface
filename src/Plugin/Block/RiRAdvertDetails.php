@@ -47,7 +47,12 @@ class RiRAdvertDetails extends BlockBase
         $advert = NULL;
         $advertiser = NULL;
         $output = [];
+
         if (isset($node)) {
+            $exception = \Drupal::request()->attributes->get('exception');
+            if ($exception and ($exception->getStatusCode() == '404' or $exception->getStatusCode() == '403')){
+                return $output;
+            }
             $advert = Node::load($node->id());
             $output[]['#cache']['max-age'] = 0; // No cache
             $output[] = ['#theme' => 'rir_advert_details', '#advert' => $advert];
