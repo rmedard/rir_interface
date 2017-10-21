@@ -53,8 +53,9 @@ class RiRAdvertDetails extends BlockBase
             if ($exception and ($exception->getStatusCode() == '404' or $exception->getStatusCode() == '403')){
                 return $output;
             }
-//            $advert = Node::load($node->id());
-            $output[] = ['#theme' => 'rir_advert_details', '#advert' => $node];
+            if ($node instanceof NodeInterface and $node->bundle() == 'advert'){
+                $output[] = ['#theme' => 'rir_advert_details', '#advert' => $node];
+            }
         }
         return $output;
     }
