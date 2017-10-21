@@ -11,7 +11,6 @@ namespace Drupal\rir_interface\Plugin\Block;
 
 use Drupal;
 use Drupal\Core\Block\BlockBase;
-use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 
 /**
@@ -41,13 +40,10 @@ class RiRAdvertDetails extends BlockBase
      *
      * @see \Drupal\block\BlockViewBuilder
      */
-    public function build()
-    {
+    public function build() {
         $node = Drupal::routeMatch()->getParameter('node');
-        $advert = NULL;
-        $advertiser = NULL;
         $output = [];
-        $output[]['#cache']['max-age'] = 0; // No cache
+        $output[]['#cache']['max-age'] = 0; //No cache. Very important.
         if ($node and $node instanceof NodeInterface and $node->bundle() == 'advert') {
             $output[] = ['#theme' => 'rir_advert_details', '#advert' => $node];
         }
