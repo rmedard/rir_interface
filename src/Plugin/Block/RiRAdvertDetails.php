@@ -24,7 +24,8 @@ use Drupal\node\NodeInterface;
  *   category = @Translation("Custom RIR Blocks")
  * )
  */
-class RiRAdvertDetails extends BlockBase {
+class RiRAdvertDetails extends BlockBase
+{
 
     /**
      * Builds and returns the renderable array for this block plugin.
@@ -40,19 +41,17 @@ class RiRAdvertDetails extends BlockBase {
      *
      * @see \Drupal\block\BlockViewBuilder
      */
-    public function build() {
+    public function build()
+    {
         $node = Drupal::routeMatch()->getParameter('node');
         $advert = NULL;
         $advertiser = NULL;
+        $output = [];
         if (isset($node)) {
             $advert = Node::load($node->id());
-//            if ($node->bundle() == 'advert'){
-
-            }
-//        }
-        $output = [];
-        $output[]['#cache']['max-age'] = 0; // No cache
-        $output[] = ['#theme' => 'rir_advert_details', '#advert' => $advert];
+            $output[]['#cache']['max-age'] = 0; // No cache
+            $output[] = ['#theme' => 'rir_advert_details', '#advert' => $advert];
+        }
         return $output;
     }
 }
