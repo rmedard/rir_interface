@@ -48,14 +48,8 @@ class RiRAdvertDetails extends BlockBase
         $advertiser = NULL;
         $output = [];
         $output[]['#cache']['max-age'] = 0; // No cache
-        if (isset($node)) {
-            $exception = \Drupal::request()->attributes->get('exception');
-            if ($exception and ($exception->getStatusCode() == '404' or $exception->getStatusCode() == '403')){
-                return $output;
-            }
-            if ($node instanceof NodeInterface and $node->bundle() == 'advert'){
-                $output[] = ['#theme' => 'rir_advert_details', '#advert' => $node];
-            }
+        if ($node and $node instanceof NodeInterface and $node->bundle() == 'advert') {
+            $output[] = ['#theme' => 'rir_advert_details', '#advert' => $node];
         }
         return $output;
     }
