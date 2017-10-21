@@ -48,7 +48,7 @@ class RiRAdvertDetails extends BlockBase {
             $advert = Node::load($node->id());
             if ($node->bundle() == 'advert'){
                 $output = [];
-                $output[]['#cache']['max-age'] = 0; // No cache
+//                $output[]['#cache']['max-age'] = 0; // No cache
                 $output[] = ['#theme' => 'rir_advert_details', '#advert' => $advert];
                 return $output;
             }
