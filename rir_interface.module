@@ -329,6 +329,10 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
 }
 
 function getEmailHtmlContent($email_type, $entity){
+    if(!isset($entity)){
+        Drupal::logger('rir_interface')->error('Empty entity while creating email. Email type: ' . $email_type);
+        return "";
+    }
     $template_path = '';
     $variables = [];
     $twig_service = Drupal::service('twig');
