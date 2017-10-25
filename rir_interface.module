@@ -211,7 +211,7 @@ function rir_interface_theme($existing, $type, $theme, $path)
         ],
         'hir_google_adsense' => [
             'variables' => [
-                'script' => print adsense_display(array('format' => '160x600', 'slot' => '5254503023'))
+                'script' => print_r(adsense_display(array('format' => '160x600', 'slot' => '5254503023')))
             ],
         ],
     ];
