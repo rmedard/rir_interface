@@ -209,11 +209,6 @@ function rir_interface_theme($existing, $type, $theme, $path)
         'hir_create_agent' => [
             'variables' => [],
         ],
-        'hir_google_adsense' => [
-            'variables' => [
-                'script' => getEmailHtmlContent('google_adsense', null)
-            ],
-        ],
     ];
 }
 
@@ -361,13 +356,6 @@ function getEmailHtmlContent($email_type, $entity)
             ];
             $template_path = '/templates/hir-agent-received.html.twig';
             break;
-        case 'google_adsense':
-            $variables = [
-                'script' => adsense_display(array('format' => '160x600', 'slot' => '5254503023'))
-            ];
-            $template_path = '/templates/hir-google-adsense.html.twig';
-            break;
-
     }
     return $twig_service->loadTemplate(drupal_get_path('module', 'rir_interface') . $template_path)->render($variables);
 }
