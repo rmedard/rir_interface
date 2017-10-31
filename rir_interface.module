@@ -316,7 +316,7 @@ function rir_interface_entity_presave(EntityInterface $entity)
  */
 function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $query)
 {
-    if ($view->storage->get('id') === 'adverts' && $view->current_display === 'block_advert_carousel') {
+    if ($view->storage->get('id') === 'adverts' && in_array($view->current_display, array('block_advert_carousel', 'block_advert_images_thumbnails'))) {
         $node = Drupal::routeMatch()->getParameter('node');
         if (isset($node)) {
             $advert = Node::load($node->id());
