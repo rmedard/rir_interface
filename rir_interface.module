@@ -255,9 +255,9 @@ function rir_interface_entity_presave(EntityInterface $entity)
          * Check if agent is published
          */
         if (intval($entity->get('field_advert_is_agent')->value) === 1
-            and intval($entity->get('field_advert_advertiser')->entity->get('status')->value) === 0
-            and intval($entity->get('status')->value) === 1) {
-            $entity->set('status', 0);
+            and intval($entity->get('field_advert_advertiser')->entity->get('status')->value) === Node::NOT_PUBLISHED
+            and intval($entity->get('status')->value) === Node::PUBLISHED) {
+            $entity->set('status', Node::NOT_PUBLISHED);
             drupal_set_message('Publishing failed: The agent of this advert is not published!', 'warning');
         }
 
@@ -265,8 +265,8 @@ function rir_interface_entity_presave(EntityInterface $entity)
          * Send notification if published for the first time
          */
         if (isset($entity->get('field_advert_is_first_published')->value)
-            and intval($entity->get('field_advert_is_first_published')->value) === 0
-            and intval($entity->get('status')->value) === 1) {
+            and intval($entity->get('field_advert_is_first_published')->value) === Node::NOT_PUBLISHED
+            and intval($entity->get('status')->value) === Node::PUBLISHED) {
 
             $contact_email = $entity->get('field_advert_contact_email')->value;
             $visit_email_1 = $entity->get('field_visit_email_address1')->value;
@@ -280,7 +280,7 @@ function rir_interface_entity_presave(EntityInterface $entity)
                 $recipients .= ',' . $visit_email_2;
             }
 
-            $entity->set('field_advert_is_first_published', 1);
+            $entity->set('field_advert_is_first_published', Node::PUBLISHED);
 
             $mailManager = Drupal::service('plugin.manager.mail');
             $module = 'rir_interface';
