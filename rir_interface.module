@@ -262,6 +262,14 @@ function rir_interface_entity_presave(EntityInterface $entity)
         }
 
         /**
+         * Set visit email if empty
+         */
+
+        if (!isset($entity->get('field_visit_email_address1')->value)) {
+            $entity->set('field_visit_email_address1', Drupal::config('system.site')->get('mail'));
+        }
+
+        /**
          * Send notification if published for the first time
          */
         if (isset($entity->get('field_advert_is_first_published')->value)
