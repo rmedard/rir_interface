@@ -33,10 +33,10 @@ class DetailsRequestWebformHandler extends EmailWebformHandler
         $node = Drupal::routeMatch()->getParameter('node');
         if (isset($node)) {
             $contact_name = $node->get('field_visit_contact_name')->value;
-            $phone = $webform_submission->getData('visitor_phone_number');
-            $email = $webform_submission->getData('visitor_email');
-            $names = $webform_submission->getData('visitor_names');
-            $email_message = $webform_submission->getData('visitor_message');
+            $phone = $webform_submission->getElementData('visitor_phone_number');
+            $email = $webform_submission->getElementData('visitor_email');
+            $names = $webform_submission->getElementData('visitor_names');
+            $email_message = $webform_submission->getElementData('visitor_message');
 
             $options = array(
                 'langcode' => Drupal::currentUser()->getPreferredLangcode(),

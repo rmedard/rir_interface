@@ -331,11 +331,6 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
             if ($advert->get('field_advert_posting_plan')->value === 'standard') {
                 $query->setLimit(10);
             }
-//            elseif ($advert->get('field_advert_posting_plan')->value === 'featured') {
-//                $query->setLimit(5);
-//            } elseif ($advert->get('field_advert_posting_plan')->value === 'full_service') {
-//                $query->setLimit(10);
-//            }
         }
     }
 }
