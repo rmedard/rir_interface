@@ -349,7 +349,7 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
                             $condition['value'] = [$from, $to];
                             $condition['operator'] = 'BETWEEN';
                         } else {
-                            Drupal::logger('rir_interface')->error('Date voncersion failed!');
+                            Drupal::logger('rir_interface')->error('Date conversion failed!');
                         }
                         break;
                     }
