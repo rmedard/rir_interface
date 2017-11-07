@@ -339,8 +339,8 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
                 }
             }
         } elseif ($view->current_display == 'page_manage_adverts') { // Remove this when date granularity is available in views filters
-            kint($query->where);
-            die();
+//            kint($query->where);
+//            die();
             foreach ($query->where as &$condition_group) {
                 foreach ($condition_group['conditions'] as &$condition) {
                     if (strpos($condition['field'], 'node_field_data.created') !== FALSE) {
@@ -358,13 +358,15 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
                         }
                         break;
                     } elseif (strpos($condition['field'], 'node__field_advert_expirydate.field_advert_expirydate_value') !== FALSE) {
-                        $query_date_strings = explode('=', $condition['field']);
-                        $query_date = trim(end($query_date_strings));
-                        $format = 'Y-m-d';
-                        $from = strtotime(date($format . ' 00:00:00', $query_date));
-                        $to = strtotime(date($format . ' 23:59:59', $query_date));
+                        $expiry_param = Drupal::request()->query->get('field_advert_expirydate_value');
+//                        $query_date_strings = explode('=', $condition['field']);
+//                        $query_date = trim(end($query_date_strings));
+//                        $format = 'Y-m-d';
+                        $from = strtotime($expiry_param . ' 00:00:00');
+                        $to = strtotime($expiry_param . ' 23:59:59');
+
                         if ($from !== FALSE and $to !== FALSE) {
-                            $condition['field'] = 'node_field_data.field_advert_expirydate_value';
+                            $condition['field'] = 'node__field_advert_expirydate.field_advert_expirydate_value';
                             $condition['value'] = [$from, $to];
                             $condition['operator'] = 'BETWEEN';
                         } else {
