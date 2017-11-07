@@ -351,27 +351,22 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
                             $condition['field'] = 'node_field_data.created';
                             $condition['value'] = [$from, $to];
                             $condition['operator'] = 'BETWEEN';
-                        } else {
-                            Drupal::logger('rir_interface')->error('Date conversion failed!');
                         }
-//                        break;
-                    } elseif (strpos($condition['field'], 'node__field_advert_expirydate.field_advert_expirydate_value') !== FALSE) {
-                        $expiry_param = Drupal::request()->query->get('field_advert_expirydate_value');
-                        $from = strtotime($expiry_param . ' 00:00:00');
-                        $to = strtotime($expiry_param . ' 23:59:59');
-                        if ($from !== FALSE and $to !== FALSE) {
-                            $condition['field'] = 'node__field_advert_expirydate.field_advert_expirydate_value';
-                            $condition['value'] = [$from, $to];
-                            $condition['operator'] = 'BETWEEN';
-                        } else {
-                            Drupal::logger('rir_interface')->error('Date conversion failed!');
-                        }
-//                        break;
                     }
+//                    elseif (strpos($condition['field'], 'node__field_advert_expirydate.field_advert_expirydate_value') !== FALSE) {
+//                        $expiry_param = Drupal::request()->query->get('field_advert_expirydate_value');
+//                        $from = strtotime($expiry_param . ' 00:00:00');
+//                        $to = strtotime($expiry_param . ' 23:59:59');
+//                        if ($from !== FALSE and $to !== FALSE) {
+//                            $condition['field'] = 'node__field_advert_expirydate.field_advert_expirydate_value';
+//                            $condition['value'] = [$from, $to];
+//                            $condition['operator'] = 'BETWEEN';
+//                        }
+//                    }
                 }
             }
-//            kint($query->where);
-//            die();
+            kint($query->where);
+            die();
         }
     }
 }
