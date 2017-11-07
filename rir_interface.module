@@ -347,7 +347,7 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
                         $to = strtotime($created_param . 'T23:59:59');
                         if ($from !== FALSE and $to !== FALSE) {
                             $condition['field'] = 'node_field_data.created';
-                            $condition['value'] = [$from, $to];
+                            $condition['value'] = array($from, $to);
                             $condition['operator'] = 'BETWEEN';
                         }
                     }
@@ -356,7 +356,7 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
                         $expiry_date = strtotime($expiry_param);
                         if ($expiry_date !== FALSE) {
                             $condition['field'] = "node__field_advert_expirydate.field_advert_expirydate_value";
-                            $condition['value'] = [$expiry_param];
+                            $condition['value'] = array($expiry_param);
                             $condition['operator'] = '=';
                         }
                     }
