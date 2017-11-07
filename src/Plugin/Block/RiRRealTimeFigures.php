@@ -63,7 +63,7 @@ class RiRRealTimeFigures extends BlockBase {
         $agents_count = $agents->execute();
 
         $output = [];
-        $output[]['#cache']['max-age'] = 0; // No cache
+        $output[]['#cache']['max-age'] = 0;
         $output[] = [
           '#theme' => 'rir_realtime',
           '#rent' => $rent_count,
