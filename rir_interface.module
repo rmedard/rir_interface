@@ -332,7 +332,7 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
             if (isset($node)) {
                 $advert = Node::load($node->id());
                 if ($advert->get('field_advert_posting_plan')->value === 'standard') {
-                    $query->setLimit(1);
+                    $query->setLimit(10);
                 }
             }
         } elseif ($view->current_display == 'page_manage_adverts') { // Remove this when date granularity is available in views filters
