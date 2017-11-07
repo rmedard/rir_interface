@@ -434,3 +434,11 @@ function rir_interface_site_information_phone_submit(array &$form, FormStateInte
     $config = Drupal::configFactory()->getEditable('system.site');
     $config->set('phone', $formState->getValue('site_phone'))->save();
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function rir_interface_form_views_exposed_form_adverts_page_manage_adverts_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    $form['created'] = ['#type' => 'date'];
+//    return 0;
+}
