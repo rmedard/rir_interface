@@ -334,14 +334,13 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
                     $query->setLimit(10);
                 }
             }
-        }
-        elseif ($view->current_display == 'page_manage_adverts') {
+        } elseif ($view->current_display == 'page_manage_adverts') { //Remove this when date granularity is available in views filters
 
             foreach ($query->where as &$condition_group) {
                 foreach ($condition_group['conditions'] as &$condition) {
                     if (strpos($condition['field'], 'node_field_data.created') !== FALSE) {
-                        //                        kint($condition);
-                        //                        die();
+                                                kint($condition);
+                                                die();
                         $condition['field'] = 'node_field_data.created';
                         $condition['value'] = ['1506636000', '1506722340'];
                         $condition['operator'] = 'BETWEEN';
