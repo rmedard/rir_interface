@@ -356,6 +356,20 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
                             Drupal::logger('rir_interface')->error('Date conversion failed!');
                         }
                         break;
+                    } elseif (strpos($condition['field'], 'node_field_data.field_advert_expirydate_value') !== FALSE) {
+                        $query_date_strings = explode('=', $condition['field']);
+                        $query_date = trim(end($query_date_strings));
+                        $format = 'Y-m-d';
+                        $from = strtotime(date($format . ' 00:00:00', $query_date));
+                        $to = strtotime(date($format . ' 23:59:59', $query_date));
+                        if ($from !== FALSE and $to !== FALSE) {
+                            $condition['field'] = 'node_field_data.field_advert_expirydate_value';
+                            $condition['value'] = [$from, $to];
+                            $condition['operator'] = 'BETWEEN';
+                        } else {
+                            Drupal::logger('rir_interface')->error('Date conversion failed!');
+                        }
+                        break;
                     }
                 }
             }
