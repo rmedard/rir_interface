@@ -359,9 +359,9 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
                         $from = strtotime($expiry_param . 'T00:00:00');
                         $to = strtotime($expiry_param . 'T23:59:59');
                         if ($from !== FALSE and $to !== FALSE) {
-                            $condition['field'] = "node__field_advert_expirydate.field_advert_expirydate";
-                            $condition['value'] = [$expiry_param . 'T00:00:00', $expiry_param . 'T23:59:59'];
-                            $condition['operator'] = 'BETWEEN';
+                            $condition['field'] = "node__field_advert_expirydate.field_advert_expirydate_value";
+                            $condition['value'] = [$expiry_param];
+                            $condition['operator'] = '=';
                         }
                     }
                 }
