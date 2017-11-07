@@ -342,8 +342,9 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
                     if (strpos($condition['field'], 'node_field_data.created') !== false) {
 //                        kint($condition);
 //                        die();
+                        $condition['field'] = 'node_field_data.created';
                         $condition['value'] = ['1506636000', '1506722340'];
-                        $create_date_condition['operator'] = 'BETWEEN';
+                        $condition['operator'] = 'BETWEEN';
                         break;
                     }
                 }
