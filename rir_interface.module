@@ -484,7 +484,7 @@ function rir_interface_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $
             $view = $form_state->get('view');
             if ($view->storage->id() == 'adverts' and $view->current_display == 'page_manage_adverts') {
                 $form['created'] = ['#type' => 'date'];
-                $form['field_advert_expirydate_value'] = ['#type' => 'date'];
+//                $form['field_advert_expirydate_value'] = ['#type' => 'date'];
             }
             break;
     }
