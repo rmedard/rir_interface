@@ -345,9 +345,6 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
                 foreach ($condition_group['conditions'] as &$condition) {
                     if (strpos($condition['field'], 'node_field_data.created') !== FALSE) {
                         $created_param = Drupal::request()->query->get('created');
-//                        $query_date_strings = explode('=', $condition['field']);
-//                        $query_date = trim(end($query_date_strings));
-//                        $format = 'Y-m-d';
                         $from = strtotime($created_param . ' 00:00:00');
                         $to = strtotime($created_param . ' 23:59:59');
                         if ($from !== FALSE and $to !== FALSE) {
@@ -360,12 +357,8 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
 //                        break;
                     } elseif (strpos($condition['field'], 'node__field_advert_expirydate.field_advert_expirydate_value') !== FALSE) {
                         $expiry_param = Drupal::request()->query->get('field_advert_expirydate_value');
-//                        $query_date_strings = explode('=', $condition['field']);
-//                        $query_date = trim(end($query_date_strings));
-//                        $format = 'Y-m-d';
                         $from = strtotime($expiry_param . ' 00:00:00');
                         $to = strtotime($expiry_param . ' 23:59:59');
-
                         if ($from !== FALSE and $to !== FALSE) {
                             $condition['field'] = 'node__field_advert_expirydate.field_advert_expirydate_value';
                             $condition['value'] = [$from, $to];
@@ -377,8 +370,8 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
                     }
                 }
             }
-            kint($query->where);
-            die();
+//            kint($query->where);
+//            die();
         }
     }
 }
