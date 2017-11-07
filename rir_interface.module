@@ -348,7 +348,7 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
 //                //                break;
 //            }
 
-            kint($query);
+            kint($query->where[0]);
             die();
             //            $conditions = $query->where[1]['conditions'];
             //            $create_date_condition = $query->where[1]['conditions'][$conditions->length - 1];
