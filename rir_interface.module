@@ -442,9 +442,9 @@ function rir_interface_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $
     switch ($form_id) {
         case 'views_exposed_form':
             $view = $form_state->get('view');
-            kint($view);
+            kint($form);
             die();
-            if ($view->name == 'adverts' and $view->current_display == 'page_manage_adverts') {
+            if ($view->storage->id() == 'adverts' and $view->current_display == 'page_manage_adverts') {
                 $form['views_exposed_form']['created'] = ['#type' => 'date'];
             }
     }
