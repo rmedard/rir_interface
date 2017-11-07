@@ -339,8 +339,8 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
                 }
             }
         } elseif ($view->current_display == 'page_manage_adverts') { // Remove this when date granularity is available in views filters
-//            kint($query->where);
-//            die();
+            kint($query->where);
+            die();
             foreach ($query->where as &$condition_group) {
                 foreach ($condition_group['conditions'] as &$condition) {
                     if (strpos($condition['field'], 'node_field_data.created') !== FALSE) {
