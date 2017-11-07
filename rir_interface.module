@@ -438,13 +438,13 @@ function rir_interface_site_information_phone_submit(array &$form, FormStateInte
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function rir_interface_form_alter(&$form, &$form_state, $form_id) {
-    switch ($form_id){
+function rir_interface_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    switch ($form_id) {
         case 'views_exposed_form':
-//            kint($form_state);
-//            die();
-            $view = $form_state['view'];
-            if ($view->name == 'adverts' and $view->current_display == 'page_manage_adverts'){
+            $view = $form_state->get('view');
+            kint($view);
+            die();
+            if ($view->name == 'adverts' and $view->current_display == 'page_manage_adverts') {
                 $form['views_exposed_form']['created'] = ['#type' => 'date'];
             }
     }
