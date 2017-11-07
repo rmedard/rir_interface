@@ -436,17 +436,14 @@ function rir_interface_site_information_phone_submit(array &$form, FormStateInte
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
+ * Implements hook_form_alter().
  */
 function rir_interface_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
     switch ($form_id) {
         case 'views_exposed_form':
             $view = $form_state->get('view');
-//            kint($form);
-//            die();
             if ($view->storage->id() == 'adverts' and $view->current_display == 'page_manage_adverts') {
-                $form['created[min]'] = ['#type' => 'datetime'];
-                $form['created[max]'] = ['#type' => 'datetime'];
+                $form['created'] = ['#type' => 'date'];
             }
     }
 }
