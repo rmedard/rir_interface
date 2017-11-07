@@ -356,7 +356,7 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
                         } else {
                             Drupal::logger('rir_interface')->error('Date conversion failed!');
                         }
-                        break;
+//                        break;
                     } elseif (strpos($condition['field'], 'node__field_advert_expirydate.field_advert_expirydate_value') !== FALSE) {
                         $expiry_param = Drupal::request()->query->get('field_advert_expirydate_value');
 //                        $query_date_strings = explode('=', $condition['field']);
@@ -372,7 +372,7 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
                         } else {
                             Drupal::logger('rir_interface')->error('Date conversion failed!');
                         }
-                        break;
+//                        break;
                     }
                 }
             }
