@@ -445,7 +445,8 @@ function rir_interface_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $
 //            kint($form);
 //            die();
             if ($view->storage->id() == 'adverts' and $view->current_display == 'page_manage_adverts') {
-//                $form['created'] = ['#type' => 'datetime'];
+                $form['created[min]'] = ['#type' => 'datetime'];
+                $form['created[max]'] = ['#type' => 'datetime'];
             }
     }
 }
