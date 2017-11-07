@@ -323,7 +323,10 @@ function rir_interface_entity_presave(EntityInterface $entity) {
  */
 function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
     if ($view->storage->get('id') === 'adverts') {
-        if (in_array($view->current_display, ['block_advert_carousel', 'block_advert_images_thumbnails'])){
+        if (in_array($view->current_display, [
+          'block_advert_carousel',
+          'block_advert_images_thumbnails',
+        ])) {
             $node = Drupal::routeMatch()->getParameter('node');
             if (isset($node)) {
                 $advert = Node::load($node->id());
@@ -331,26 +334,27 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
                     $query->setLimit(10);
                 }
             }
-        } elseif ($view->current_display == 'page_manage_adverts'){
-//            kint($query);
-//            die();
+        }
+        elseif ($view->current_display == 'page_manage_adverts') {
 
-            foreach ($query->where as &$condition_group){
-                foreach ($condition_group['conditions'] as &$condition){
-                    if (strpos($condition['field'], 'node_field_data.created')){
+            foreach ($query->where as &$condition_group) {
+                foreach ($condition_group['conditions'] as &$condition) {
+                    if (strpos($condition['field'], 'node_field_data.created')) {
                         $condition['value'] = ['1506636000', '1506722340'];
                         $create_date_condition['operator'] = 'BETWEEN';
                         break;
                     }
                 }
-//                break;
+                //                break;
             }
 
-//            $conditions = $query->where[1]['conditions'];
-//            $create_date_condition = $query->where[1]['conditions'][$conditions->length - 1];
-//            $create_date_condition['field'] = 'node_field_data.created';
-//            $create_date_condition['value'] = ['1506636000', '1506722340'];
-//            $create_date_condition['operator'] = 'BETWEEN';
+            kint($query);
+            die();
+            //            $conditions = $query->where[1]['conditions'];
+            //            $create_date_condition = $query->where[1]['conditions'][$conditions->length - 1];
+            //            $create_date_condition['field'] = 'node_field_data.created';
+            //            $create_date_condition['value'] = ['1506636000', '1506722340'];
+            //            $create_date_condition['operator'] = 'BETWEEN';
         }
     }
 }
