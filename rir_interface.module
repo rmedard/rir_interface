@@ -335,7 +335,10 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
 //            kint($query);
 //            die();
             $conditions = $query->where[1]['conditions'];
-            $query->where[1]['conditions'][$conditions->length - 1]['field'] = 'node_field_data.created BETWEEN 1506636000 AND 1506722340';
+            $create_date_condition = $query->where[1]['conditions'][$conditions->length - 1];
+            $create_date_condition['field'] = 'node_field_data.created';
+            $create_date_condition['value'] = ['1506636000', '1506722340'];
+            $create_date_condition['operator'] = 'BETWEEN';
         }
     }
 }
