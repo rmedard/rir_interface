@@ -334,7 +334,7 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
                     $query->setLimit(10);
                 }
             }
-        } elseif ($view->current_display == 'page_manage_adverts') { //Remove this when date granularity is available in views filters
+        } elseif ($view->current_display == 'page_manage_adverts') { // Remove this when date granularity is available in views filters
 
             foreach ($query->where as &$condition_group) {
                 foreach ($condition_group['conditions'] as &$condition) {
