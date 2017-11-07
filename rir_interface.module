@@ -339,23 +339,17 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
 
             foreach ($query->where as &$condition_group) {
                 foreach ($condition_group['conditions'] as &$condition) {
-                    if (strpos($condition['field'], 'node_field_data.created') !== false) {
-//                        kint($condition);
-//                        die();
+                    if (strpos($condition['field'], 'node_field_data.created') !== FALSE) {
+                        //                        kint($condition);
+                        //                        die();
                         $condition['field'] = 'node_field_data.created';
                         $condition['value'] = ['1506636000', '1506722340'];
                         $condition['operator'] = 'BETWEEN';
                         break;
                     }
                 }
-                //                break;
+                break;
             }
-
-            //            $conditions = $query->where[1]['conditions'];
-            //            $create_date_condition = $query->where[1]['conditions'][$conditions->length - 1];
-            //            $create_date_condition['field'] = 'node_field_data.created';
-            //            $create_date_condition['value'] = ['1506636000', '1506722340'];
-            //            $create_date_condition['operator'] = 'BETWEEN';
         }
     }
 }
