@@ -365,8 +365,8 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
 //                    }
                 }
             }
-//            kint($query->where);
-//            die();
+            kint($query->where);
+            die();
         }
     }
 }
