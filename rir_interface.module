@@ -339,7 +339,7 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
 
             foreach ($query->where as &$condition_group) {
 
-                kint($condition_group);
+                kint($condition_group['conditions']);
                 die();
                 foreach ($condition_group['conditions'] as &$condition) {
                     if (strpos($condition['field'], 'node_field_data.created')) {
