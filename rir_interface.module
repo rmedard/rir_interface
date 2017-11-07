@@ -439,6 +439,7 @@ function rir_interface_site_information_phone_submit(array &$form, FormStateInte
  * Implements hook_form_FORM_ID_alter().
  */
 function rir_interface_form_views_exposed_form_adverts_page_manage_adverts_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    drupal_set_message('In form', 'warning');
     $form['created'] = ['#type' => 'date'];
 //    return 0;
 }
