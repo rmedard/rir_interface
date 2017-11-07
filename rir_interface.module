@@ -345,8 +345,8 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
                 foreach ($condition_group['conditions'] as &$condition) {
                     if (strpos($condition['field'], 'node_field_data.created') !== FALSE) {
                         $created_param = Drupal::request()->query->get('created');
-                        $from = strtotime($created_param . ' 00:00:00');
-                        $to = strtotime($created_param . ' 23:59:59');
+                        $from = strtotime($created_param . 'T00:00:00');
+                        $to = strtotime($created_param . 'T23:59:59');
                         if ($from !== FALSE and $to !== FALSE) {
                             $condition['field'] = 'node_field_data.created';
                             $condition['value'] = [$from, $to];
