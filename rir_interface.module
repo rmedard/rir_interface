@@ -353,20 +353,21 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
                             $condition['operator'] = 'BETWEEN';
                         }
                     }
-//                    elseif (strpos($condition['field'], 'node__field_advert_expirydate.field_advert_expirydate_value') !== FALSE) {
-//                        $expiry_param = Drupal::request()->query->get('field_advert_expirydate_value');
-//                        $from = strtotime($expiry_param . ' 00:00:00');
-//                        $to = strtotime($expiry_param . ' 23:59:59');
-//                        if ($from !== FALSE and $to !== FALSE) {
-//                            $condition['field'] = 'node__field_advert_expirydate.field_advert_expirydate_value';
-//                            $condition['value'] = [$from, $to];
-//                            $condition['operator'] = 'BETWEEN';
-//                        }
-//                    }
+//                    DATE_FORMAT(node__field_advert_expirydate.field_advert_expirydate_value, '%Y-%m-%d') BETWEEN DATE_FORMAT('2017-10-05T22:00:00', '%Y-%m-%d') AND DATE_FORMAT('2017-10-06T22:00:00', '%Y-%m-%d')
+                    elseif (strpos($condition['field'], 'node__field_advert_expirydate.field_advert_expirydate_value') !== FALSE) {
+                        $expiry_param = Drupal::request()->query->get('field_advert_expirydate_value');
+                        $from = strtotime($expiry_param . ' 00:00:00');
+                        $to = strtotime($expiry_param . ' 23:59:59');
+                        if ($from !== FALSE and $to !== FALSE) {
+                            $condition['field'] = "DATE_FORMAT(node__field_advert_expirydate.field_advert_expirydate_value, '%Y-%m-%d')";
+                            $condition['value'] = ["DATE_FORMAT('" . $expiry_param . "T00:00:00', '%Y-%m-%d')", "DATE_FORMAT('" . $expiry_param . "T23:59:59', '%Y-%m-%d')"];
+                            $condition['operator'] = 'BETWEEN';
+                        }
+                    }
                 }
             }
-            kint($query->where);
-            die();
+//            kint($query->where);
+//            die();
         }
     }
 }
