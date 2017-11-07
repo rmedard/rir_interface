@@ -332,8 +332,10 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
                 }
             }
         } elseif ($view->current_display == 'page_manage_adverts'){
-            kint($query);
-            die();
+//            kint($query);
+//            die();
+            $conditions = $query->where[1]['conditions'];
+            $query->where[1]['conditions'][$conditions->length - 1]['field'] = 'node_field_data.created BETWEEN 1506636000 AND 1506722340';
         }
     }
 }
