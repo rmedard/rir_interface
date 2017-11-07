@@ -441,8 +441,8 @@ function rir_interface_site_information_phone_submit(array &$form, FormStateInte
 function rir_interface_form_alter(&$form, &$form_state, $form_id) {
     switch ($form_id){
         case 'views_exposed_form':
-            kint($form_state);
-            die();
+//            kint($form_state);
+//            die();
             $view = $form_state['view'];
             if ($view->name == 'adverts' and $view->current_display == 'page_manage_adverts'){
                 $form['views_exposed_form']['created'] = ['#type' => 'date'];
