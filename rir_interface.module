@@ -468,7 +468,7 @@ function rir_interface_site_information_phone_submit(array &$form, FormStateInte
 /**
  * Implements hook_form_alter().
  */
-function rir_interface_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id)
+function rir_interface_form_alter(&$form, FormStateInterface $form_state, $form_id)
 {
     switch ($form_id) {
         case 'views_exposed_form':
