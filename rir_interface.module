@@ -17,440 +17,445 @@ use Drupal\views\ViewExecutable;
 /**
  * Implements hook_entity_insert().
  */
-function rir_interface_entity_insert(EntityInterface $entity)
-{
-    if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
-        Drupal::cache('render')->deleteAll();
+function rir_interface_entity_insert(EntityInterface $entity) {
+		if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
+				Drupal::cache('render')->deleteAll();
 
-        $cc_recipients = $entity->get('field_visit_email_address1')->value;
-        if (isset($entity->get('field_visit_email_address2')->value) and !empty($entity->get('field_visit_email_address2')->value)) {
-            $cc_recipients .= ',' . $entity->get('field_visit_email_address2')->value;
-        }
-        $cc_recipients .= ',' . Drupal::config('system.site')->get('mail');
+				$cc_recipients = $entity->get('field_visit_email_address1')->value;
+				if (isset($entity->get('field_visit_email_address2')->value) and !empty($entity->get('field_visit_email_address2')->value)) {
+						$cc_recipients .= ',' . $entity->get('field_visit_email_address2')->value;
+				}
+				$cc_recipients .= ',' . Drupal::config('system.site')->get('mail');
 
-        $mailManager = Drupal::service('plugin.manager.mail');
-        $module = 'rir_interface';
-        $key = 'advert_insert_alert';
-        $to = $entity->get('field_advert_contact_email')->value;
-        $reply = Drupal::config('system.site')->get('mail');
-        $params['cc'] = $cc_recipients;
-        $params['message'] = Markup::create(getEmailHtmlContent('advert_received', $entity));
-        $params['advert_title'] = $entity->label();
-        $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
-        $langcode = Drupal::currentUser()->getPreferredLangcode();
-        $send = TRUE;
-        $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
-        if ($result['result'] !== TRUE) {
-            $message = t('There was a problem sending notification email to @email for creating advert id: @id.', [
-                '@email' => $to,
-                '@id' => $entity->id(),
-            ]);
-            Drupal::logger('rir_interface')->error($message);
-            return;
-        }
-        $message = t('An email notification has been sent to @email for creating advert id: @id.', [
-            '@email' => $to,
-            '@id' => $entity->id(),
-        ]);
-        Drupal::logger('rir_interface')->notice($message);
-    } elseif ($entity instanceof NodeInterface and $entity->bundle() == 'agent') {
-        $mailManager = Drupal::service('plugin.manager.mail');
-        $module = 'rir_interface';
-        $key = 'agent_insert_alert';
-        $to = $entity->get('field_agent_email')->value;
-        $reply = Drupal::config('system.site')->get('mail');
-        $params['cc'] = $reply;
-        $params['message'] = Markup::create(getEmailHtmlContent('agent_received', $entity));
-        $langcode = Drupal::currentUser()->getPreferredLangcode();
-        $send = TRUE;
-        $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
-        if ($result['result'] !== TRUE) {
-            $message = t('There was a problem sending notification email to @email after creating agent id: @id', [
-                '@email' => $to,
-                '@id' => $entity->id(),
-            ]);
-            Drupal::logger('rir_interface')->error($message);
-            return;
-        }
-        $message = t('An email notification has been sent to @email for creating agent id: @id.', [
-            '@email' => $to,
-            '@id' => $entity->id(),
-        ]);
-        Drupal::logger('rir_interface')->notice($message);
-    }
+				$mailManager = Drupal::service('plugin.manager.mail');
+				$module = 'rir_interface';
+				$key = 'advert_insert_alert';
+				$to = $entity->get('field_advert_contact_email')->value;
+				$reply = Drupal::config('system.site')->get('mail');
+				$params['cc'] = $cc_recipients;
+				$params['message'] = Markup::create(getEmailHtmlContent('advert_received', $entity));
+				$params['advert_title'] = $entity->label();
+				$params['contact_name'] = $entity->get('field_visit_contact_name')->value;
+				$langcode = Drupal::currentUser()->getPreferredLangcode();
+				$send = TRUE;
+				$result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
+				if ($result['result'] !== TRUE) {
+						$message = t('There was a problem sending notification email to @email for creating advert id: @id.', [
+							'@email' => $to,
+							'@id' => $entity->id(),
+						]);
+						Drupal::logger('rir_interface')->error($message);
+						return;
+				}
+				$message = t('An email notification has been sent to @email for creating advert id: @id.', [
+					'@email' => $to,
+					'@id' => $entity->id(),
+				]);
+				Drupal::logger('rir_interface')->notice($message);
+		}
+		elseif ($entity instanceof NodeInterface and $entity->bundle() == 'agent') {
+				$mailManager = Drupal::service('plugin.manager.mail');
+				$module = 'rir_interface';
+				$key = 'agent_insert_alert';
+				$to = $entity->get('field_agent_email')->value;
+				$reply = Drupal::config('system.site')->get('mail');
+				$params['cc'] = $reply;
+				$params['message'] = Markup::create(getEmailHtmlContent('agent_received', $entity));
+				$langcode = Drupal::currentUser()->getPreferredLangcode();
+				$send = TRUE;
+				$result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
+				if ($result['result'] !== TRUE) {
+						$message = t('There was a problem sending notification email to @email after creating agent id: @id', [
+							'@email' => $to,
+							'@id' => $entity->id(),
+						]);
+						Drupal::logger('rir_interface')->error($message);
+						return;
+				}
+				$message = t('An email notification has been sent to @email for creating agent id: @id.', [
+					'@email' => $to,
+					'@id' => $entity->id(),
+				]);
+				Drupal::logger('rir_interface')->notice($message);
+		}
 }
 
 /**
  * Implements hook_entity_update().
  */
-function rir_interface_entity_update(EntityInterface $entity)
-{
-    if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
-        Drupal::cache('render')->deleteAll();
-    }
+function rir_interface_entity_update(EntityInterface $entity) {
+		if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
+				Drupal::cache('render')->deleteAll();
+		}
 
-    if ($entity instanceof NodeInterface and $entity->bundle() == 'agent') {
-        if (!$entity->isPublished()) {
-            $agentService = Drupal::service('rir_interface.agent_service');
-            $adverts = $agentService->loadAdverts($entity->id());
-            if (count($adverts) > 0) {
-                foreach ($adverts as $advert) {
-                    $advert->setPublished(FALSE);
-                    $advert->save();
-                }
-            }
-        }
-    }
+		if ($entity instanceof NodeInterface and $entity->bundle() == 'agent') {
+				if (!$entity->isPublished()) {
+						$agentService = Drupal::service('rir_interface.agent_service');
+						$adverts = $agentService->loadAdverts($entity->id());
+						if (count($adverts) > 0) {
+								foreach ($adverts as $advert) {
+										$advert->setPublished(FALSE);
+										$advert->save();
+								}
+						}
+				}
+		}
 }
 
 /**
  * Implements hook_entity_create().
  */
-function rir_interface_entity_create(EntityInterface $entity)
-{
-    if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
-        $entity->set('field_advert_reference', generateRandomStr());
+function rir_interface_entity_create(EntityInterface $entity) {
+		if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
+				$entity->set('field_advert_reference', generateRandomStr());
 
-        $locationObj = new SmartIpLocation();
-        $location = $locationObj->get('city') . ', ' . $locationObj->get('country') . '(' . $locationObj->get('countryCode') . ')';
-        $entity->set('field_advert_creator_location', $location);
-    }
+				$locationObj = new SmartIpLocation();
+				$location = $locationObj->get('city') . ', ' . $locationObj->get('country') . '(' . $locationObj->get('countryCode') . ')';
+				$entity->set('field_advert_creator_location', $location);
+		}
 }
 
-function generateRandomStr()
-{
-    $randomPart = '';
-    srand((double)microtime(TRUE) * 1000000);
-    $chars = [
-        '1',
-        '2',
-        '3',
-        '4',
-        '5',
-        '6',
-        '7',
-        '8',
-        '9',
-        'A',
-        'B',
-        'C',
-        'D',
-        'E',
-        'F',
-        'G',
-        'H',
-        'I',
-        'J',
-        'K',
-        'L',
-        'M',
-        'N',
-        'O',
-        'P',
-        'Q',
-        'R',
-        'S',
-        'T',
-        'U',
-        'V',
-        'W',
-        'X',
-        'Y',
-        'Z',
-    ];
+function generateRandomStr() {
+		$randomPart = '';
+		srand((double) microtime(TRUE) * 1000000);
+		$chars = [
+			'1',
+			'2',
+			'3',
+			'4',
+			'5',
+			'6',
+			'7',
+			'8',
+			'9',
+			'A',
+			'B',
+			'C',
+			'D',
+			'E',
+			'F',
+			'G',
+			'H',
+			'I',
+			'J',
+			'K',
+			'L',
+			'M',
+			'N',
+			'O',
+			'P',
+			'Q',
+			'R',
+			'S',
+			'T',
+			'U',
+			'V',
+			'W',
+			'X',
+			'Y',
+			'Z',
+		];
 
-    for ($rand = 0; $rand <= 9; $rand++) {
-        $random = rand(0, count($chars) - 1);
-        $randomPart .= $chars[$random];
-    }
-    return $randomPart;
+		for ($rand = 0; $rand <= 9; $rand++) {
+				$random = rand(0, count($chars) - 1);
+				$randomPart .= $chars[$random];
+		}
+		return $randomPart;
 }
 
 /**
  * Implements hook_theme().
  */
-function rir_interface_theme($existing, $type, $theme, $path)
-{
+function rir_interface_theme($existing, $type, $theme, $path) {
 
-    return [
-        'rir_copyright' => [
-            'variables' => [
-                'year' => date('Y'),
-                'terms' => t('Terms of use'),
-                'privacy' => t('Privacy policy'),
-                'admin' => t('Site Management'),
-            ],
-        ],
-        'rir_address' => [
-            'variables' => [
-                'title' => t('Get in touch'),
-                'phone' => Drupal::config('system.site')->get('phone'),
-            ],
-        ],
-        'rir_services' => [
-            'variables' => [
-                'title' => t('Our services'),
-            ],
-        ],
-        'rir_realtime' => [
-            'variables' => [
-                'title' => t('Realtime Figures'),
-                'rent' => 0,
-                'sale' => 0,
-                'agents' => 0,
-                'auctions' => 0,
-            ],
-        ],
-        'rir_advert_details' => [
-            'variables' => [
-                'advert' => NULL,
-            ],
-        ],
-        'hir_create_agent' => [
-            'variables' => [],
-        ],
-    ];
+		return [
+			'rir_copyright' => [
+				'variables' => [
+					'year' => date('Y'),
+					'terms' => t('Terms of use'),
+					'privacy' => t('Privacy policy'),
+					'admin' => t('Site Management'),
+				],
+			],
+			'rir_address' => [
+				'variables' => [
+					'title' => t('Get in touch'),
+					'phone' => Drupal::config('system.site')->get('phone'),
+				],
+			],
+			'rir_services' => [
+				'variables' => [
+					'title' => t('Our services'),
+				],
+			],
+			'rir_realtime' => [
+				'variables' => [
+					'title' => t('Realtime Figures'),
+					'rent' => 0,
+					'sale' => 0,
+					'agents' => 0,
+					'auctions' => 0,
+				],
+			],
+			'rir_advert_details' => [
+				'variables' => [
+					'advert' => NULL,
+				],
+			],
+			'hir_create_agent' => [
+				'variables' => [],
+			],
+		];
 }
 
 /**
  * Implements hook_entity_presave().
  */
-function rir_interface_entity_presave(EntityInterface $entity)
-{
-    if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
+function rir_interface_entity_presave(EntityInterface $entity) {
+		if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
 
-        /**
-         * Update address signature
-         */
-        $term = Term::load($entity->get('field_advert_district')->target_id);
-        $district = str_replace(' ', '', strtolower($term->getName()));
-        $sector = str_replace(' ', '', strtolower($entity->get('field_advert_sector')->value));
-        $village = str_replace(' ', '', strtolower($entity->get('field_advert_village')->value));
-        $cell = str_replace(' ', '', strtolower($entity->get('field_advert_cell')->value));
-        $street = str_replace(' ', '', strtolower($entity->get('field_advert_street')->value));
-        if (!empty($district) and !empty($sector) and !empty($village) and !empty($cell) and !empty($street)) {
-            $signature = hash('md5', $district . '_' . $sector . '_' . $village . '_' . $cell . '_' . $street);
-            $entity->set('field_advert_signature', $signature);
-        } else {
-            $entity->set('field_advert_signature', '');
-        }
+				/**
+				 * Update address signature
+				 */
+				$term = Term::load($entity->get('field_advert_district')->target_id);
+				$district = str_replace(' ', '', strtolower($term->getName()));
+				$sector = str_replace(' ', '', strtolower($entity->get('field_advert_sector')->value));
+				$village = str_replace(' ', '', strtolower($entity->get('field_advert_village')->value));
+				$cell = str_replace(' ', '', strtolower($entity->get('field_advert_cell')->value));
+				$street = str_replace(' ', '', strtolower($entity->get('field_advert_street')->value));
+				if (!empty($district) and !empty($sector) and !empty($village) and !empty($cell) and !empty($street)) {
+						$signature = hash('md5', $district . '_' . $sector . '_' . $village . '_' . $cell . '_' . $street);
+						$entity->set('field_advert_signature', $signature);
+				}
+				else {
+						$entity->set('field_advert_signature', '');
+				}
 
-        /**
-         * Update price in RWF
-         */
-        if ($entity->get('field_advert_currency')->value == 'usd') {
-            $response = Unirest\Request::get("https://currency-exchange.p.mashape.com/exchange?from=USD&q=1.0&to=RWF",
-                [
-                    "X-Mashape-Key" => "G9T1txjJzbmshj9pPAEB2d0k79G5p1m3Xjgjsn5PO0gQ09UvDw",
-                    "Accept" => "text/plain",
-                ]
-            )->body;
-            $converted = $entity->get('field_advert_price')->value * $response;
-            $entity->set('field_price_in_rwf', $converted);
-        } else {
-            $entity->set('field_price_in_rwf', $entity->get('field_advert_price')->value);
-        }
+				/**
+				 * Update price in RWF
+				 */
+				if ($entity->get('field_advert_currency')->value == 'usd') {
+						$response = Unirest\Request::get("https://currency-exchange.p.mashape.com/exchange?from=USD&q=1.0&to=RWF",
+							[
+								"X-Mashape-Key" => "G9T1txjJzbmshj9pPAEB2d0k79G5p1m3Xjgjsn5PO0gQ09UvDw",
+								"Accept" => "text/plain",
+							]
+						)->body;
+						$converted = $entity->get('field_advert_price')->value * $response;
+						$entity->set('field_price_in_rwf', $converted);
+				}
+				else {
+						$entity->set('field_price_in_rwf', $entity->get('field_advert_price')->value);
+				}
 
-        /**
-         * Check if agent is published
-         */
-        if (intval($entity->get('field_advert_is_agent')->value) === 1
-            and intval($entity->get('field_advert_advertiser')->entity->get('status')->value) === Node::NOT_PUBLISHED
-            and intval($entity->get('status')->value) === Node::PUBLISHED) {
-            $entity->set('status', Node::NOT_PUBLISHED);
-            drupal_set_message('Publishing failed: The agent of this advert is not published!', 'warning');
-        }
+				/**
+				 * Check if agent is published
+				 */
+				if (intval($entity->get('field_advert_is_agent')->value) === 1
+					and intval($entity->get('field_advert_advertiser')->entity->get('status')->value) === Node::NOT_PUBLISHED
+					and intval($entity->get('status')->value) === Node::PUBLISHED) {
+						$entity->set('status', Node::NOT_PUBLISHED);
+						drupal_set_message('Publishing failed: The agent of this advert is not published!', 'warning');
+				}
 
-        /**
-         * Set visit email if empty
-         */
+				/**
+				 * Set visit email if empty
+				 */
 
-        if (!isset($entity->get('field_visit_email_address1')->value)) {
-            $entity->set('field_visit_email_address1', Drupal::config('system.site')
-                ->get('mail'));
-        }
+				if (!isset($entity->get('field_visit_email_address1')->value)) {
+						$entity->set('field_visit_email_address1', Drupal::config('system.site')
+							->get('mail'));
+				}
 
-        /**
-         * Send notification if published for the first time
-         */
-        if (isset($entity->get('field_advert_is_first_published')->value)
-            and intval($entity->get('field_advert_is_first_published')->value) === Node::NOT_PUBLISHED
-            and intval($entity->get('status')->value) === Node::PUBLISHED) {
+				/**
+				 * Send notification if published for the first time
+				 */
+				if (isset($entity->get('field_advert_is_first_published')->value)
+					and intval($entity->get('field_advert_is_first_published')->value) === Node::NOT_PUBLISHED
+					and intval($entity->get('status')->value) === Node::PUBLISHED) {
 
-            $contact_email = $entity->get('field_advert_contact_email')->value;
-            $visit_email_1 = $entity->get('field_visit_email_address1')->value;
-            $visit_email_2 = $entity->get('field_visit_email_address2')->value;
-            $recipients = $contact_email;
+						$contact_email = $entity->get('field_advert_contact_email')->value;
+						$visit_email_1 = $entity->get('field_visit_email_address1')->value;
+						$visit_email_2 = $entity->get('field_visit_email_address2')->value;
+						$recipients = $contact_email;
 
-            if (isset($visit_email_1) and !empty($visit_email_1)) {
-                $recipients .= ',' . $visit_email_1;
-            }
-            if (isset($visit_email_2) and !empty($visit_email_2)) {
-                $recipients .= ',' . $visit_email_2;
-            }
+						if (isset($visit_email_1) and !empty($visit_email_1)) {
+								$recipients .= ',' . $visit_email_1;
+						}
+						if (isset($visit_email_2) and !empty($visit_email_2)) {
+								$recipients .= ',' . $visit_email_2;
+						}
 
-            $entity->set('field_advert_is_first_published', Node::PUBLISHED);
+						$entity->set('field_advert_is_first_published', Node::PUBLISHED);
 
-            $mailManager = Drupal::service('plugin.manager.mail');
-            $module = 'rir_interface';
-            $key = 'advert_first_published';
-            $to = $recipients;
-            $reply = Drupal::config('system.site')->get('mail');
-            $params['cc'] = Drupal::config('system.site')->get('mail');
-            $params['message'] = Markup::create(getEmailHtmlContent('advert_validated', $entity));
-            $params['advert_title'] = $entity->label();
-            $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
-            $langcode = Drupal::currentUser()->getPreferredLangcode();
-            $send = TRUE;
-            $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
-            if ($result['result'] !== TRUE) {
-                $message = t('There was a problem sending alert email to @email for creating advert id: @id.', [
-                    '@email' => $to,
-                    '@id' => $entity->id(),
-                ]);
-                Drupal::logger('rir_interface')
-                    ->error($message . ' Whole Error: ' . json_encode($result, TRUE));
-                return;
-            }
-            $message = t('An email notification has been sent to @email for creating advert id: @id.', [
-                '@email' => $to,
-                '@id' => $entity->id(),
-            ]);
-            Drupal::logger('rir_interface')->notice($message);
-        }
-    }
+						$mailManager = Drupal::service('plugin.manager.mail');
+						$module = 'rir_interface';
+						$key = 'advert_first_published';
+						$to = $recipients;
+						$reply = Drupal::config('system.site')->get('mail');
+						$params['cc'] = Drupal::config('system.site')->get('mail');
+						$params['message'] = Markup::create(getEmailHtmlContent('advert_validated', $entity));
+						$params['advert_title'] = $entity->label();
+						$params['contact_name'] = $entity->get('field_visit_contact_name')->value;
+						$langcode = Drupal::currentUser()->getPreferredLangcode();
+						$send = TRUE;
+						$result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
+						if ($result['result'] !== TRUE) {
+								$message = t('There was a problem sending alert email to @email for creating advert id: @id.', [
+									'@email' => $to,
+									'@id' => $entity->id(),
+								]);
+								Drupal::logger('rir_interface')
+									->error($message . ' Whole Error: ' . json_encode($result, TRUE));
+								return;
+						}
+						$message = t('An email notification has been sent to @email for creating advert id: @id.', [
+							'@email' => $to,
+							'@id' => $entity->id(),
+						]);
+						Drupal::logger('rir_interface')->notice($message);
+				}
+		}
 }
 
 /**
  * Implements hook_views_query_alter().
  */
-function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $query)
-{
-    if ($view->storage->get('id') === 'adverts') {
-        if (in_array($view->current_display, array('block_advert_carousel', 'block_advert_images_thumbnails'))) {
-            $node = Drupal::routeMatch()->getParameter('node');
-            if (isset($node)) {
-                $advert = Node::load($node->id());
-                if ($advert->get('field_advert_posting_plan')->value === 'standard') {
-                    $query->setLimit(10);
-                }
-            }
-        } elseif ($view->current_display == 'page_manage_adverts') { // Remove this when date granularity is available in views filters
-            foreach ($query->where as &$condition_group) {
-                foreach ($condition_group['conditions'] as &$condition) {
-                    if (strpos($condition['field'], 'node_field_data.created') !== FALSE) {
-                        $created_param = Drupal::request()->query->get('created');
-                        $from = strtotime($created_param . 'T00:00:00');
-                        $to = strtotime($created_param . 'T23:59:59');
-                        if ($from !== FALSE and $to !== FALSE) {
-                            $condition['field'] = 'node_field_data.created';
-                            $condition['value'] = array($from, $to);
-                            $condition['operator'] = 'BETWEEN';
-                        }
-                    } elseif (strpos($condition['field'], 'node__field_advert_expirydate.field_advert_expirydate_value') !== FALSE) {
-                        $expiry_param = Drupal::request()->query->get('field_advert_expirydate_value');
-                        $expiry_date = strtotime($expiry_param);
-                        if ($expiry_date !== FALSE) {
-                            $condition['field'] = "node__field_advert_expirydate.field_advert_expirydate_value";
-                            $condition['value'] = array($expiry_param);
-                            $condition['operator'] = '=';
-                        }
-                    }
-                }
-            }
-        }
-    }
+function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+		if ($view->storage->get('id') === 'adverts') {
+				if (in_array($view->current_display, [
+					'block_advert_carousel',
+					'block_advert_images_thumbnails',
+				])) {
+						$node = Drupal::routeMatch()->getParameter('node');
+						if (isset($node)) {
+								$advert = Node::load($node->id());
+								if ($advert->get('field_advert_posting_plan')->value === 'standard') {
+										$query->setLimit(10);
+								}
+						}
+				}
+				elseif ($view->current_display == 'page_manage_adverts') { // Remove this when date granularity is available in views filters
+						foreach ($query->where as &$condition_group) {
+								foreach ($condition_group['conditions'] as &$condition) {
+										if (strpos($condition['field'], 'node_field_data.created') !== FALSE) {
+												$created_param = Drupal::request()->query->get('created');
+												$from = strtotime($created_param . 'T00:00:00');
+												$to = strtotime($created_param . 'T23:59:59');
+												if ($from !== FALSE and $to !== FALSE) {
+														$condition['field'] = 'node_field_data.created';
+														$condition['value'] = [$from, $to];
+														$condition['operator'] = 'BETWEEN';
+												}
+										}
+										elseif (strpos($condition['field'], 'node__field_advert_expirydate.field_advert_expirydate_value') !== FALSE) {
+												$expiry_param = Drupal::request()->query->get('field_advert_expirydate_value');
+												$expiry_date = strtotime($expiry_param);
+												if ($expiry_date !== FALSE) {
+														$condition['field'] = "node__field_advert_expirydate.field_advert_expirydate_value";
+														$condition['value'] = [$expiry_param];
+														$condition['operator'] = '=';
+												}
+										}
+								}
+						}
+				}
+		}
 }
 
-function getEmailHtmlContent($email_type, $entity)
-{
-    $template_path = '';
-    $variables = [];
-    $twig_service = Drupal::service('twig');
-    switch ($email_type) {
-        case 'advert_validated':
-            $variables = [
-                'advert' => $entity,
-            ];
-            $template_path = '/templates/hir-advert-validated.html.twig';
-            break;
-        case 'advert_received':
-            $variables = [
-                'advert' => $entity,
-                'phone' => Drupal::config('system.site')->get('phone'),
-            ];
-            $template_path = '/templates/hir-advert-received.html.twig';
-            break;
-        case 'agent_received':
-            $variables = [
-                'agent' => $entity,
-            ];
-            $template_path = '/templates/hir-agent-received.html.twig';
-            break;
-    }
-    return $twig_service->loadTemplate(drupal_get_path('module', 'rir_interface') . $template_path)
-        ->render($variables);
+function getEmailHtmlContent($email_type, $entity) {
+		$template_path = '';
+		$variables = [];
+		$twig_service = Drupal::service('twig');
+		switch ($email_type) {
+				case 'advert_validated':
+						$variables = [
+							'advert' => $entity,
+						];
+						$template_path = '/templates/hir-advert-validated.html.twig';
+						break;
+				case 'advert_received':
+						$variables = [
+							'advert' => $entity,
+							'phone' => Drupal::config('system.site')->get('phone'),
+						];
+						$template_path = '/templates/hir-advert-received.html.twig';
+						break;
+				case 'agent_received':
+						$variables = [
+							'agent' => $entity,
+						];
+						$template_path = '/templates/hir-agent-received.html.twig';
+						break;
+		}
+		return $twig_service->loadTemplate(drupal_get_path('module', 'rir_interface') . $template_path)
+			->render($variables);
 }
 
 
 /**
  * Implements hook_mail().
  */
-function rir_interface_mail($key, &$message, $params)
-{
-    $options = [
-        'langcode' => $message['langcode'],
-    ];
+function rir_interface_mail($key, &$message, $params) {
+		$options = [
+			'langcode' => $message['langcode'],
+		];
 
-    switch ($key) {
-        case 'advert_insert_alert':
-            $message['from'] = Drupal::config('system.site')
-                    ->get('name') . ' <' . Drupal::config('system.site')
-                    ->get('mail') . '>';
-            $message['headers']['Cc'] = $params['cc'];
-            $message['subject'] = t('Your advert was posted on @site', [
-                '@site' => Drupal::config('system.site')
-                    ->get('name'),
-            ], $options);
-            $message['body'][] = $params['message'];
-            break;
-        case 'advert_first_published':
-            $message['from'] = Drupal::config('system.site')
-                    ->get('name') . ' <' . Drupal::config('system.site')
-                    ->get('mail') . '>';
-            $message['headers']['Cc'] = $params['cc'];
-            $message['subject'] = t('Your advert at @site has been validated', [
-                '@site' => Drupal::config('system.site')
-                    ->get('name'),
-            ], $options);
-            $message['body'][] = $params['message'];
-            break;
-        case 'agent_insert_alert':
-            $message['from'] = Drupal::config('system.site')
-                    ->get('name') . ' <' . Drupal::config('system.site')
-                    ->get('mail') . '>';
-            $message['headers']['Cc'] = $params['cc'];
-            $message['subject'] = t('Confirmation: Your profile was created on  @site', [
-                '@site' => Drupal::config('system.site')
-                    ->get('name'),
-            ], $options);
-            $message['body'][] = $params['message'];
-            break;
-    }
+		switch ($key) {
+				case 'advert_insert_alert':
+						$message['from'] = Drupal::config('system.site')
+								->get('name') . ' <' . Drupal::config('system.site')
+								->get('mail') . '>';
+						$message['headers']['Cc'] = $params['cc'];
+						$message['subject'] = t('Your advert was posted on @site', [
+							'@site' => Drupal::config('system.site')
+								->get('name'),
+						], $options);
+						$message['body'][] = $params['message'];
+						break;
+				case 'advert_first_published':
+						$message['from'] = Drupal::config('system.site')
+								->get('name') . ' <' . Drupal::config('system.site')
+								->get('mail') . '>';
+						$message['headers']['Cc'] = $params['cc'];
+						$message['subject'] = t('Your advert at @site has been validated', [
+							'@site' => Drupal::config('system.site')
+								->get('name'),
+						], $options);
+						$message['body'][] = $params['message'];
+						break;
+				case 'agent_insert_alert':
+						$message['from'] = Drupal::config('system.site')
+								->get('name') . ' <' . Drupal::config('system.site')
+								->get('mail') . '>';
+						$message['headers']['Cc'] = $params['cc'];
+						$message['subject'] = t('Confirmation: Your profile was created on  @site', [
+							'@site' => Drupal::config('system.site')
+								->get('name'),
+						], $options);
+						$message['body'][] = $params['message'];
+						break;
+				case 'expiring_adverts_alert':
+						$message['from'] = Drupal::config('system.site')
+								->get('name') . ' <' . Drupal::config('system.site')
+								->get('mail') . '>';
+						$message['subject'] = t('Alert: Adverts expiring today', $options);
+						$message['body'][] = $params['message'];
+						break;
+		}
 }
 
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function rir_interface_form_system_site_information_settings_alter(&$form, FormStateInterface $form_state, $form_id)
-{
+function rir_interface_form_system_site_information_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
 
-    $form['site_phone'] = [
-        '#type' => 'tel',
-        '#title' => t('Site phone'),
-        '#default_value' => Drupal::config('system.site')->get('phone'),
-    ];
-    $form['#submit'][] = 'rir_interface_site_information_phone_submit';
+		$form['site_phone'] = [
+			'#type' => 'tel',
+			'#title' => t('Site phone'),
+			'#default_value' => Drupal::config('system.site')->get('phone'),
+		];
+		$form['#submit'][] = 'rir_interface_site_information_phone_submit';
 }
 
 /**
@@ -459,24 +464,22 @@ function rir_interface_form_system_site_information_settings_alter(&$form, FormS
  * @param array $form
  * @param \Drupal\Core\Form\FormStateInterface $formState
  */
-function rir_interface_site_information_phone_submit(array &$form, FormStateInterface $formState)
-{
-    $config = Drupal::configFactory()->getEditable('system.site');
-    $config->set('phone', $formState->getValue('site_phone'))->save();
+function rir_interface_site_information_phone_submit(array &$form, FormStateInterface $formState) {
+		$config = Drupal::configFactory()->getEditable('system.site');
+		$config->set('phone', $formState->getValue('site_phone'))->save();
 }
 
 /**
  * Implements hook_form_alter().
  */
-function rir_interface_form_alter(&$form, FormStateInterface $form_state, $form_id)
-{
-    switch ($form_id) {
-        case 'views_exposed_form':
-            $view = $form_state->get('view');
-            if ($view->storage->id() == 'adverts' and $view->current_display == 'page_manage_adverts') {
-                $form['created'] = ['#type' => 'date'];
-                $form['field_advert_expirydate_value'] = ['#type' => 'date'];
-            }
-            break;
-    }
+function rir_interface_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+		switch ($form_id) {
+				case 'views_exposed_form':
+						$view = $form_state->get('view');
+						if ($view->storage->id() == 'adverts' and $view->current_display == 'page_manage_adverts') {
+								$form['created'] = ['#type' => 'date'];
+								$form['field_advert_expirydate_value'] = ['#type' => 'date'];
+						}
+						break;
+		}
 }
