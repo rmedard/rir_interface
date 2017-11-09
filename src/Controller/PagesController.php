@@ -15,7 +15,7 @@ class PagesController extends ControllerBase {
 
 		public function hirManagementPage(){
 				$element = array(
-					'#markup' => 'Hello HiR...'
+					'#theme' => 'hir_management_page'
 				);
 				return $element;
 		}
