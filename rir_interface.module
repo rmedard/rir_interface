@@ -205,6 +205,9 @@ function rir_interface_theme($existing, $type, $theme, $path) {
 			'hir_create_agent' => [
 				'variables' => [],
 			],
+			'hir_management_page' => [
+				'variables' => [],
+			],
 		];
 }
 
