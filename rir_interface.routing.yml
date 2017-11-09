@@ -4,4 +4,4 @@ rir_interface.manage_page:
     _title: 'HiR Management'
     _controller: '\Drupal\rir_interface\Controller\PagesController::hirManagementPage'
   requirements:
-    _access: 'access content'
+    _permission: 'access content'
