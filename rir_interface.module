@@ -446,7 +446,6 @@ function rir_interface_mail($key, &$message, $params)
             $message['from'] = Drupal::config('system.site')
                     ->get('name') . ' <' . Drupal::config('system.site')
                     ->get('mail') . '>';
-            $message['headers']['Cc'] = $params['cc'];
             $message['subject'] = t('Alert: Adverts expiring today', $options);
             $message['body'][] = $params['message'];
             break;
