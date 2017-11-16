@@ -337,7 +337,7 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
             $node = Drupal::routeMatch()->getParameter('node');
             if (isset($node)) {
 								$query->orderby[1] = array(
-									'field' => 'delta',
+									'field' => 'node__field_advert_picture.delta',
 									'description' => 'ASC'
 								);
                 $advert = Node::load($node->id());
