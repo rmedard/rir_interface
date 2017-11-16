@@ -6,7 +6,16 @@
                 <div class="row">
                     <div class="col-md-6">
                         <strong>Advert type:</strong> {% if advert.field_advert_type.value == 'buy' %} Sale {% else %} {{ advert.field_advert_type.value|capitalize }} {% endif %} <br>
-                        <strong>Price:</strong> {% if advert.field_advert_type.value == 'auction' %} n/a {% else %} {{ advert.field_advert_price.value|number_format }} {{ advert.field_advert_currency.value|upper }}{% endif %}<br>
+                        <strong>Price:</strong>
+                        {% if advert.field_advert_price_negociable.value == '1' %}
+                            Negotiable
+                        {% else %}
+                            {% if advert.field_advert_type.value == 'auction' %}
+                                n/a
+                            {% else %}
+                                {{ advert.field_advert_price.value|number_format }} {{ advert.field_advert_currency.value|upper }}
+                            {% endif %}
+                        {% endif %}<br>
                         <strong>Bedrooms:</strong> {{ advert.field_advert_bedrooms.value }} <br>
                         <strong>Total floors:</strong> {{ advert.field_advert_total_floors.value }} <br>
                         <strong>Address:</strong> {{ advert.field_advert_district.entity.name.value }}, {{ advert.field_advert_sector.value }}, {{ advert.field_advert_village.value }} {{ advert.field_advert_street.value }} <br>
