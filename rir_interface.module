@@ -336,10 +336,12 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
         ])) {
             $node = Drupal::routeMatch()->getParameter('node');
             if (isset($node)) {
+            		// Sort images as the are arranged in the edit page
 								$query->orderby[1] = array(
 									'field' => 'node__field_advert_picture.delta',
 									'description' => 'ASC'
 								);
+								// Limit number of images by posting plan
                 $advert = Node::load($node->id());
                 if ($advert->get('field_advert_posting_plan')->value === 'standard') {
                     $query->setLimit(10);
