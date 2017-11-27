@@ -339,12 +339,12 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
         ])) {
             $node = Drupal::routeMatch()->getParameter('node');
             if (isset($node)) {
-            		// Sort images as the are arranged in the edit page
-								$query->orderby[1] = array(
-									'field' => 'node__field_advert_picture.delta',
-									'description' => 'ASC'
-								);
-								// Limit number of images by posting plan
+                // Sort images as the are arranged in the edit page
+                $query->orderby[1] = array(
+                    'field' => 'node__field_advert_picture.delta',
+                    'description' => 'ASC'
+                );
+                // Limit number of images by posting plan
                 $advert = Node::load($node->id());
                 if ($advert->get('field_advert_posting_plan')->value === 'standard') {
                     $query->setLimit(10);
@@ -420,41 +420,34 @@ function rir_interface_mail($key, &$message, $params)
     switch ($key) {
         case 'advert_insert_alert':
             $message['from'] = Drupal::config('system.site')
-                    ->get('name') . ' <' . Drupal::config('system.site')
-                    ->get('mail') . '>';
+                    ->get('name') . ' <' . Drupal::config('system.site')->get('mail') . '>';
             $message['headers']['Cc'] = $params['cc'];
             $message['subject'] = t('Your advert was posted on @site', [
-                '@site' => Drupal::config('system.site')
-                    ->get('name'),
+                '@site' => Drupal::config('system.site')->get('name'),
             ], $options);
             $message['body'][] = $params['message'];
             break;
         case 'advert_first_published':
             $message['from'] = Drupal::config('system.site')
-                    ->get('name') . ' <' . Drupal::config('system.site')
-                    ->get('mail') . '>';
+                    ->get('name') . ' <' . Drupal::config('system.site')->get('mail') . '>';
             $message['headers']['Cc'] = $params['cc'];
             $message['subject'] = t('Your advert at @site has been validated', [
-                '@site' => Drupal::config('system.site')
-                    ->get('name'),
+                '@site' => Drupal::config('system.site')->get('name'),
             ], $options);
             $message['body'][] = $params['message'];
             break;
         case 'agent_insert_alert':
             $message['from'] = Drupal::config('system.site')
-                    ->get('name') . ' <' . Drupal::config('system.site')
-                    ->get('mail') . '>';
+                    ->get('name') . ' <' . Drupal::config('system.site')->get('mail') . '>';
             $message['headers']['Cc'] = $params['cc'];
             $message['subject'] = t('Confirmation: Your profile was created on  @site', [
-                '@site' => Drupal::config('system.site')
-                    ->get('name'),
+                '@site' => Drupal::config('system.site')->get('name'),
             ], $options);
             $message['body'][] = $params['message'];
             break;
         case 'expiring_adverts_alert':
             $message['from'] = Drupal::config('system.site')
-                    ->get('name') . ' <' . Drupal::config('system.site')
-                    ->get('mail') . '>';
+                    ->get('name') . ' <' . Drupal::config('system.site')->get('mail') . '>';
             $message['subject'] = t('Alert: Adverts expiring today', $options);
             $message['body'][] = $params['message'];
             break;
