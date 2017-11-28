@@ -260,7 +260,7 @@ function rir_interface_entity_presave(EntityInterface $entity)
         /**
          * Check if advert is expired and trying to publish
          */
-        $end_of_yesterday = date('Y-m-d', strtotime('now'));
+        $end_of_yesterday = DateTime::createFromFormat('Y-m-d', date('Y-m-d', strtotime('now')));
         $expiry_date = DateTime::createFromFormat('Y-m-d', $entity->get('field_advert_expirydate')->value);
         kint($end_of_yesterday, $expiry_date);
         die();
