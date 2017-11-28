@@ -260,11 +260,9 @@ function rir_interface_entity_presave(EntityInterface $entity)
         /**
          * Check if advert is expired and trying to publish
          */
-        $end_of_yesterday = DateTime::createFromFormat('Y-m-d', date('Y-m-d', strtotime('now')));
+        $today = DateTime::createFromFormat('Y-m-d', date('Y-m-d', strtotime('now')));
         $expiry_date = DateTime::createFromFormat('Y-m-d', $entity->get('field_advert_expirydate')->value);
-//        kint($end_of_yesterday, $expiry_date);
-//        die();
-        if($expiry_date < $end_of_yesterday and intval($entity->get('status')->value) === Node::PUBLISHED){
+        if($expiry_date < $today and intval($entity->get('status')->value) === Node::PUBLISHED){
             $entity->set('status', Node::NOT_PUBLISHED);
             drupal_set_message('Publishing failed: The advert cannot be published because it is expired!', 'warning');
         }
