@@ -106,16 +106,16 @@ function rir_interface_entity_update(EntityInterface $entity)
 /**
  * Implements hook_entity_create().
  */
-function rir_interface_entity_create(EntityInterface $entity)
-{
-    if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
-        $entity->set('field_advert_reference', generateRandomStr());
-
-        $locationObj = new SmartIpLocation();
-        $location = $locationObj->get('city') . ', ' . $locationObj->get('country') . '(' . $locationObj->get('countryCode') . ')';
-        $entity->set('field_advert_creator_location', $location);
-    }
-}
+//function rir_interface_entity_create(EntityInterface $entity)
+//{
+//    if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
+//        $entity->set('field_advert_reference', generateRandomStr());
+//
+//        $locationObj = new SmartIpLocation();
+//        $location = $locationObj->get('city') . ', ' . $locationObj->get('country') . '(' . $locationObj->get('countryCode') . ')';
+//        $entity->set('field_advert_creator_location', $location);
+//    }
+//}
 
 function generateRandomStr()
 {
@@ -224,6 +224,17 @@ function rir_interface_theme($existing, $type, $theme, $path)
 function rir_interface_entity_presave(EntityInterface $entity)
 {
     if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
+
+				/**
+				 * In case of new entity: Set advert reference and creator location
+				 */
+    		if ($entity->isNew()) {
+						$entity->set('field_advert_reference', generateRandomStr());
+
+						$locationObj = new SmartIpLocation();
+						$location = $locationObj->get('city') . ', ' . $locationObj->get('country') . '(' . $locationObj->get('countryCode') . ')';
+						$entity->set('field_advert_creator_location', $location);
+				}
 
         /**
          * Update address signature
