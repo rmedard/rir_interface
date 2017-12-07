@@ -103,20 +103,6 @@ function rir_interface_entity_update(EntityInterface $entity)
     }
 }
 
-/**
- * Implements hook_entity_create().
- */
-//function rir_interface_entity_create(EntityInterface $entity)
-//{
-//    if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
-//        $entity->set('field_advert_reference', generateRandomStr());
-//
-//        $locationObj = new SmartIpLocation();
-//        $location = $locationObj->get('city') . ', ' . $locationObj->get('country') . '(' . $locationObj->get('countryCode') . ')';
-//        $entity->set('field_advert_creator_location', $location);
-//    }
-//}
-
 function generateRandomStr()
 {
     $randomPart = '';
