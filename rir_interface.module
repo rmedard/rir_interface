@@ -249,7 +249,7 @@ function rir_interface_entity_presave(EntityInterface $entity)
                 Drupal::state()->set('latest_usd_rwf_rate', $response->body->USD_RWF);
                 $converted = $entity->get('field_advert_price')->value * $response->body->USD_RWF;
             } else {
-                Drupal::logger('rir_interface')->error('Currency Converter Error. Response Code: ' . $response->code);
+                Drupal::logger('rir_interface')->error('Currency Converter Error. Response Code: ' . $response->code . ' Advert NID: ' . $entity->id());
             }
             $entity->set('field_price_in_rwf', $converted);
         } else {
