@@ -243,7 +243,7 @@ function rir_interface_entity_presave(EntityInterface $entity)
          */
         Drupal::logger('rir_interface')->debug('Currency: ' . $entity->get('field_advert_currency')->value . ' Price: ' . $entity->get('field_advert_price')->value);
         if ($entity->get('field_advert_currency')->value == 'usd') {
-            $response = Unirest\Request::get("https://free.currencyconverterapi.com/api/v5/convert?q=USD_RWF&compact=ultra")->body;
+            $response = Unirest\Request::get("https://free.currencyconverterapi.com/api/v5/convert?q=USD_RWF&compact=ultra");
             Drupal::logger('rir_interface')->debug('Response: ' . json_decode($response, true));
 //            $converted = $entity->get('field_advert_price')->value * $response;
 //            $entity->set('field_price_in_rwf', $converted);
