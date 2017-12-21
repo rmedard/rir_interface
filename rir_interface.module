@@ -244,12 +244,14 @@ function rir_interface_entity_presave(EntityInterface $entity)
         Drupal::logger('rir_interface')->debug('Currency: ' . $entity->get('field_advert_currency')->value . ' Price: ' . $entity->get('field_advert_price')->value);
         if ($entity->get('field_advert_currency')->value == 'usd') {
             $response = Unirest\Request::get("https://free.currencyconverterapi.com/api/v5/convert?q=USD_RWF&compact=ultra");
+            $converted = $entity->get('field_advert_price')->value * Drupal::state()->get('latest_usd_rwf_rate');
             if ($response->code === 200){
+                Drupal::state()->set('latest_usd_rwf_rate', $response->body->USD_RWF);
                 $converted = $entity->get('field_advert_price')->value * $response->body->USD_RWF;
-                $entity->set('field_price_in_rwf', $converted);
             } else {
                 Drupal::logger('rir_interface')->error('Currency Converter Error. Response Code: ' . $response->code);
             }
+            $entity->set('field_price_in_rwf', $converted);
         } else {
             $entity->set('field_price_in_rwf', $entity->get('field_advert_price')->value);
         }
