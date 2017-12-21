@@ -249,6 +249,7 @@ function rir_interface_entity_presave(EntityInterface $entity)
                     "Accept" => "text/plain",
                 ]
             )->body;
+            Drupal::logger('rir_interface')->debug('Response: ' . $response);
             $converted = $entity->get('field_advert_price')->value * $response;
             $entity->set('field_price_in_rwf', $converted);
         } else {
