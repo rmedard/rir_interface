@@ -261,7 +261,7 @@ function rir_interface_entity_presave(EntityInterface $entity)
         $expiry_date = DateTime::createFromFormat('Y-m-d', $entity->get('field_advert_expirydate')->value);
         if($expiry_date < $today and intval($entity->get('status')->value) === Node::PUBLISHED){
             $entity->set('status', Node::NOT_PUBLISHED);
-            drupal_set_message('Publishing failed: The advert cannot be published because it is expired!', 'warning');
+            Drupal::logger('rir_interface')->warning('Publishing failed: The advert cannot be published because it is expired!');
         }
 
 
