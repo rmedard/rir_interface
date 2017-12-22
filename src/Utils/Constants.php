@@ -11,5 +11,5 @@ namespace Drupal\rir_interface\Utils;
 
 interface Constants
 {
-    const CURRENCY_USD_RWF_RATE = 'latest_usd_rwf_rate';
+    const USD_RWF_EXCHANGE_RATE = 'latest_usd_rwf_rate';
 }
