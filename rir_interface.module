@@ -9,6 +9,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\rir_interface\Utils\Constants;
 use Drupal\smart_ip\SmartIpLocation;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
@@ -243,9 +244,9 @@ function rir_interface_entity_presave(EntityInterface $entity)
          */
         if ($entity->get('field_advert_currency')->value == 'usd') {
             $response = Unirest\Request::get("https://free.currencyconverterapi.com/api/v5/convert?q=USD_RWF&compact=ultra");
-            $converted = $entity->get('field_advert_price')->value * Drupal::state()->get('latest_usd_rwf_rate');
+            $converted = $entity->get('field_advert_price')->value * Drupal::state()->get(Constants::CURRENCY_USD_RWF_RATE);
             if ($response->code === 200){
-                Drupal::state()->set('latest_usd_rwf_rate', $response->body->USD_RWF);
+                Drupal::state()->set(Constants::CURRENCY_USD_RWF_RATE, $response->body->USD_RWF);
                 $converted = $entity->get('field_advert_price')->value * $response->body->USD_RWF;
             } else {
                 Drupal::logger('rir_interface')->error('Currency Converter Error. Response Code: ' . $response->code . ' Advert NID: ' . $entity->id());
