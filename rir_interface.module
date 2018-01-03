@@ -20,6 +20,7 @@ use Drupal\views\ViewExecutable;
  */
 function rir_interface_entity_insert(EntityInterface $entity)
 {
+
     if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
         Drupal::cache('render')->deleteAll();
 
@@ -38,6 +39,11 @@ function rir_interface_entity_insert(EntityInterface $entity)
         $params['message'] = Markup::create(getEmailHtmlContent('advert_received', $entity));
         $params['advert_title'] = $entity->label();
         $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
+
+        $attachments = get_email_attachment_files();
+        $params['attachments'][] = $attachments[0];
+        $params['attachments'][] = $attachments[1];
+
         $langcode = Drupal::currentUser()->getPreferredLangcode();
         $send = TRUE;
         $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
@@ -66,6 +72,7 @@ function rir_interface_entity_insert(EntityInterface $entity)
         $attachments = get_email_attachment_files();
         $params['attachments'][] = $attachments[0];
         $params['attachments'][] = $attachments[1];
+
         $langcode = Drupal::currentUser()->getPreferredLangcode();
         $send = TRUE;
         $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
@@ -320,6 +327,11 @@ function rir_interface_entity_presave(EntityInterface $entity)
             $params['message'] = Markup::create(getEmailHtmlContent('advert_validated', $entity));
             $params['advert_title'] = $entity->label();
             $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
+
+            $attachments = get_email_attachment_files();
+            $params['attachments'][] = $attachments[0];
+            $params['attachments'][] = $attachments[1];
+
             $langcode = Drupal::currentUser()->getPreferredLangcode();
             $send = TRUE;
             $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
@@ -439,6 +451,7 @@ function rir_interface_mail($key, &$message, $params)
             $message['subject'] = t('Your advert was posted on @site', [
                 '@site' => Drupal::config('system.site')->get('name'),
             ], $options);
+            $message['params']['files'] = $params['attachments'];
             $message['body'][] = $params['message'];
             break;
         case 'advert_first_published':
@@ -448,6 +461,7 @@ function rir_interface_mail($key, &$message, $params)
             $message['subject'] = t('Your advert at @site has been validated', [
                 '@site' => Drupal::config('system.site')->get('name'),
             ], $options);
+            $message['params']['files'] = $params['attachments'];
             $message['body'][] = $params['message'];
             break;
         case 'agent_insert_alert':
