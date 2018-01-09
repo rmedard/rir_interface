@@ -29,9 +29,9 @@
                                 <h3>Property advert creation</h3>
 
                                 <p><strong>Dear {{ advert.field_advert_contact_name.value }}!</strong></p>
-
-                                <p>A new property has been created. It is waiting to be validated.</p>
-
+                                <br>
+                                <p>Your property has been created on our website: <a href="{{ drupal_token('site:url') }}">www.houseinrwanda.com</a>. It is waiting to be validated.</p>
+                                <br>
                                 <strong>Property details:</strong>
                                 <ul>
                                     <li><strong>Reference</strong>: {{ advert.field_advert_reference.value }}</li>
@@ -64,18 +64,18 @@
                                     <li><strong>Contact email 1</strong>: {{ advert.field_visit_email_address1.value }}</li>
                                     <li><strong>Contact email 2</strong>: {{ advert.field_visit_email_address2.value }}</li>
                                 </ul>
-
-                                <p>The advert needs validation before it appears online. Please check our Services/Posting options below (more details in the attached documents in English and Kinyarwanda) and make your payment as soon as possible(if applicable).</p>
+                                <br>
+                                <p>The advert needs validation before it appears online. <br>Please check our Services/Posting options below (more details in the attached documents in English and Kinyarwanda) and make your payment as soon as possible(if applicable).</p>
                                 <br>
                                 <strong>Payment options:</strong>
                                 <p>To make your payment, please choose an option:</p>
                                 <ul>
-                                    <li>Mobile Money to this number {{ phone }}</li>
-                                    <li>Cash/cheque to our offices at Kimihurura</li>
-                                    <li>Bank transfer to our bank account number: 211-208517-1-5100-0</li>
-                                    <li>Paypal to info@houseinrwanda.com</li>
+                                    <li><strong>Mobile Money</strong> to this number {{ phone }}</li>
+                                    <li><strong>Cash/cheque</strong> to our offices at Kimihurura</li>
+                                    <li><strong>Bank transfer</strong> to our bank account number: 211-208517-1-5100-0</li>
+                                    <li><strong>Paypal</strong> to info@houseinrwanda.com</li>
                                 </ul>
-
+                                <br>
                                 <strong>Our services/Posting options:</strong>
                                 <ul>
                                     <li><strong>Standard</strong>: It is a self-service and your adverts appear online for on month and only one picture of the property is displayed online.</li>
@@ -84,7 +84,7 @@
                                     <li><strong>Super Featured</strong>: Maximum visibility as your adverts are guaranteed to stay on top of the featured list.</li>
                                 </ul>
 
-                                <br><br>
+                                <br>
                                 <p>Best regards, <br>{{ drupal_token('site:name') }}</p>
                             </div>
                             <!-- // END MODULE: BODY CONTENT -->

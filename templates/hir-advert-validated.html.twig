@@ -29,11 +29,11 @@
                                 <h3>Advert validation confirmation</h3>
 
                                 <p><strong>Dear {{ advert.field_advert_contact_name.value }}!</strong></p>
-
+                                <br>
                                 <p>Your advert reference {{ advert.field_advert_reference.value }} is online: <a
                                             href="{{ drupal_token('site:url') ~ path('entity.node.canonical', {'node':advert.id}) }}">{{ drupal_token('site:url') ~ path('entity.node.canonical', {'node':advert.id}) }}</a></p>
                                 <p>Please check that your advert looks ok and corresponds to the services/posting options you have selected.</p>
-                                <p>For a kind reminder, our services/posting options are listed below. More details can be found on the attached document in English and Kinyarwanda.</p>
+                                <p>For a kind reminder, our services/posting options are listed below. More details can be found on the attached documents in English and Kinyarwanda.</p>
                                 <br>
                                 <strong>Our Services:</strong>
                                 <ul>
@@ -42,7 +42,7 @@
                                     <li><strong>Featured Plus</strong>: We assess your property, we take as many pictures as needed, we post them on our homepage and they stay on top of the featured listing for a maximum visibility.</li>
                                     <li><strong>Super Featured</strong>: Maximum visibility as your adverts are guaranteed to stay on top of the featured list.</li>
                                 </ul>
-
+                                <br>
                                 <p>Best regards, <br>{{ drupal_token('site:name') }}</p>
                             </div>
                             <!-- // END MODULE: BODY CONTENT -->
