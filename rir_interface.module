@@ -5,6 +5,7 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityMalformedException;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\node\Entity\Node;
@@ -304,6 +305,8 @@ function rir_interface_entity_presave(EntityInterface $entity)
             and intval($entity->get('field_advert_is_first_published')->value) === Node::NOT_PUBLISHED
             and intval($entity->get('status')->value) === Node::PUBLISHED) {
 
+						$entity->set('field_advert_is_first_published', Node::PUBLISHED);
+
             $contact_email = $entity->get('field_advert_contact_email')->value;
             $visit_email_1 = $entity->get('field_visit_email_address1')->value;
             $visit_email_2 = $entity->get('field_visit_email_address2')->value;
@@ -315,8 +318,6 @@ function rir_interface_entity_presave(EntityInterface $entity)
             if (isset($visit_email_2) and !empty($visit_email_2)) {
                 $recipients .= ',' . $visit_email_2;
             }
-
-            $entity->set('field_advert_is_first_published', Node::PUBLISHED);
 
             $mailManager = Drupal::service('plugin.manager.mail');
             $module = 'rir_interface';
@@ -410,10 +411,17 @@ function getEmailHtmlContent($email_type, $entity)
     $twig_service = Drupal::service('twig');
     switch ($email_type) {
         case 'advert_validated':
-            $variables = [
-                'advert' => $entity,
-            ];
-            $template_path = '/templates/hir-advert-validated.html.twig';
+        		if ($entity instanceof NodeInterface){
+								try {
+										$variables = [
+											'advert' => $entity,
+											'advert_url' => $entity->toUrl()->setAbsolute()->toString(),
+										];
+										$template_path = '/templates/hir-advert-validated.html.twig';
+								} catch (EntityMalformedException $e) {
+										Drupal::logger('rir_interface')->error('Malformed entity: ' . $e);
+								}
+						}
             break;
         case 'advert_received':
             $variables = [

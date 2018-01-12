@@ -30,8 +30,7 @@
 
                                 <p><strong>Dear {{ advert.field_advert_contact_name.value }}!</strong></p>
                                 <br>
-                                <p>Your advert reference {{ advert.field_advert_reference.value }} is online: <a
-                                            href="{{ drupal_token('site:url') ~ path('entity.node.canonical', {'node':advert.id}) }}">{{ drupal_token('site:url') ~ path('entity.node.canonical', {'node':advert.id}) }}</a></p>
+                                <p>Your advert reference {{ advert.field_advert_reference.value }} is online: <a href="{{ advert_url }}">{{ advert_url }}</a></p>
                                 <p>Please check that your advert looks ok and corresponds to the services/posting options you have selected.</p>
                                 <p>For a kind reminder, our services/posting options are listed below. More details can be found on the attached documents in English and Kinyarwanda.</p>
                                 <br>
