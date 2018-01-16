@@ -415,7 +415,7 @@ function getEmailHtmlContent($email_type, $entity)
 								try {
 										$variables = [
 											'advert' => $entity,
-											'advert_url' => $entity->toUrl()->setAbsolute()->toString(),
+											'advert_url' => Drupal::request()->getSchemeAndHttpHost() . Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $entity->id()),
 										];
 										$template_path = '/templates/hir-advert-validated.html.twig';
 								} catch (EntityMalformedException $e) {
