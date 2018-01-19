@@ -5,7 +5,6 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityMalformedException;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\node\Entity\Node;
@@ -54,13 +53,23 @@ function rir_interface_entity_insert(EntityInterface $entity)
                 '@id' => $entity->id(),
             ]);
             Drupal::logger('rir_interface')->error($message);
-            return;
-        }
-        $message = t('An email notification has been sent to @email for creating advert id: @id.', [
-            '@email' => $to,
-            '@id' => $entity->id(),
-        ]);
-        Drupal::logger('rir_interface')->notice($message);
+        } else {
+						$message = t('An email notification has been sent to @email for creating advert id: @id.', [
+							'@email' => $to,
+							'@id' => $entity->id(),
+						]);
+						Drupal::logger('rir_interface')->notice($message);
+				}
+
+				if ($entity->isPublished()){
+						$notificationsSender = Drupal::queue('notifications_sender');
+						$data = [
+							'notificationType' => Constants::ADVERT_VALIDATED,
+							'entity' => $entity
+						];
+						$notificationsSender->createItem($data);
+				}
+
     } elseif ($entity instanceof NodeInterface and $entity->bundle() == 'agent') {
         $mailManager = Drupal::service('plugin.manager.mail');
         $module = 'rir_interface';
@@ -110,49 +119,12 @@ function rir_interface_entity_update(EntityInterface $entity)
             and intval($is_first_published) === Node::PUBLISHED
             and intval($is_original_first_published) === Node::NOT_PUBLISHED){
 
-            $contact_email = $entity->get('field_advert_contact_email')->value;
-            $visit_email_1 = $entity->get('field_visit_email_address1')->value;
-            $visit_email_2 = $entity->get('field_visit_email_address2')->value;
-            $recipients = $contact_email;
-
-            if (isset($visit_email_1) and !empty($visit_email_1)) {
-                $recipients .= ',' . $visit_email_1;
-            }
-            if (isset($visit_email_2) and !empty($visit_email_2)) {
-                $recipients .= ',' . $visit_email_2;
-            }
-
-            $mailManager = Drupal::service('plugin.manager.mail');
-            $module = 'rir_interface';
-            $key = 'advert_first_published';
-            $to = $recipients;
-            $reply = Drupal::config('system.site')->get('mail');
-            $params['cc'] = Drupal::config('system.site')->get('mail');
-            $params['message'] = Markup::create(getEmailHtmlContent('advert_validated', $entity));
-            $params['advert_title'] = $entity->label();
-            $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
-
-            $attachments = get_email_attachment_files();
-            $params['attachments'][] = $attachments[0];
-            $params['attachments'][] = $attachments[1];
-
-            $langcode = Drupal::currentUser()->getPreferredLangcode();
-            $send = TRUE;
-            $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
-            if (intval($result['result']) !== 1) {
-                $message = t('There was a problem sending alert email to @email for creating advert id: @id.', [
-                    '@email' => $to,
-                    '@id' => $entity->id(),
-                ]);
-                Drupal::logger('rir_interface')
-                    ->error($message . ' Whole Error: ' . json_encode($result, TRUE));
-                return;
-            }
-            $message = t('An email notification has been sent to @email for creating advert id: @id.', [
-                '@email' => $to,
-                '@id' => $entity->id(),
-            ]);
-            Drupal::logger('rir_interface')->notice($message);
+        		$notificationsSender = Drupal::queue('notifications_sender');
+        		$data = [
+        			'notificationType' => Constants::ADVERT_VALIDATED,
+							'entity' => $entity
+						];
+        		$notificationsSender->createItem($data);
         }
     }
 
@@ -355,12 +327,16 @@ function rir_interface_entity_presave(EntityInterface $entity)
         /**
          * Send notification if published for the first time
          */
-        if (isset($entity->get('field_advert_is_first_published')->value)
-            and intval($entity->get('field_advert_is_first_published')->value) === Node::NOT_PUBLISHED
-            and intval($entity->get('status')->value) === Node::PUBLISHED) {
+//        if (isset($entity->get('field_advert_is_first_published')->value)
+//            and intval($entity->get('field_advert_is_first_published')->value) === Node::NOT_PUBLISHED
+//            and intval($entity->get('status')->value) === Node::PUBLISHED) {
+//
+//            $entity->set('field_advert_is_first_published', Node::PUBLISHED);
+//        }
 
-            $entity->set('field_advert_is_first_published', Node::PUBLISHED);
-        }
+        if ($entity->isNew() and $entity->isPublished()){
+						$entity->set('field_advert_is_first_published', Node::PUBLISHED);
+				}
     }
 }
 
@@ -423,8 +399,8 @@ function getEmailHtmlContent($email_type, $entity)
         case 'advert_validated':
             if ($entity instanceof NodeInterface){
                 $variables = [
-                'advert' => $entity,
-                'advert_url' => Drupal::request()->getSchemeAndHttpHost() . Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $entity->id()),
+										'advert' => $entity,
+										'advert_url' => Drupal::request()->getSchemeAndHttpHost() . Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $entity->id()),
                 ];
                 $template_path = '/templates/hir-advert-validated.html.twig';
             }
