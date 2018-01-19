@@ -93,13 +93,13 @@ class NotificationsQueueWorker extends QueueWorkerBase {
 										]);
 										Drupal::logger('rir_interface')
 											->error($message . ' Whole Error: ' . json_encode($result, TRUE));
-										return;
+								} else {
+										$message = t('An email notification has been sent to @email for creating advert id: @id.', [
+											'@email' => $to,
+											'@id' => $entity->id(),
+										]);
+										Drupal::logger('rir_interface')->notice($message);
 								}
-								$message = t('An email notification has been sent to @email for creating advert id: @id.', [
-									'@email' => $to,
-									'@id' => $entity->id(),
-								]);
-								Drupal::logger('rir_interface')->notice($message);
 						} else {
 								Drupal::logger('rir_interface')->error('Advert validated notification: Wrong entity type');
 						}
