@@ -327,16 +327,12 @@ function rir_interface_entity_presave(EntityInterface $entity)
         /**
          * Send notification if published for the first time
          */
-//        if (isset($entity->get('field_advert_is_first_published')->value)
-//            and intval($entity->get('field_advert_is_first_published')->value) === Node::NOT_PUBLISHED
-//            and intval($entity->get('status')->value) === Node::PUBLISHED) {
-//
-//            $entity->set('field_advert_is_first_published', Node::PUBLISHED);
-//        }
+        if (isset($entity->get('field_advert_is_first_published')->value)
+            and intval($entity->get('field_advert_is_first_published')->value) === Node::NOT_PUBLISHED
+            and intval($entity->get('status')->value) === Node::PUBLISHED) {
 
-        if ($entity->isNew() and $entity->isPublished()){
-						$entity->set('field_advert_is_first_published', Node::PUBLISHED);
-				}
+            $entity->set('field_advert_is_first_published', Node::PUBLISHED);
+        }
     }
 }
 
