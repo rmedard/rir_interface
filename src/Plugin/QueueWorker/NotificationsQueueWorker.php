@@ -21,7 +21,7 @@ use Drupal\rir_interface\Utils\Constants;
  * @package Drupal\rir_interface\Plugin\QueueWorker
  * @QueueWorker(
  *  id = "notifications_sender",
- *  title = "Notifications Queue Worker",
+ *  title = @Translation("Notifications Queue Worker"),
  *  cron = {"time" = 60}
  * )
  */

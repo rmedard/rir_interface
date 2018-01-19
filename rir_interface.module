@@ -61,7 +61,7 @@ function rir_interface_entity_insert(EntityInterface $entity)
 						Drupal::logger('rir_interface')->notice($message);
 				}
 
-				if (!$entity->isPublished()){
+				if ($entity->isPublished()){
 						$notificationsSender = Drupal::queue('notifications_sender');
 						$data = [
 							'notificationType' => Constants::ADVERT_VALIDATED,
