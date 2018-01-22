@@ -61,15 +61,6 @@ function rir_interface_entity_insert(EntityInterface $entity)
 						Drupal::logger('rir_interface')->notice($message);
 				}
 
-				if (intval($entity->get('status')->value === Node::PUBLISHED)){
-						$notificationsSender = Drupal::queue('notifications_sender');
-						$data = [
-							'notificationType' => Constants::ADVERT_VALIDATED,
-							'entity' => $entity
-						];
-						$notificationsSender->createItem($data);
-				}
-
     } elseif ($entity instanceof NodeInterface and $entity->bundle() == 'agent') {
         $mailManager = Drupal::service('plugin.manager.mail');
         $module = 'rir_interface';
@@ -119,12 +110,13 @@ function rir_interface_entity_update(EntityInterface $entity)
             and intval($is_first_published) === Node::PUBLISHED
             and intval($is_original_first_published) === Node::NOT_PUBLISHED){
 
-        		$notificationsSender = Drupal::queue('notifications_sender');
+						$emailService = Drupal::service('rir_interface.email_service');
+
         		$data = (object)[
         			'notificationType' => Constants::ADVERT_VALIDATED,
-							'entity' => $entity
+							'entity' => NodeInterface::load($entity->id())
 						];
-        		$notificationsSender->createItem($data);
+        		$emailService->send($data);
         }
     }
 
