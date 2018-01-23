@@ -114,7 +114,7 @@ function rir_interface_entity_update(EntityInterface $entity)
 
         		$data = (object)[
         			'notificationType' => Constants::ADVERT_VALIDATED,
-							'entity' => Node::load($entity->id())
+							'entity' => $entity->original
 						];
         		$emailService->send($data);
         }
