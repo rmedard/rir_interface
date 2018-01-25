@@ -114,7 +114,7 @@ function rir_interface_entity_update(EntityInterface $entity)
 
         		$data = (object)[
         			'notificationType' => Constants::ADVERT_VALIDATED,
-							'entity' => $entity->original
+							'entity' => $entity
 						];
         		$emailService->send($data);
         }
@@ -386,9 +386,11 @@ function getEmailHtmlContent($email_type, $entity)
     switch ($email_type) {
         case 'advert_validated':
             if ($entity instanceof NodeInterface){
+								$langcode = Drupal::currentUser()->getPreferredLangcode();
+								Drupal::logger('rir_interface')->warning('Langcode for email: ' . $langcode);
                 $variables = [
 										'advert' => $entity,
-										'advert_url' => Drupal::request()->getSchemeAndHttpHost() . Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $entity->id()),
+										'advert_url' => Drupal::request()->getSchemeAndHttpHost() . Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $entity->id(), $langcode),
                 ];
                 $template_path = '/templates/hir-advert-validated.html.twig';
             }
