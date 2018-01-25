@@ -387,10 +387,12 @@ function getEmailHtmlContent($email_type, $entity)
         case 'advert_validated':
             if ($entity instanceof NodeInterface){
 								$langcode = Drupal::currentUser()->getPreferredLangcode();
+								$nodePath = Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $entity->id(), $langcode);
 								Drupal::logger('rir_interface')->warning('Langcode for email: ' . $langcode);
+								Drupal::logger('rir_interface')->warning('Node path: ' . $nodePath);
                 $variables = [
 										'advert' => $entity,
-										'advert_url' => Drupal::request()->getSchemeAndHttpHost() . Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $entity->id(), $langcode),
+										'advert_url' => Drupal::request()->getSchemeAndHttpHost() . $nodePath,
                 ];
                 $template_path = '/templates/hir-advert-validated.html.twig';
             }
