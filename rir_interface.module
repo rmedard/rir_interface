@@ -393,7 +393,7 @@ function getEmailHtmlContent($email_type, $entity)
 										$source = '/node/' . $entity->id();
 										$connection = Drupal::database();
 //										$query = $connection->query('SELECT alias FROM url_alias WHERE source = :source AND langcode = :lang', [':source' => $nodePath, ':lang' => $langcode]);
-										$query = $connection->query('SELECT alias FROM url_alias WHERE source = :source AND langcode = :lang', [':source' => $source, ':lang' => $langcode]);
+										$query = $connection->query('SELECT al.alias FROM url_alias al WHERE al.source = :source AND al.langcode = :lang', [':source' => $source, ':lang' => $langcode]);
 										if ($query) {
 												while ($row = $query->fetchAssoc()){
 														$path = $row['alias'];
