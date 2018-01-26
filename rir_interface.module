@@ -391,7 +391,7 @@ function getEmailHtmlContent($email_type, $entity)
 								Drupal::logger('rir_interface')->warning('Langcode : ' . $langcode . '|Node path: ' . $nodePath);
 								if ($nodePath != '/node/' . $entity->id()) {
 										$connection = Drupal::database();
-										$query = $connection->query('SELECT alias FROM url_alias WHERE source = :source AND langcode = :lang', ['source' => $nodePath, 'langcode' => $langcode]);
+										$query = $connection->query('SELECT alias FROM url_alias WHERE source = :source AND langcode = :lang', ['source' => $nodePath, 'lang' => $langcode]);
 										if ($query and $query->rowCount() == 1) {
 												while ($row = $query->fetchAssoc()){
 														$path = $row['alias'];
