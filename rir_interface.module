@@ -394,14 +394,12 @@ function getEmailHtmlContent($email_type, $entity)
 										$connection = Drupal::database();
 //										$query = $connection->query('SELECT alias FROM url_alias WHERE source = :source AND langcode = :lang', [':source' => $nodePath, ':lang' => $langcode]);
 										$query = $connection->query('SELECT alias FROM url_alias WHERE source = :source AND langcode = :lang', [':source' => $source, ':lang' => $langcode]);
-										$result = $query->fetchAll();
-										Drupal::logger('rir_interface')->debug('Count: ' . count($result) . '|Source: ' . $source . '|Lan: ' . $langcode);
-//										if ($query) {
-//												while ($row = $query->fetchAssoc()){
-//														$path = $row['alias'];
-//														Drupal::logger('rir_interface')->debug('Selected path: ' . $path);
-//												}
-//										}
+										if ($query) {
+												while ($row = $query->fetchAssoc()){
+														$path = $row['alias'];
+														Drupal::logger('rir_interface')->debug('Selected path: ' . $path);
+												}
+										}
 								}
                 $variables = [
 										'advert' => $entity,
