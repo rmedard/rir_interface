@@ -8,15 +8,13 @@
 
 namespace Drupal\rir_interface\Form;
 
-use function count;
 use Drupal;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
+use function count;
 use function drupal_set_message;
-use function intval;
-use function json_encode;
 
 class DirectAccessForm extends FormBase
 {
@@ -47,7 +45,6 @@ class DirectAccessForm extends FormBase
     {
         $form['reference_number'] = array(
             '#type' => 'textfield',
-//      '#title' => $this->t('Reference'),
             '#attributes' => array(
                 'placeholder' => $this->t('Reference number'),
                 'size' => 30,
