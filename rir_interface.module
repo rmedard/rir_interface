@@ -110,13 +110,12 @@ function rir_interface_entity_update(EntityInterface $entity)
             and intval($is_first_published) === Node::PUBLISHED
             and intval($is_original_first_published) === Node::NOT_PUBLISHED){
 
-						$emailService = Drupal::service('rir_interface.email_service');
-
-        		$data = (object)[
-        			'notificationType' => Constants::ADVERT_VALIDATED,
-							'entity' => $entity
-						];
-        		$emailService->send($data);
+            $emailService = Drupal::service('rir_interface.email_service');
+            $data = (object)[
+                'notificationType' => Constants::ADVERT_VALIDATED,
+                'entity' => $entity
+            ];
+            $emailService->send($data);
         }
     }
 
@@ -296,7 +295,6 @@ function rir_interface_entity_presave(EntityInterface $entity)
             Drupal::logger('rir_interface')->warning('Publishing failed: The advert cannot be published because it is expired!');
         }
 
-
         /**
          * Check if agent is published
          */
@@ -386,21 +384,21 @@ function getEmailHtmlContent($email_type, $entity)
     switch ($email_type) {
         case 'advert_validated':
             if ($entity instanceof NodeInterface){
-								$langcode = Drupal::languageManager()->getDefaultLanguage()->getId();
-								$nodePath = Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $entity->id(), $langcode);
-								Drupal::logger('rir_interface')->warning('Langcode : ' . $langcode . '|Node path: ' . $nodePath);
-								if ($nodePath == '/node/' . $entity->id()) {
-										$connection = Drupal::database();
-										$query = $connection->query('SELECT al.alias FROM url_alias al WHERE al.source = :source AND al.langcode = :lang', [':source' => $nodePath, ':lang' => $langcode]);
-										if ($query) {
-												while ($row = $query->fetchAssoc()){
-														$nodePath = $row['alias'];
-												}
-										}
-								}
+                $langcode = Drupal::languageManager()->getDefaultLanguage()->getId();
+                $nodePath = Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $entity->id(), $langcode);
+                Drupal::logger('rir_interface')->warning('Langcode : ' . $langcode . '|Node path: ' . $nodePath);
+                if ($nodePath == '/node/' . $entity->id()) {
+                    $connection = Drupal::database();
+                    $query = $connection->query('SELECT al.alias FROM url_alias al WHERE al.source = :source AND al.langcode = :lang', [':source' => $nodePath, ':lang' => $langcode]);
+                    if ($query) {
+                        while ($row = $query->fetchAssoc()){
+                            $nodePath = $row['alias'];
+                        }
+                    }
+                }
                 $variables = [
-										'advert' => $entity,
-										'advert_url' => Drupal::request()->getSchemeAndHttpHost() . $nodePath,
+                    'advert' => $entity,
+                    'advert_url' => Drupal::request()->getSchemeAndHttpHost() . $nodePath,
                 ];
                 $template_path = '/templates/hir-advert-validated.html.twig';
             }

@@ -11,13 +11,13 @@ namespace Drupal\rir_interface\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 
-class PagesController extends ControllerBase {
-
-		public function hirManagementPage(){
-				$element = array(
-					'#theme' => 'hir_management_page'
-				);
-				return $element;
-		}
-
+class PagesController extends ControllerBase
+{
+    public function hirManagementPage()
+    {
+        $element = array(
+            '#theme' => 'hir_management_page'
+        );
+        return $element;
+    }
 }
