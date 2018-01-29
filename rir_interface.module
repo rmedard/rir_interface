@@ -392,9 +392,12 @@ function getEmailHtmlContent($email_type, $entity)
                     $connection = Drupal::database();
                     $query = $connection->query('SELECT al.alias FROM url_alias al WHERE al.source = :source AND al.langcode = :lang', [':source' => $nodePath, ':lang' => $langcode]);
                     if ($query) {
+                        Drupal::logger('rir_interface')->debug('Query not empty');
                         while ($row = $query->fetchAssoc()){
                             $nodePath = $row['alias'];
                         }
+                    } else {
+                        Drupal::logger('rir_interface')->debug('Query empty');
                     }
                 } else {
                     Drupal::logger('rir_interface')->debug('No equality: ' . '/node/' . $entity->id());
