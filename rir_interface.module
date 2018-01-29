@@ -395,10 +395,12 @@ function getEmailHtmlContent($email_type, $entity)
 //                            Drupal::logger('rir_interface')->debug('Query not empty: ' . $result['alias']);
 //                        }
                         Drupal::logger('rir_interface')->debug('Query not empty: ' . $query->getQueryString());
-                        while ($row = $query->fetchAssoc()){
-                            $nodePath = $row['alias'];
-                            Drupal::logger('rir_interface')->debug('Query not empty: ' . $row['alias']);
-                        }
+                        $row = $query->fetchAssoc();
+                        Drupal::logger('rir_interface')->debug('Result: ' . json_decode($row, TRUE));
+//                        while ($row = $query->fetchAssoc()){
+//                            $nodePath = $row['alias'];
+//                            Drupal::logger('rir_interface')->debug('Query not empty: ' . $row['alias']);
+//                        }
                     } else {
                         Drupal::logger('rir_interface')->debug('Query empty');
                     }
