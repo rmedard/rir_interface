@@ -385,21 +385,28 @@ function getEmailHtmlContent($email_type, $entity)
                 $langcode = Drupal::languageManager()->getDefaultLanguage()->getId();
                 $nodePath = Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $entity->id(), $langcode);
                 Drupal::logger('rir_interface')->warning('Langcode : ' . $langcode . '|Node path: ' . $nodePath);
+
                 if ($nodePath != '/node/' . $entity->id()) {
                     $connection = Drupal::database();
-                    $query = "SELECT alias FROM url_alias WHERE source = :source AND langcode = :lang";
-                    $result = $connection->query($query, [':source' => $nodePath, ':lang' => $langcode]);
+                    $query = $connection->select('url_alias', 'al')->fields('al', array('alias'))->condition('al.source', '/node/' . $entity->id(), '=');
+                    $result = $query->execute();
+
+//                    $query = "SELECT alias FROM url_alias WHERE source = :source AND langcode = :lang";
+//                    $result = $connection->query($query, [':source' => $nodePath, ':lang' => $langcode]);
                     if ($result) {
 //                        $results = $query->fetchAllAssoc('alias', PDO::FETCH_ASSOC);
 //                        foreach ($results as $result){
 //                            $nodePath = $result['alias'];
 //                            Drupal::logger('rir_interface')->debug('Query not empty: ' . $result['alias']);
 //                        }
-                        Drupal::logger('rir_interface')->debug('Query not empty: ' . $result->getQueryString());
+                        while ($row = $result->fetchAssoc()){
+                            Drupal::logger('rir_interface')->debug('Query not empty: ' . $result['alias']);
+                        }
+
 //                        $query->execute();
 //                        $result->setFetchMode(PDO::FETCH_ASSOC);
 //                        $row = $result->fetchObject();
-                        Drupal::logger('rir_interface')->debug('Result: ' . json_decode($result, TRUE));
+//                        Drupal::logger('rir_interface')->debug('Result: ' . json_decode($result, TRUE));
 //                        while ($row = $query->fetchAssoc()){
 //                            $nodePath = $row['alias'];
 //                            Drupal::logger('rir_interface')->debug('Query not empty: ' . $row['alias']);
