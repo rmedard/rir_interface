@@ -391,7 +391,7 @@ function getEmailHtmlContent($email_type, $entity)
                     $connection = Drupal::database();
                     $query = $connection->query('SELECT al.alias FROM url_alias al WHERE al.source = :source AND al.langcode = :lang', [':source' => $nodePath, ':lang' => $langcode]);
                     if ($query) {
-                        Drupal::logger('rir_interface')->debug('Query not empty');
+                        Drupal::logger('rir_interface')->debug('Query not empty: ' . $query->getQueryString());
                         while ($row = $query->fetchAssoc()){
                             Drupal::logger('rir_interface')->debug('Query not empty: ' . $row['alias']);
                             $nodePath = $row['alias'];
