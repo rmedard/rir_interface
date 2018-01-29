@@ -22,7 +22,6 @@ class EmailService
      */
     public function send($data)
     {
-
         if ($data->notificationType === Constants::ADVERT_VALIDATED) {
             $entity = $data->entity;
             if ($entity instanceof NodeInterface) {
@@ -56,15 +55,13 @@ class EmailService
                 $send = TRUE;
                 $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
                 if (intval($result['result']) !== 1) {
-                    $message = t('There was a problem sending alert email to @email for creating advert id: @id.', [
-                        '@email' => $to,
+                    $message = t('There was a problem sending notification email after creating advert id: @id.', [
                         '@id' => $entity->id(),
                     ]);
                     Drupal::logger('rir_interface')
                         ->error($message . ' Whole Error: ' . json_encode($result, TRUE));
                 } else {
-                    $message = t('An email notification has been sent to @email for creating advert id: @id.', [
-                        '@email' => $to,
+                    $message = t('An email notification has been sent after creating advert id: @id.', [
                         '@id' => $entity->id(),
                     ]);
                     Drupal::logger('rir_interface')->notice($message);
