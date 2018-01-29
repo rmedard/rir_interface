@@ -51,10 +51,10 @@ class EmailService
                 $params['attachments'][] = $attachments[0];
                 $params['attachments'][] = $attachments[1];
 
-                $langcode = Drupal::currentUser()->getPreferredLangcode();
+                $langcode = Drupal::languageManager()->getDefaultLanguage()->getId();
                 $send = TRUE;
                 $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
-                if (intval($result['result']) !== 1) {
+                if (intval($result['result']) != 1) {
                     $message = t('There was a problem sending notification email after creating advert id: @id.', [
                         '@id' => $entity->id(),
                     ]);
