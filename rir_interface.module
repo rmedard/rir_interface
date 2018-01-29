@@ -390,15 +390,15 @@ function getEmailHtmlContent($email_type, $entity)
                     $connection = Drupal::database();
                     $query = $connection->query('SELECT al.alias FROM url_alias al WHERE al.source = :source AND al.langcode = :lang', [':source' => $nodePath, ':lang' => $langcode]);
                     if ($query) {
-                        $results = $query->fetchAllAssoc('alias', PDO::FETCH_ASSOC);
-                        foreach ($results as $result){
-                            $nodePath = $result['alias'];
-                            Drupal::logger('rir_interface')->debug('Query not empty: ' . $result['alias']);
-                        }
-//                        while ($row = $query->fetchAssoc()){
-//                            $nodePath = $row['alias'];
-//                            Drupal::logger('rir_interface')->debug('Query not empty: ' . $row['alias']);
+//                        $results = $query->fetchAllAssoc('alias', PDO::FETCH_ASSOC);
+//                        foreach ($results as $result){
+//                            $nodePath = $result['alias'];
+//                            Drupal::logger('rir_interface')->debug('Query not empty: ' . $result['alias']);
 //                        }
+                        while ($row = $query->fetchAssoc()){
+                            $nodePath = $row['alias'];
+                            Drupal::logger('rir_interface')->debug('Query not empty: ' . $row['alias']);
+                        }
                     } else {
                         Drupal::logger('rir_interface')->debug('Query empty');
                     }
