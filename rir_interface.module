@@ -397,9 +397,9 @@ function getEmailHtmlContent($email_type, $entity)
 //                        }
                         Drupal::logger('rir_interface')->debug('Query not empty: ' . $result->getQueryString());
 //                        $query->execute();
-                        $result->setFetchMode(PDO::FETCH_ASSOC);
-                        $row = $result->fetchObject();
-                        Drupal::logger('rir_interface')->debug('Result: ' . json_decode($row, TRUE));
+//                        $result->setFetchMode(PDO::FETCH_ASSOC);
+//                        $row = $result->fetchObject();
+                        Drupal::logger('rir_interface')->debug('Result: ' . json_decode($result, TRUE));
 //                        while ($row = $query->fetchAssoc()){
 //                            $nodePath = $row['alias'];
 //                            Drupal::logger('rir_interface')->debug('Query not empty: ' . $row['alias']);
