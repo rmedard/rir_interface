@@ -397,7 +397,7 @@ function getEmailHtmlContent($email_type, $entity)
                         Drupal::logger('rir_interface')->debug('Query not empty: ' . $query->getQueryString());
 //                        $query->execute();
 
-                        $row = $query->fetchAll(PDO::FETCH_ASSOC);
+                        $row = $query->fetchObject();
                         Drupal::logger('rir_interface')->debug('Result: ' . json_decode($row, TRUE));
 //                        while ($row = $query->fetchAssoc()){
 //                            $nodePath = $row['alias'];
