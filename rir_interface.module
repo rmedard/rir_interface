@@ -388,11 +388,11 @@ function getEmailHtmlContent($email_type, $entity)
                 $langcode = Drupal::languageManager()->getDefaultLanguage()->getId();
                 $nodePath = Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $entity->id(), $langcode);
                 Drupal::logger('rir_interface')->warning('Langcode : ' . $langcode . '|Node path: ' . $nodePath);
-                if ($nodePath == '/node/' . $entity->id()) {
+                if ($nodePath != '/node/' . $entity->id()) {
                     $connection = Drupal::database();
                     $result = $connection->select('url_alias', 'al')
                         ->fields('al', ['alias'])
-                        ->condition('source', $nodePath)
+                        ->condition('source', '/node/' . $entity->id())
                         ->execute();
                     if ($result and $result instanceof StatementInterface) {
                         Drupal::logger('rir_interface')->debug('Query string: ' . $result->getQueryString());
