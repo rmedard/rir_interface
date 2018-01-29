@@ -387,9 +387,9 @@ function getEmailHtmlContent($email_type, $entity)
                 $langcode = Drupal::languageManager()->getDefaultLanguage()->getId();
                 $nodePath = Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $entity->id(), $langcode);
                 Drupal::logger('rir_interface')->warning('Langcode : ' . $langcode . '|Node path: ' . $nodePath);
-                if ($nodePath != '/node/' . $entity->id()) {
+                if ($nodePath == '/node/' . $entity->id()) {
                     $connection = Drupal::database();
-                    $query = $connection->query('SELECT al.alias FROM url_alias al WHERE al.source = :source AND al.langcode = :lang', [':source' => '/node/' . $entity->id(), ':lang' => $langcode]);
+                    $query = $connection->query('SELECT al.alias FROM url_alias al WHERE al.source = :source AND al.langcode = :lang', [':source' => $nodePath, ':lang' => $langcode]);
                     if ($query) {
                         Drupal::logger('rir_interface')->debug('Query not empty');
                         while ($row = $query->fetchAssoc()){
