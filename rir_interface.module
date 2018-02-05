@@ -392,7 +392,7 @@ function getEmailHtmlContent($email_type, $entity)
                     $connection = Drupal::database();
                     $result = $connection->select('url_alias', 'al')
                         ->fields('al', ['alias'])
-                        ->condition('source', $nodePath)
+                        ->condition('source', '/node/' . $entity->id())
                         ->execute();
                     if ($result and $result instanceof StatementInterface) {
                         Drupal::logger('rir_interface')->debug('Query string: ' . $result->getQueryString());
