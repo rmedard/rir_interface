@@ -542,8 +542,8 @@
 
                                 <p><strong>Dear {{ contact_name }}!</strong></p>
 
-                                <span>{{ message }}</span>
-
+                                <p>{{ message }}</p>
+                                <br>
                                 <strong>My details:</strong>
                                 <ul>
                                     <li><strong>My names</strong>: {{ names }}</li>
@@ -555,7 +555,7 @@
                                     <li><strong>Reference</strong>: <a href="{{ drupal_token('site:url') ~ path('entity.node.canonical', {'node':advert.id}) }}" target="_blank">{{ advert.field_advert_reference.value }}</a></li>
                                     <li><strong>Title</strong>: {{ advert.title.value }}</li>
                                 </ul>
-                                <br><br>
+                                <br>
                                 <p>Best regards, <br>{{ names }}</p>
                             </div>
                             <!-- // END MODULE: BODY CONTENT -->
