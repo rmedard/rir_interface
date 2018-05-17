@@ -522,13 +522,13 @@ function rir_interface_form_alter(&$form, FormStateInterface $form_state, $form_
 
 function get_email_attachment_files(){
     $file1 = new stdClass();
-    $file1->uri = 'sites/default/files/email_attachments/packages_EN_RW.pdf';
-    $file1->filename = 'packages.pdf';
+    $file1->uri = 'sites/default/files/email_attachments/HiR_Services.pdf';
+    $file1->filename = 'HiR_Services.pdf';
     $file1->filemime = 'application/pdf';
 
     $file2 = new stdClass();
-    $file2->uri = 'sites/default/files/email_attachments/services_EN_RW.pdf';
-    $file2->filename = 'services.pdf';
+    $file2->uri = 'sites/default/files/email_attachments/HiR_Profile.pdf';
+    $file2->filename = 'HiR_Profile.pdf';
     $file2->filemime = 'application/pdf';
 
     return array($file1, $file2);
