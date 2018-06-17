@@ -232,6 +232,11 @@ function rir_interface_theme($existing, $type, $theme, $path)
         'hir_like_buttons' => [
             'variables' => [],
         ],
+        'hir_similar_adverts' => [
+            'variables' => [
+                'title' => t('Similar adverts')
+            ],
+        ],
     ];
 }
 

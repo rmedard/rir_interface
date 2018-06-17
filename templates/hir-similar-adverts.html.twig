@@ -1,0 +1,8 @@
+<div class="panel panel-primary advert-summary-block">
+    <div class="panel-heading">{{ title }}</div>
+    <ul class="list-group">
+        {% for advert in adverts %}
+            <li class="list-group-item">{{ advert.field_advert_reference.value }}</li>
+        {% endfor %}
+    </ul>
+</div>
