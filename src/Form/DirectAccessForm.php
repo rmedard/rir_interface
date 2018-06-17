@@ -14,7 +14,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 use function count;
-use function drupal_set_message;
 
 class DirectAccessForm extends FormBase
 {
@@ -89,11 +88,11 @@ class DirectAccessForm extends FormBase
                 }
             } else {
                 // Should not happen
-                drupal_set_message($this->t("Oops, more than one advert have reference number: @reference . Please report this issue to the admin.",
-                    array('@reference' => $reference)), 'error');
+                Drupal::logger('rir_interface')
+                    ->error($this->t("Oops, more than one advert have reference number: @reference . Please report this issue to the admin.", array('@reference' => $reference)));
             }
         } else {
-            drupal_set_message($this->t("Sorry, no advert found with reference number: @reference", array('@reference' => $reference)), 'error');
+            Drupal::logger('rir_interface')->error($this->t("Sorry, no advert found with reference number: @reference", array('@reference' => $reference)));
         }
     }
 }
