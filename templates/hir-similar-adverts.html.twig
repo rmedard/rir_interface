@@ -21,7 +21,8 @@
                             <span class="glyphicon glyphicon-map-marker"
                                   aria-hidden="true"></span> {{ advert.field_advert_district.entity.name.value }}, {{ advert.field_advert_sector.value }}
                         </small>
-                        {% set property_type = advert.field_advert_property_type.value %}
+                        <small>
+                            {% set property_type = advert.field_advert_property_type.value %}
                             {% if property_type == 'house' %}
                                 <span class="label label-primary">{{ property_type }}</span>
                             {% elseif property_type == 'apartment' %}
@@ -37,7 +38,7 @@
                             {% elseif property_type == 'land' %}
                                 <span class="label label-yellow">{{ property_type }}</span>
                             {% endif %}
-                        {#{% endset %}#}
+                        </small>
                     </div>
                 </div>
             </li>
