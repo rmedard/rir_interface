@@ -44,9 +44,9 @@ class AgentService {
             $advert_ids = $query->execute();
             $data = $storage->loadMultiple($advert_ids);
         } catch (InvalidPluginDefinitionException $e) {
-            Drupal::logger('rir_interface')->error("Load adverts failed: " . $e);
+            Drupal::logger('rir_interface')->error("Load adverts failed: " . $e->getMessage());
         } catch (PluginNotFoundException $e) {
-            Drupal::logger('rir_interface')->error("Load adverts failed: " . $e);
+            Drupal::logger('rir_interface')->error("Load adverts failed: " . $e->getMessage());
         }
         return $data;
     }
