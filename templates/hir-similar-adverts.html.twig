@@ -21,6 +21,21 @@
                             <span class="glyphicon glyphicon-map-marker"
                                   aria-hidden="true"></span> {{ advert.field_advert_district.entity.name.value }}, {{ advert.field_advert_sector.value }}
                         </small>
+                        {% if advert.field_advert_property_type.value == 'house' %}
+                            <span class="label label-primary">{{ field_advert_property_type }}</span>
+                        {% elseif advert.field_advert_property_type.value == 'apartment' %}
+                            <span class="label label-danger">{{ field_advert_property_type }}</span>
+                        {% elseif advert.field_advert_property_type.value == 'room' or advert.field_advert_property_type.value == 'shared_room' %}
+                            <span class="label label-warning">{{ field_advert_property_type }}</span>
+                        {% elseif advert.field_advert_property_type.value == 'building' %}
+                            <span class="label label-success">{{ field_advert_property_type }}</span>
+                        {% elseif advert.field_advert_property_type.value == 'commerce' %}
+                            <span class="label label-default">{{ field_advert_property_type }}</span>
+                        {% elseif advert.field_advert_property_type.value == 'office' %}
+                            <span class="label label-violet">{{ field_advert_property_type }}</span>
+                        {% elseif advert.field_advert_property_type.value == 'land' %}
+                            <span class="label label-yellow">{{ field_advert_property_type }}</span>
+                        {% endif %}
                     </div>
                 </div>
             </li>
