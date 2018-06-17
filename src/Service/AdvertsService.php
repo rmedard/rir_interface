@@ -30,17 +30,25 @@ class AdvertsService
         $this->entityTypeManager = $entityTypeManager;
     }
 
-    public function loadSimilarAdverts(NodeInterface $advert_node) {
+    public function loadSimilarAdverts(NodeInterface $advert_node)
+    {
         $adverts = array();
         try {
             $storage = $this->entityTypeManager->getStorage('node');
 
-//                ->condition('field_advert_district.target_id', $advert_node->get('field_advert_district.target_id'))
-            $query = $storage->getQuery()
+            $query = $storage->getQuery()->range(0, 5)
                 ->condition('type', 'advert')
                 ->condition('status', Node::PUBLISHED)
-                ->condition('nid', $advert_node->id(), '<>');
-//                ->condition('field_advert_type', $advert_node->get('field_advert_type')->value);
+                ->condition('nid', $advert_node->id(), '<>')
+                ->condition('field_advert_type', $advert_node->get('field_advert_type')->value);
+
+            if ($advert_node->get('field_advert_type')->value != 'auction' and
+                $advert_node->get('field_advert_price_negociable')->value == '0') {
+                $price = intval($advert_node->get('field_advert_price')->value);
+                $query = $query->condition('field_advert_price', $price - ($price * 0.1), '>');
+                $query = $query->condition('field_advert_price', $price + ($price * 0.1), '<');
+            }
+
             $advertsIds = $query->execute();
             Drupal::logger('rir_interface')->debug('Ids: ' . implode('|', $advertsIds) . ' Current ID: ' . $advert_node->id());
             $adverts = $storage->loadMultiple($advertsIds);

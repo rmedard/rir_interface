@@ -48,7 +48,6 @@
                                 {% if advert.field_advert_price_negociable.value == '1' %}
                                     Negotiable
                                 {% else %}
-
                                     {{ advert.field_advert_price.value }} {{ advert.field_advert_currency.value|upper }}
                                     <small>
                                         {% set payment = advert.field_advert_payment.value %}
