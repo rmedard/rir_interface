@@ -50,7 +50,6 @@ class AdvertsService
                 $query = $query->condition('field_advert_price', $price + ($price * 0.1), '<');
             }
             $advertsIds = $query->execute();
-            Drupal::logger('rir_interface')->debug('Ids: ' . implode('|', $advertsIds) . ' Current ID: ' . $advert_node->id());
             $adverts = $storage->loadMultiple($advertsIds);
         } catch (InvalidPluginDefinitionException $e) {
             Drupal::logger('rir_interface')->error('Invalid plugin: ' . $e->getMessage());
