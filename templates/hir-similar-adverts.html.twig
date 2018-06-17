@@ -17,8 +17,10 @@
                             </a>
                             <small><i>Ref: {{ advert.field_advert_reference.value }}</i></small>
                         </h5>
-                        <span class="glyphicon glyphicon-map-marker"
-                              aria-hidden="true"></span> {{ advert.field_advert_district.entity.name.value }}, {{ advert.field_advert_sector.value }}
+                        <small>
+                            <span class="glyphicon glyphicon-map-marker"
+                                  aria-hidden="true"></span> {{ advert.field_advert_district.entity.name.value }}, {{ advert.field_advert_sector.value }}
+                        </small>
                     </div>
                 </div>
             </li>
