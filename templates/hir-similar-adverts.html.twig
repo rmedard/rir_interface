@@ -10,7 +10,7 @@
                         </a>
                     </div>
                     <div class="media-body">
-                        <h4 class="media-heading">Jhon Carter <small><i>{{ advert.field_advert_reference.value }}</i></small></h4>
+                        <h4 class="media-heading">{{ advert.title.value|striptags|truncate(20, true)|raw }} <small><i>Ref: {{ advert.field_advert_reference.value }}</i></small></h4>
                         <p>Excellent feature! I love it. One day I'm definitely going to put this Bootstrap component into use and I'll let you know once I do.</p>
                     </div>
                 </div>
