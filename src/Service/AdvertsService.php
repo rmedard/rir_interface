@@ -42,7 +42,7 @@ class AdvertsService
 //                ->condition('nid', $advert_node->id(), '<>');
 //                ->condition('field_advert_type', $advert_node->get('field_advert_type')->value);
             $advertsIds = $query->execute();
-            Drupal::logger('rir_interface')->debug('Ids: ' . $advertsIds . ' Current ID: ' . $advert_node->id());
+            Drupal::logger('rir_interface')->debug('Ids: ' . implode('|', $advertsIds) . ' Current ID: ' . $advert_node->id());
             $adverts = $storage->loadMultiple($advertsIds);
         } catch (InvalidPluginDefinitionException $e) {
             Drupal::logger('rir_interface')->error('Invalid plugin: ' . $e->getMessage());
