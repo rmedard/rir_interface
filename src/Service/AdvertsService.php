@@ -38,8 +38,8 @@ class AdvertsService
 //                ->condition('field_advert_district.target_id', $advert_node->get('field_advert_district.target_id'))
             $query = $storage->getQuery()
                 ->condition('type', 'advert')
-                ->condition('status', Node::PUBLISHED)
-                ->condition('nid', $advert_node->id(), '<>');
+                ->condition('status', Node::PUBLISHED);
+//                ->condition('nid', $advert_node->id(), '<>');
 //                ->condition('field_advert_type', $advert_node->get('field_advert_type')->value);
             $advertsIds = $query->execute();
             $adverts = $storage->loadMultiple($advertsIds);
