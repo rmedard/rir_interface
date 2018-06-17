@@ -3,7 +3,17 @@
     <ul class="list-group">
         {% for advert in adverts %}
             <li class="list-group-item">
-                <img src="{{ advert.field_advert_picture[0].entity.uri.value|image_style('smallest_50x50') }}" class="img-rounded img-responsive"/> {{ advert.field_advert_reference.value }}
+                <div class="media">
+                    <div class="media-left">
+                        <a href="{{ path('entity.node.canonical', {'node':advert.id}) }}">
+                            <img src="{{ advert.field_advert_picture[0].entity.uri.value|image_style('smallest_50x50') }}" class="media-object img-rounded" alt="{{ advert.title.value }}">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">Jhon Carter <small><i>{{ advert.field_advert_reference.value }}</i></small></h4>
+                        <p>Excellent feature! I love it. One day I'm definitely going to put this Bootstrap component into use and I'll let you know once I do.</p>
+                    </div>
+                </div>
             </li>
         {% endfor %}
     </ul>
