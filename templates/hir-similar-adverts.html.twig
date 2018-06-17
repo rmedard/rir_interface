@@ -42,12 +42,13 @@
 
                             {% set advert_type = advert.field_advert_type.value %}
                             <span class="label label-info">{{ advert_type }}</span>
-                            |
-                            <span class="label label-default">
-                            {% if advert.field_advert_price_negociable.value == '1' %}
-                                Negotiable
-                            {% else %}
-                                {% if advert_type == 'rent' or advert_type == 'buy' %}
+                            {% if advert_type == 'rent' or advert_type == 'buy' %}
+                                |
+                                <span class="label label-default">
+                                {% if advert.field_advert_price_negociable.value == '1' %}
+                                    Negotiable
+                                {% else %}
+
                                     {{ advert.field_advert_price.value }} {{ advert.field_advert_currency.value|upper }}
                                     <small>
                                         {% set payment = advert.field_advert_payment.value %}
@@ -68,8 +69,8 @@
                                         {% endif %}
                                     </small>
                                 {% endif %}
+                                </span>
                             {% endif %}
-                            </span>
                         </small>
                     </div>
                 </div>
