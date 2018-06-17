@@ -42,7 +42,7 @@ class AdvertsService
 //                ->condition('field_advert_district.target_id', $advert_node->get('field_advert_district.target_id'))
                 ->condition('field_advert_type', $advert_node->get('field_advert_type')->value);
             $advertsIds = $query->execute();
-            $adverts = NodeInterface::loadMultiple($advertsIds);
+            $adverts = $storage->loadMultiple($advertsIds);
         } catch (InvalidPluginDefinitionException $e) {
             Drupal::logger('rir_interface')->error('Invalid plugin: ' . $e->getMessage());
         } catch (PluginNotFoundException $e) {
