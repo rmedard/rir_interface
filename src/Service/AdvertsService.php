@@ -44,6 +44,7 @@ class AdvertsService
             $advertsIds = $query->execute();
             kint($advert_node);
             kint($advertsIds);
+            die();
             $adverts = $storage->loadMultiple($advertsIds);
         } catch (InvalidPluginDefinitionException $e) {
             Drupal::logger('rir_interface')->error('Invalid plugin: ' . $e->getMessage());
