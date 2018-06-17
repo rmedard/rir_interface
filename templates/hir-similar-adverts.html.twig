@@ -42,6 +42,36 @@
 
                             {% set advert_type = advert.field_advert_type.value %}
                             <span class="label label-success">{{ advert_type }}</span>
+                            |
+                            <span class="label label-default">
+                            {% if advert.field_advert_price_negociable.value == '1' %}
+                                Negotiable
+                            {% else %}
+                                {% if advert_type == 'rent' or advert_type == 'buy' %}
+                                    {{ advert.field_advert_price.value }} {{ advert.field_advert_currency.value|upper }}
+                                    <small>
+                                        {% set payment = advert.field_advert_payment.value %}
+                                        {% if advert_type == 'rent' %}
+                                            {% if payment == 'monthly' %}
+                                                /month
+                                            {% elseif payment == 'weekly' %}
+                                                /week
+                                            {% elseif payment == 'daily' %}
+                                                /day
+                                            {% elseif payment == 'nightly' %}
+                                                /night
+                                            {% elseif payment == 'yearly' %}
+                                                /year
+                                            {% endif %}
+                                        {% elseif advert_type == 'buy' %}
+                                            /sale
+                                        {% endif %}
+                                    </small>
+                                {% else %}
+                                    {{ advert_type|capitalize }}
+                                {% endif %}
+                            {% endif %}
+                            </span>
                         </small>
                     </div>
                 </div>
