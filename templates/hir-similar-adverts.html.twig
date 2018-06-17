@@ -6,12 +6,19 @@
                 <div class="media">
                     <div class="media-left">
                         <a href="{{ path('entity.node.canonical', {'node':advert.id}) }}">
-                            <img src="{{ advert.field_advert_picture[0].entity.uri.value|image_style('smallest_50x50') }}" class="media-object img-rounded" alt="{{ advert.title.value }}">
+                            <img src="{{ advert.field_advert_picture[0].entity.uri.value|image_style('smallest_50x50') }}"
+                                 class="media-object img-rounded" alt="{{ advert.title.value }}">
                         </a>
                     </div>
                     <div class="media-body">
-                        <h5 class="media-heading">{{ advert.title.value|slice(0, 20) }} <small><i>Ref: {{ advert.field_advert_reference.value }}</i></small></h5>
-                        <p>Excellent feature! I love it. One day I'm definitely going to put this Bootstrap component into use and I'll let you know once I do.</p>
+                        <h5 class="media-heading">
+                            <a href="{{ path('entity.node.canonical', {'node':advert.id}) }}">
+                                {{ advert.title.value|slice(0, 20) }}
+                            </a>
+                            <small><i>Ref: {{ advert.field_advert_reference.value }}</i></small>
+                        </h5>
+                        <p>Excellent feature! I love it. One day I'm definitely going to put this Bootstrap component
+                            into use and I'll let you know once I do.</p>
                     </div>
                 </div>
             </li>
