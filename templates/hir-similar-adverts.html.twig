@@ -1,8 +1,10 @@
 <div class="panel panel-primary similar-adverts-block">
-    <div class="panel-heading">{{ title }}</div>
+    <div class="panel-heading text-center">{{ title }}</div>
     <ul class="list-group">
         {% for advert in adverts %}
-            <li class="list-group-item"><img src="{{ advert.field_advert_picture[0].entity.uri.value|image_style('smallest_50x50') }}" class="img-thumbnail"/> {{ advert.field_advert_reference.value }}</li>
+            <li class="list-group-item">
+                <img src="{{ advert.field_advert_picture[0].entity.uri.value|image_style('smallest_50x50') }}" class="img-rounded img-responsive"/> {{ advert.field_advert_reference.value }}
+            </li>
         {% endfor %}
     </ul>
 </div>
