@@ -41,7 +41,7 @@ class AdvertsService
                 ->condition('status', Node::PUBLISHED)
                 ->condition('nid', $advert_node->id(), '<>')
                 ->condition('field_advert_type', $advert_node->get('field_advert_type')->value)
-                ->condition('field_advert_district.target_id', $advert_node->get('field_advert_district.entity.id')->value);
+                ->condition('field_advert_district.target_id', $advert_node->get('field_advert_district')->target_id);
 
             if ($advert_node->get('field_advert_type')->value != 'auction' and
                 $advert_node->get('field_advert_price_negociable')->value == '0') {
