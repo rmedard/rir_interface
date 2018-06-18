@@ -48,7 +48,6 @@ class AdvertsService
                 $price = intval($advert_node->get('field_price_in_rwf')->value);
                 $min_price = intval($price - ($price * 0.1));
                 $max_price = intval($price + ($price * 0.1));
-                Drupal::logger('rir_interface')->debug('Current node: ' . $price . ' Min: ' . $min_price . ' Max: ' . $max_price);
                 $query = $query->condition('field_price_in_rwf', array($min_price, $max_price), 'BETWEEN');
             }
             $advertsIds = $query->execute();

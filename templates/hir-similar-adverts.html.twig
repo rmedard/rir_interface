@@ -14,7 +14,7 @@
                     <div class="media-body">
                         <h5 class="media-heading">
                             <a href="{{ path('entity.node.canonical', {'node':advert.id}) }}">
-                                {{ advert.title.value|slice(0, 20) }}...
+                                {{ advert.title.value|slice(0, 20)|capitalize }}...
                             </a>
                             <small>Ref: {{ advert.field_advert_reference.value }}</small>
                         </h5>
