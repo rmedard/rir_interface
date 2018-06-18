@@ -45,8 +45,9 @@ class AdvertsService
 
             if ($advert_node->get('field_advert_type')->value != 'auction' and
                 $advert_node->get('field_advert_price_negociable')->value == '0') {
-                $price = intval($advert_node->get('field_advert_price')->value);
-                $query = $query->condition('field_advert_price', array($price - ($price * 0.1), $price + ($price * 0.1)), 'BETWEEN');
+                $price = intval($advert_node->get('field_price_in_rwf')->value);
+                Drupal::logger('rir_interface')->debug('Current node: ' . $price);
+                $query = $query->condition('field_price_in_rwf', array($price - ($price * 0.1), $price + ($price * 0.1)), 'BETWEEN');
             }
             $advertsIds = $query->execute();
             $adverts = $storage->loadMultiple($advertsIds);
