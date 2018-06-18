@@ -46,8 +46,7 @@ class AdvertsService
             if ($advert_node->get('field_advert_type')->value != 'auction' and
                 $advert_node->get('field_advert_price_negociable')->value == '0') {
                 $price = intval($advert_node->get('field_advert_price')->value);
-                $query = $query->condition('field_advert_price', $price - ($price * 0.1), '>');
-                $query = $query->condition('field_advert_price', $price + ($price * 0.1), '<');
+                $query = $query->condition('field_advert_price', array($price - ($price * 0.1), $price + ($price * 0.1)), 'BETWEEN');
             }
             $advertsIds = $query->execute();
             $adverts = $storage->loadMultiple($advertsIds);
