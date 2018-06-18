@@ -46,8 +46,8 @@ class AdvertsService
             if ($advert_node->get('field_advert_type')->value != 'auction' and
                 $advert_node->get('field_advert_price_negociable')->value == '0') {
                 $price = intval($advert_node->get('field_price_in_rwf')->value);
-                $min_price = $price - ($price * 0.1);
-                $max_price = $price + ($price * 0.1);
+                $min_price = intval($price - ($price * 0.1));
+                $max_price = intval($price + ($price * 0.1));
                 Drupal::logger('rir_interface')->debug('Current node: ' . $price . ' Min: ' . $min_price . ' Max: ' . $max_price);
                 $query = $query->condition('field_price_in_rwf', array($min_price, $max_price), 'BETWEEN');
             }
