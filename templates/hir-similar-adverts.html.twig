@@ -42,10 +42,12 @@
                             {% endif %}
 
                             {% set advert_type = advert.field_advert_type.value %}
-                            {#{% if advert_type == 'buy' %}#}
-                                {#{{ kint(advert.field_advert_type) }}#}
-                            {#{% endif %}#}
-                            <span class="label label-info">{{ advert.field_advert_type.label }}</span>
+                            {% if advert_type == 'buy' %}
+                                <span class="label label-info">Sale</span>
+                            {% else %}
+                                <span class="label label-info">{{ advert_type|capitalize }}</span>
+                            {% endif %}
+
                             {% if advert_type == 'rent' or advert_type == 'buy' %}
                                 |
                                 <span class="label label-default">
