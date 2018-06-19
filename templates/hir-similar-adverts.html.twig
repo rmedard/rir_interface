@@ -26,19 +26,19 @@
                         <small>
                             {% set property_type = advert.field_advert_property_type.value %}
                             {% if property_type == 'house' %}
-                                <span class="label label-primary">{{ property_type }}</span>
+                                <span class="label label-primary">{{ property_type|capitalize }}</span>
                             {% elseif property_type == 'apartment' %}
-                                <span class="label label-danger">{{ property_type }}</span>
+                                <span class="label label-danger">{{ property_type|capitalize }}</span>
                             {% elseif property_type == 'room' or property_type == 'shared_room' %}
-                                <span class="label label-warning">{{ property_type }}</span>
+                                <span class="label label-warning">Room</span>
                             {% elseif property_type == 'building' %}
-                                <span class="label label-success">{{ property_type }}</span>
+                                <span class="label label-success">{{ property_type|capitalize }}</span>
                             {% elseif property_type == 'commerce' %}
-                                <span class="label label-default">{{ property_type }}</span>
+                                <span class="label label-default">{{ property_type|capitalize }}</span>
                             {% elseif property_type == 'office' %}
-                                <span class="label label-violet">{{ property_type }}</span>
+                                <span class="label label-violet">{{ property_type|capitalize }}</span>
                             {% elseif property_type == 'land' %}
-                                <span class="label label-yellow">{{ property_type }}</span>
+                                <span class="label label-yellow">{{ property_type|capitalize }}</span>
                             {% endif %}
 
                             {% set advert_type = advert.field_advert_type.value %}
