@@ -15,7 +15,19 @@
                             {% else %}
                                 {{ advert.field_advert_price.value|number_format }} {{ advert.field_advert_currency.value|upper }}
                                 {% if advert.field_advert_type.value == 'rent' %}
-                                    <small>/{{ advert.field_advert_payment.value }}</small>
+                                    <small>/
+                                    {% if advert.field_advert_payment.value == 'nightly' %}
+                                        night
+                                    {% elseif advert.field_advert_payment.value == 'daily' %}
+                                        day
+                                    {% elseif advert.field_advert_payment.value == 'weekly' %}
+                                        week
+                                    {% elseif advert.field_advert_payment.value == 'monthly' %}
+                                        month
+                                    {% elseif advert.field_advert_payment.value == 'yearly' %}
+                                        year
+                                    {% endif %}
+                                    </small>
                                 {% endif %}
                             {% endif %}
                         {% endif %}<br>
