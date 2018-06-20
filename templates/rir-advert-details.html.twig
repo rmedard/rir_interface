@@ -15,7 +15,7 @@
                             {% else %}
                                 {{ advert.field_advert_price.value|number_format }} {{ advert.field_advert_currency.value|upper }}
                                 {% if advert.field_advert_type.value == 'rent' %}
-                                    <small>/{{ renderVar(advert.field_advert_payment) }}</small>
+                                    <small>/{{ advert.field_advert_payment.value }}</small>
                                 {% endif %}
                             {% endif %}
                         {% endif %}<br>
