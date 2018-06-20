@@ -55,12 +55,12 @@ function rir_interface_entity_insert(EntityInterface $entity)
             ]);
             Drupal::logger('rir_interface')->error($message);
         } else {
-						$message = t('An email notification has been sent to @email for creating advert id: @id.', [
-							'@email' => $to,
-							'@id' => $entity->id(),
-						]);
-						Drupal::logger('rir_interface')->notice($message);
-				}
+            $message = t('An email notification has been sent to @email for creating advert id: @id.', [
+                '@email' => $to,
+                '@id' => $entity->id(),
+            ]);
+            Drupal::logger('rir_interface')->notice($message);
+        }
 
     } elseif ($entity instanceof NodeInterface and $entity->bundle() == 'agent') {
         $mailManager = Drupal::service('plugin.manager.mail');
@@ -109,7 +109,7 @@ function rir_interface_entity_update(EntityInterface $entity)
         if (isset($is_first_published)
             and isset($is_original_first_published)
             and intval($is_first_published) === Node::PUBLISHED
-            and intval($is_original_first_published) === Node::NOT_PUBLISHED){
+            and intval($is_original_first_published) === Node::NOT_PUBLISHED) {
 
             $emailService = Drupal::service('rir_interface.email_service');
             $data = (object)[
@@ -281,7 +281,7 @@ function rir_interface_entity_presave(EntityInterface $entity)
         if ($entity->get('field_advert_currency')->value == 'usd') {
             $response = Unirest\Request::get("https://free.currencyconverterapi.com/api/v5/convert?q=USD_RWF&compact=ultra");
             $converted = $entity->get('field_advert_price')->value * Drupal::state()->get(Constants::USD_RWF_EXCHANGE_RATE);
-            if ($response->code === 200){
+            if ($response->code === 200) {
                 Drupal::state()->set(Constants::USD_RWF_EXCHANGE_RATE, $response->body->USD_RWF);
                 $converted = $entity->get('field_advert_price')->value * $response->body->USD_RWF;
             } else {
@@ -297,7 +297,7 @@ function rir_interface_entity_presave(EntityInterface $entity)
          */
         $today = DateTime::createFromFormat('Y-m-d', date('Y-m-d', strtotime('now')));
         $expiry_date = DateTime::createFromFormat('Y-m-d', $entity->get('field_advert_expirydate')->value);
-        if($expiry_date < $today and intval($entity->get('status')->value) === Node::PUBLISHED){
+        if ($expiry_date < $today and intval($entity->get('status')->value) === Node::PUBLISHED) {
             $entity->set('status', Node::NOT_PUBLISHED);
             Drupal::logger('rir_interface')->warning('Publishing failed: The advert cannot be published because it is expired!');
         }
@@ -390,7 +390,7 @@ function getEmailHtmlContent($email_type, $entity)
     $twig_service = Drupal::service('twig');
     switch ($email_type) {
         case 'advert_validated':
-            if ($entity instanceof NodeInterface){
+            if ($entity instanceof NodeInterface) {
                 $langcode = Drupal::languageManager()->getDefaultLanguage()->getId();
                 $nodePath = Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $entity->id(), $langcode);
                 Drupal::logger('rir_interface')->warning('Langcode : ' . $langcode . '|Node path: ' . $nodePath);
@@ -402,7 +402,7 @@ function getEmailHtmlContent($email_type, $entity)
                         ->execute();
                     if ($result and $result instanceof StatementInterface) {
                         Drupal::logger('rir_interface')->debug('Query string: ' . $result->getQueryString());
-                        while ($row = $result->fetchAssoc()){
+                        while ($row = $result->fetchAssoc()) {
                             Drupal::logger('rir_interface')->debug('Query not empty: ' . $row['alias']);
                             $nodePath = $row['alias'];
                         }
@@ -526,7 +526,8 @@ function rir_interface_form_alter(&$form, FormStateInterface $form_state, $form_
 }
 
 
-function get_email_attachment_files(){
+function get_email_attachment_files()
+{
     $file1 = new stdClass();
     $file1->uri = 'sites/default/files/email_attachments/HiR_Services.pdf';
     $file1->filename = 'HiR_Services.pdf';

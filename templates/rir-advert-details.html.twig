@@ -14,6 +14,9 @@
                                 n/a
                             {% else %}
                                 {{ advert.field_advert_price.value|number_format }} {{ advert.field_advert_currency.value|upper }}
+                                {% if advert.field_advert_type.value == 'rent' %}
+                                    <small>/month</small>
+                                {% endif %}
                             {% endif %}
                         {% endif %}<br>
                         <strong>Bedrooms:</strong> {{ advert.field_advert_bedrooms.value }} <br>
