@@ -5,60 +5,70 @@
             <dl class="dl-horizontal" style="margin-bottom: 0">
                 <div class="row">
                     <div class="col-md-6">
-                        <strong>Advert type:</strong> {% if advert.field_advert_type.value == 'buy' %} Sale {% else %} {{ advert.field_advert_type.value|capitalize }} {% endif %} <br>
+                        <strong>Advert
+                            type:</strong> {% if advert.field_advert_type.value == 'buy' %} Sale {% else %} {{ advert.field_advert_type.value|capitalize }} {% endif %}
+                        <br>
                         <strong>Price:</strong>
                         {% if advert.field_advert_price_negociable.value == '1' %}
-                            Negotiable
+                        Negotiable
+                    {% else %}
+                        {% if advert.field_advert_type.value == 'auction' %}
+                            n/a
                         {% else %}
-                            {% if advert.field_advert_type.value == 'auction' %}
-                                n/a
-                            {% else %}
-                                {{ advert.field_advert_price.value|number_format }} {{ advert.field_advert_currency.value|upper }}
-                                {% if advert.field_advert_type.value == 'rent' %}
-                                    <small>/
-                                    {% if advert.field_advert_payment.value == 'nightly' %}
-                                        night
-                                    {% elseif advert.field_advert_payment.value == 'daily' %}
-                                        day
-                                    {% elseif advert.field_advert_payment.value == 'weekly' %}
-                                        week
-                                    {% elseif advert.field_advert_payment.value == 'monthly' %}
-                                        month
-                                    {% elseif advert.field_advert_payment.value == 'yearly' %}
-                                        year
-                                    {% endif %}
-                                    </small>
+                            {{ advert.field_advert_price.value|number_format }} {{ advert.field_advert_currency.value|upper }}
+                            {% if advert.field_advert_type.value == 'rent' %}
+                                {% if advert.field_advert_payment.value == 'nightly' %}
+                                    <small>/night</small>
+                                {% elseif advert.field_advert_payment.value == 'daily' %}
+                                    <small>/day</small>
+                                {% elseif advert.field_advert_payment.value == 'weekly' %}
+                                    <small>/week</small>
+                                {% elseif advert.field_advert_payment.value == 'monthly' %}
+                                    <small>/month</small>
+                                {% elseif advert.field_advert_payment.value == 'yearly' %}
+                                    <small>/year</small>
                                 {% endif %}
                             {% endif %}
+                        {% endif %}
                         {% endif %}<br>
                         <strong>Bedrooms:</strong> {{ advert.field_advert_bedrooms.value }} <br>
                         <strong>Total floors:</strong> {{ advert.field_advert_total_floors.value }} <br>
-                        <strong>Address:</strong> {{ advert.field_advert_district.entity.name.value }}, {{ advert.field_advert_sector.value }}, {{ advert.field_advert_village.value }} {{ advert.field_advert_street.value }} <br>
+                        <strong>Address:</strong> {{ advert.field_advert_district.entity.name.value }}
+                        , {{ advert.field_advert_sector.value }}
+                        , {{ advert.field_advert_village.value }} {{ advert.field_advert_street.value }} <br>
                     </div>
                     <div class="col-md-6">
-                        <strong>Property type:</strong> {% if advert.field_advert_property_type.value == 'shared_room' %} Shared room {% else %} {{ advert.field_advert_property_type.value|capitalize }} {% endif %} <br>
+                        <strong>Property
+                            type:</strong> {% if advert.field_advert_property_type.value == 'shared_room' %} Shared room {% else %} {{ advert.field_advert_property_type.value|capitalize }} {% endif %}
+                        <br>
                         <strong>Bathrooms:</strong> {{ advert.field_advert_bathrooms.value }} <br>
-                        <strong>Plot size:</strong> {% if advert.field_advert_size is not empty and advert.field_advert_size.value != 0 %} {{ advert.field_advert_size.value|number_format(2, '.', ',') }} m² {% else %} n/a {% endif %}<br>
-                        <strong>Living area:</strong> {% if advert.field_advert_living_area is not empty and advert.field_advert_living_area.value != 0 %}{{ advert.field_advert_living_area.value|number_format(2, '.', ',') }} m²{% else %} n/a {% endif %}<br>
-                        <strong>Expiry date:</strong> {{ advert.field_advert_expirydate.value is empty ? "" : advert.field_advert_expirydate.value|date("d-m-Y") }} <br>
+                        <strong>Plot
+                            size:</strong> {% if advert.field_advert_size is not empty and advert.field_advert_size.value != 0 %} {{ advert.field_advert_size.value|number_format(2, '.', ',') }} m² {% else %} n/a {% endif %}
+                        <br>
+                        <strong>Living
+                            area:</strong> {% if advert.field_advert_living_area is not empty and advert.field_advert_living_area.value != 0 %}{{ advert.field_advert_living_area.value|number_format(2, '.', ',') }} m²{% else %} n/a {% endif %}
+                        <br>
+                        <strong>Expiry
+                            date:</strong> {{ advert.field_advert_expirydate.value is empty ? "" : advert.field_advert_expirydate.value|date("d-m-Y") }}
+                        <br>
                     </div>
                 </div>
             </dl>
         </div>
     </div>
     {% if advert.field_property_description is not empty %}
-    <div class="panel panel-default">
-        <div class="panel-heading" style="font-weight: bolder; font-size: large">Property description</div>
-        <div class="panel-body">
-            <dl class="dl-horizontal" style="margin-bottom: 0">
-                <div class="row">
-                    <div class="col-md-12">
-                        <p>{% autoescape false %} {{ advert.field_property_description.value }} {% endautoescape %}</p>
+        <div class="panel panel-default">
+            <div class="panel-heading" style="font-weight: bolder; font-size: large">Property description</div>
+            <div class="panel-body">
+                <dl class="dl-horizontal" style="margin-bottom: 0">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>{% autoescape false %} {{ advert.field_property_description.value }} {% endautoescape %}</p>
+                        </div>
                     </div>
-                </div>
-            </dl>
+                </dl>
+            </div>
         </div>
-    </div>
     {% endif %}
     <div class="panel panel-default">
         <div class="panel-heading" style="font-weight: bolder; font-size: large">Contact details</div>
@@ -90,22 +100,30 @@
                     <div class="row">
                         <div class="col-md-2 col-xs-12">
                             <a href="{{ drupal_token('site:url') ~ path('entity.node.canonical', {'node':advert.field_advert_advertiser.entity.id}) }}">
-                            {% if advert.field_advert_advertiser.entity.field_agent_logo.entity.uri.value is not empty %}
-                                <img src="{{ advert.field_advert_advertiser.entity.field_agent_logo.entity.uri.value|image_style('thumbnail') }}" class="img-thumbnail"/>
-                            {% else %}
-                                <img src="{{ 'public://default_images/unknown.jpg'|image_style('thumbnail') }}" class="img-thumbnail"/>
-                            {% endif %}
+                                {% if advert.field_advert_advertiser.entity.field_agent_logo.entity.uri.value is not empty %}
+                                    <img src="{{ advert.field_advert_advertiser.entity.field_agent_logo.entity.uri.value|image_style('thumbnail') }}"
+                                         class="img-thumbnail"/>
+                                {% else %}
+                                    <img src="{{ 'public://default_images/unknown.jpg'|image_style('thumbnail') }}"
+                                         class="img-thumbnail"/>
+                                {% endif %}
                             </a>
                         </div>
                         <div class="col-md-5 col-xs-6">
                             <strong>Name:</strong> {{ advert.field_advert_advertiser.entity.title.value }}<br>
-                            <strong>Website:</strong> {{ advert.field_advert_advertiser.entity.field_agent_website.value }}<br>
-                            <strong>Location of interest: </strong> {{ advert.field_advert_advertiser.entity.field_agent_operations_area.value }} <br>
+                            <strong>Website:</strong> {{ advert.field_advert_advertiser.entity.field_agent_website.value }}
+                            <br>
+                            <strong>Location of
+                                interest: </strong> {{ advert.field_advert_advertiser.entity.field_agent_operations_area.value }}
+                            <br>
                         </div>
                         <div class="col-md-5 col-xs-6">
-                            <strong>District:</strong> {{ advert.field_advert_advertiser.entity.field_agent_district.entity.name.value }}<br>
-                            <strong>Sector:</strong> {{ advert.field_advert_advertiser.entity.field_agent_sector.value }}<br>
-                            <strong>Street:</strong> {{ advert.field_advert_advertiser.entity.field_agent_street.value }}<br>
+                            <strong>District:</strong> {{ advert.field_advert_advertiser.entity.field_agent_district.entity.name.value }}
+                            <br>
+                            <strong>Sector:</strong> {{ advert.field_advert_advertiser.entity.field_agent_sector.value }}
+                            <br>
+                            <strong>Street:</strong> {{ advert.field_advert_advertiser.entity.field_agent_street.value }}
+                            <br>
                         </div>
                     </div>
                 </dl>
