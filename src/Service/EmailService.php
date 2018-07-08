@@ -50,6 +50,7 @@ class EmailService
                 $attachments = get_email_attachment_files();
                 $params['attachments'][] = $attachments[0];
                 $params['attachments'][] = $attachments[1];
+                $params['attachments'][] = $attachments[2];
 
                 $langcode = Drupal::languageManager()->getDefaultLanguage()->getId();
                 $send = TRUE;
