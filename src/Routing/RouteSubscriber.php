@@ -21,7 +21,14 @@ class RouteSubscriber extends RouteSubscriberBase {
      *   The route collection for adding routes.
      */
     protected function alterRoutes(RouteCollection $collection) {
-        $admin_routes = ['view.adverts.page_manage_adverts'];
+        $admin_routes = [
+            'view.adverts.page_manage_adverts',
+            'view.agents.page_manage_advertisers',
+            'view.details_requests.page_manage_details_requests',
+            'view.details_requests.page_manage_property_requests',
+            'view.news.page_manage_news',
+            'view.banners.page_manage_banners',
+        ];
         foreach ($collection->all() as $name => $route) {
             if (in_array($name, $admin_routes)) {
                 $route->setOption('_admin_route', true);
