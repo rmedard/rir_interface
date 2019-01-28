@@ -28,7 +28,7 @@ class RouteSubscriber extends RouteSubscriberBase {
             'view.details_requests.page_manage_property_requests',
             'view.news.page_manage_news',
             'view.banners.page_manage_banners',
-            'view.property_request.page_manage_property_requests'
+            'view.manage_property_requests.page_manage_property_requests'
         ];
         foreach ($collection->all() as $name => $route) {
             if (in_array($name, $management_routes)) {
