@@ -31,7 +31,7 @@
                                 <p><strong>Dear {{ agent.title.value }}!</strong></p>
 
                                 <p>Your real estate advertiser profile has been created and it is online:
-                                    <a href="{{ drupal_token('site:url') ~ path('entity.node.canonical', {'node':agent.id}) }}">Here</a><br>
+                                    <a href="{{ drupal_url('node/' ~ agent.id, {absolute: true}) }}">Here</a><br>
                                         Would you please double check that your details below are correct? </p>
                                 <strong>Your public details:</strong>
                                 <ul>
