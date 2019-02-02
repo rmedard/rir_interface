@@ -35,7 +35,6 @@ class AdvertsService
         $adverts = array();
         try {
             $storage = $this->entityTypeManager->getStorage('node');
-
             $query = $storage->getQuery()->range(0, 5)
                 ->condition('type', 'advert')
                 ->condition('status', Node::PUBLISHED)
