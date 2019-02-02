@@ -51,7 +51,11 @@ class AdvertsService
                 $query = $query->condition('field_price_in_rwf', array($min_price, $max_price), 'BETWEEN');
             }
             $advertsIds = $query->execute();
-            $adverts = $storage->loadMultiple($advertsIds);
+
+            if ($advertsIds && !empty($advertsIds)) {
+                $advertsIds = array_diff($advertsIds, [$advert_node->id()]);
+                $adverts = $storage->loadMultiple($advertsIds);
+            }
         } catch (InvalidPluginDefinitionException $e) {
             Drupal::logger('rir_interface')->error('Invalid plugin: ' . $e->getMessage());
         } catch (PluginNotFoundException $e) {
