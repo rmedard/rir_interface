@@ -39,7 +39,6 @@ class AdvertsService
             $query = $storage->getQuery()->range(0, 5)
                 ->condition('type', 'advert')
                 ->condition('status', Node::PUBLISHED)
-                ->condition('nid', $advert_node->id(), '<>')
                 ->condition('field_advert_type', $advert_node->get('field_advert_type')->value)
                 ->condition('field_advert_district.target_id', $advert_node->get('field_advert_district')->target_id);
 
