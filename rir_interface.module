@@ -125,6 +125,13 @@ function rir_interface_entity_update(EntityInterface $entity)
             ];
             $emailService->send($data);
         }
+
+        // Set this advert to target PR if any
+        $prId = $entity->get('field_advert_target_pr_id')->value;
+        if (isset($prId) && intval($prId) > 0) {
+            $advertsService = Drupal::service('rir_interface.adverts_service');
+            $advertsService->setProposedAdvertOnPR($entity->id(), $prId);
+        }
     }
 
     if ($entity instanceof NodeInterface and $entity->bundle() == 'agent') {
