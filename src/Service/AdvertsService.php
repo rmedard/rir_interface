@@ -66,19 +66,19 @@ class AdvertsService
 
     public function setProposedAdvertOnPR($advertId, $prId) {
         try {
-//            $storage = $this->entityTypeManager->getStorage('node');
-//            $pr = $storage->load($prId);
-            $pr = Node::load($prId);
-            if (isset($pr) && $pr instanceof EntityInterface && $pr->bundle() == 'property_request') {
-//                $pr->set('field_advert_target_pr_id.target_id', $advertId)->save();
+            $storage = $this->entityTypeManager->getStorage('node');
+            $pr = $storage->load($prId);
+//            $pr = Node::load($prId);
+            if (isset($pr) && $pr instanceof NodeInterface && $pr->bundle() == 'property_request') {
+                $pr->set('field_advert_target_pr_id.target_id', $advertId)->save();
                 Drupal::logger('PR')->debug('About to save: ' . $prId);
-                $pr->field_advert_target_pr_id[] = ['target_id' => $advertId];
-                $pr->save();
+//                $pr->field_advert_target_pr_id[] = ['target_id' => $advertId];
+//                $pr->save();
             }
-//        } catch (InvalidPluginDefinitionException $e) {
-//            Drupal::logger('rir_interface')->error('Invalid plugin: ' . $e->getMessage());
-//        } catch (PluginNotFoundException $e) {
-//            Drupal::logger('rir_interface')->error('Plugin not found: ' . $e->getMessage());
+        } catch (InvalidPluginDefinitionException $e) {
+            Drupal::logger('rir_interface')->error('Invalid plugin: ' . $e->getMessage());
+        } catch (PluginNotFoundException $e) {
+            Drupal::logger('rir_interface')->error('Plugin not found: ' . $e->getMessage());
         } catch (EntityStorageException $e) {
         }
     }
