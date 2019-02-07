@@ -69,15 +69,28 @@ class AdvertsService
             $storage = $this->entityTypeManager->getStorage('node');
             $pr = $storage->load($prId);
             if (isset($pr) && $pr instanceof NodeInterface && $pr->bundle() == 'property_request') {
-                kint($pr->field_pr_proposed_properties->referencedEntities());
-//                kint($storage->loadByProperties(array('type' => 'property_request', 'field_pr_proposed_properties' => $advertId)));
-                die();
-                Drupal::logger('rir_interface')->debug('Find ' . $advertId . ', In: '
-                    . json_encode($pr->referencedEntities()));
-                if (!in_array($advertId, (array)$pr->get('field_pr_proposed_properties.target_id')->value)) {
-                    $pr->field_pr_proposed_properties[] = ['target_id' => $advertId];
-                    $pr->save();
+//                kint($pr->field_pr_proposed_properties->referencedEntities());
+//                die();
+                foreach ($pr->field_pr_proposed_properties->referencedEntities() as $advert) {
+                    if ($advert instanceof Drupal\Core\Entity\EntityInterface) {
+                        if ($advert->id() == $advertId) {
+                            Drupal::logger('rir_interface')
+                                ->error('Unable to set proposed advert because already set');
+                            return;
+                        }
+                    }
                 }
+
+                $pr->field_pr_proposed_properties[] = ['target_id' => $advertId];
+                $pr->save();
+                Drupal::logger('rir_interface')
+                    ->error(t('Advert @id proposed to PR @prId', array('@id' => $advertId, '@prId' => $prId)));
+//                Drupal::logger('rir_interface')->debug('Find ' . $advertId . ', In: '
+//                    . json_encode($pr->referencedEntities()));
+//                if (!in_array($advertId, (array)$pr->get('field_pr_proposed_properties.target_id')->value)) {
+//                    $pr->field_pr_proposed_properties[] = ['target_id' => $advertId];
+//                    $pr->save();
+//                }
             }
         } catch (InvalidPluginDefinitionException $e) {
             Drupal::logger('rir_interface')->error('Invalid plugin: ' . $e->getMessage());
