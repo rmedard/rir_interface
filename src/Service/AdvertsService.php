@@ -69,7 +69,8 @@ class AdvertsService
             $storage = $this->entityTypeManager->getStorage('node');
             $pr = $storage->load($prId);
             if (isset($pr) && $pr instanceof NodeInterface && $pr->bundle() == 'property_request') {
-                kint($pr->referencedEntities());
+//                kint($pr->referencedEntities());
+                kint($storage->loadByProperties(array('type' => 'property_request', 'field_pr_proposed_properties' => $advertId)));
                 die();
                 Drupal::logger('rir_interface')->debug('Find ' . $advertId . ', In: '
                     . json_encode($pr->referencedEntities()));
