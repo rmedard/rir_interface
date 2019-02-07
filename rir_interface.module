@@ -403,7 +403,7 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
     }
 }
 
-function getEmailHtmlContent($email_type, $entity)
+function getEmailHtmlContent($email_type, $entity, $recipientName = NULL)
 {
     $template_path = '';
     $variables = [];
@@ -447,6 +447,13 @@ function getEmailHtmlContent($email_type, $entity)
                 'agent' => $entity,
             ];
             $template_path = '/templates/hir-agent-received.html.twig';
+            break;
+        case 'advert_validated_notify_pr':
+            $variables = [
+                'advert' => $entity,
+                'recipient' => $recipientName
+            ];
+            $template_path = '/templates/hir-proposed-advert-notify-pr.html.twig';
             break;
     }
     return $twig_service->loadTemplate(drupal_get_path('module', 'rir_interface') . $template_path)

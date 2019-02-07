@@ -68,8 +68,10 @@ class AdvertsService
             $storage = $this->entityTypeManager->getStorage('node');
             $pr = $storage->load($prId);
             if (isset($pr) && $pr instanceof NodeInterface && $pr->bundle() == 'property_request') {
-                $pr->field_pr_proposed_properties[] = ['target_id' => $advertId];
-                $pr->save();
+                if (!in_array($advertId, $pr->get('field_pr_proposed_properties')->getValue())) {
+                    $pr->field_pr_proposed_properties[] = ['target_id' => $advertId];
+                    $pr->save();
+                }
             }
         } catch (InvalidPluginDefinitionException $e) {
             Drupal::logger('rir_interface')->error('Invalid plugin: ' . $e->getMessage());

@@ -22,6 +22,8 @@ class EmailService
      */
     public function send($data)
     {
+        $mailManager = Drupal::service('plugin.manager.mail');
+        $module = 'rir_interface';
         if ($data->notificationType === Constants::ADVERT_VALIDATED) {
             $entity = $data->entity;
             if ($entity instanceof NodeInterface) {
@@ -37,8 +39,6 @@ class EmailService
                     $recipients .= ',' . $visit_email_2;
                 }
 
-                $mailManager = Drupal::service('plugin.manager.mail');
-                $module = 'rir_interface';
                 $key = 'advert_first_published';
                 $to = $recipients;
                 $reply = Drupal::config('system.site')->get('mail');
@@ -75,14 +75,35 @@ class EmailService
         if ($data->notificationType === Constants::ADVERT_VALIDATED_NOTIFY_PR) {
             $entity = $data->entity;
             if ($entity instanceof NodeInterface) {
-                $mailManager = Drupal::service('plugin.manager.mail');
-                $module = 'rir_interface';
                 $key = 'advert_first_published_notify_prs';
 
                 $PRsService = Drupal::service('rir_interface.property_requests_service');
                 $PRs = $PRsService->loadPRsForAdvert($entity);
-
-                // TODO Send email to all PR's
+                if (isset($PRs) and !empty($PRs)) {
+                    foreach ($PRs as $pr){
+                        if ($pr instanceof NodeInterface) {
+                            $to = $pr->get('field_pr_email')->value;
+                            $reply = Drupal::config('system.site')->get('mail');
+                            $params['cc'] = Drupal::config('system.site')->get('mail');
+                            $params['message'] = Markup::create(getEmailHtmlContent('advert_validated_notify_pr', $entity, $pr->get('field_pr_first_name')->value));
+                            $langcode = Drupal::languageManager()->getDefaultLanguage()->getId();
+                            $send = TRUE;
+                            $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
+                            if (intval($result['result']) != 1) {
+                                $message = t('There was a problem sending notification email to PR for advert: @id.', [
+                                    '@id' => $entity->id(),
+                                ]);
+                                Drupal::logger('rir_interface')
+                                    ->error($message . ' Whole Error: ' . json_encode($result, TRUE));
+                            } else {
+                                $message = t('An email notification has been sent to PR for advert id: @id.', [
+                                    '@id' => $entity->id(),
+                                ]);
+                                Drupal::logger('rir_interface')->notice($message);
+                            }
+                        }
+                    }
+                }
             }
         }
     }
