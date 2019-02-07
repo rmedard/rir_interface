@@ -62,7 +62,9 @@ function rir_interface_entity_insert(EntityInterface $entity)
             Drupal::logger('rir_interface')->notice($message);
         }
 
-        // Set this advert to target PR if any
+        /**
+         * Set this advert to target PR if any
+         */
         $prId = $entity->get('field_advert_target_pr_id')->value;
         if (isset($prId) && intval($prId) > 0) {
             $advertsService = Drupal::service('rir_interface.adverts_service');
@@ -109,7 +111,9 @@ function rir_interface_entity_update(EntityInterface $entity)
     if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
         Drupal::cache('render')->deleteAll();
 
-        // Send validation notification on first publishing
+        /**
+         * Send validation notification on first publishing
+         */
         $is_first_published = $entity->get('field_advert_is_first_published')->value;
         $is_original_first_published = $entity->original->get('field_advert_is_first_published')->value;
 
@@ -130,13 +134,6 @@ function rir_interface_entity_update(EntityInterface $entity)
                 'entity' => $entity
             ];
             $emailService->send($pr_data);
-        }
-
-        // Set this advert to target PR if any
-        $prId = $entity->get('field_advert_target_pr_id')->value;
-        if (isset($prId) && intval($prId) > 0) {
-            $advertsService = Drupal::service('rir_interface.adverts_service');
-            $advertsService->setProposedAdvertOnPR($entity->id(), $prId);
         }
     }
 
