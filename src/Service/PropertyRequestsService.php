@@ -31,6 +31,7 @@ class PropertyRequestsService
     public function loadPRsForAdvert($advert) {
         if ($advert instanceof NodeInterface) {
             try {
+                Drupal::logger('rir_interface')->debug('About to fetch PR ids: ' . $advert->id());
                 $storage = $this->entityTypeManager->getStorage('node');
                 $query = $storage->getQuery()
                     ->condition('type', 'property_request')
