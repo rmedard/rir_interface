@@ -70,7 +70,7 @@ class AdvertsService
             $pr = $storage->load($prId);
 //            $pr = Node::load($prId);
             if (isset($pr) && $pr instanceof NodeInterface && $pr->bundle() == 'property_request') {
-                $pr->set('field_advert_target_pr_id.target_id', $advertId)->save();
+                $pr->set('field_pr_proposed_properties.target_id', $advertId)->save();
                 Drupal::logger('PR')->debug('About to save: ' . $prId);
 //                $pr->field_advert_target_pr_id[] = ['target_id' => $advertId];
 //                $pr->save();
