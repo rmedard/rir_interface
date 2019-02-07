@@ -31,18 +31,20 @@ class PropertyRequestsService
     public function loadPRsForAdvert($advert) {
         if ($advert instanceof NodeInterface) {
             try {
-                Drupal::logger('rir_interface')->debug('About to fetch PR ids: ' . $advert->id());
                 $storage = $this->entityTypeManager->getStorage('node');
                 $query = $storage->getQuery()
                     ->condition('type', 'property_request')
                     ->condition('field_pr_proposed_properties.target_id', $advert->id(), 'IN');
                 $prIds = $query->execute();
-                Drupal::logger('rir_interface')->debug('PR ids: ' . json_encode($prIds));
+                if (isset($prIds) && count($prIds) > 0) {
+                    return $storage->loadMultiple($prIds);
+                }
             } catch (InvalidPluginDefinitionException $e) {
                 Drupal::logger('rir_interface')->error('Invalid plugin: ' . $e->getMessage());
             } catch (PluginNotFoundException $e) {
                 Drupal::logger('rir_interface')->error('Plugin not found: ' . $e->getMessage());
             }
         }
+        return array();
     }
 }

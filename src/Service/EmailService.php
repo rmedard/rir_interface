@@ -77,10 +77,12 @@ class EmailService
             if ($entity instanceof NodeInterface) {
                 $mailManager = Drupal::service('plugin.manager.mail');
                 $module = 'rir_interface';
-                $key = 'advert_first_published';
+                $key = 'advert_first_published_notify_prs';
 
                 $PRsService = Drupal::service('rir_interface.property_requests_service');
-                $PRsService->loadPRsForAdvert($entity);
+                $PRs = $PRsService->loadPRsForAdvert($entity);
+
+                // TODO Send email to all PR's
             }
         }
     }
