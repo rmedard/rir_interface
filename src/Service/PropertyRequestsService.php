@@ -32,13 +32,8 @@ class PropertyRequestsService
         if ($advert instanceof NodeInterface) {
             try {
                 $storage = $this->entityTypeManager->getStorage('node');
-                $query = $storage->getQuery()
-                    ->condition('type', 'property_request')
-                    ->condition('field_pr_proposed_properties.target_id', $advert->id(), 'IN');
-                $prIds = $query->execute();
-                if (isset($prIds) && count($prIds) > 0) {
-                    return $storage->loadMultiple($prIds);
-                }
+                $storage->loadByProperties(array('type' => 'property_request', 'field_pr_proposed_properties'
+                => $advert->id()));
             } catch (InvalidPluginDefinitionException $e) {
                 Drupal::logger('rir_interface')->error('Invalid plugin: ' . $e->getMessage());
             } catch (PluginNotFoundException $e) {
