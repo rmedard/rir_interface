@@ -63,13 +63,15 @@ class AdvertsService
         return $adverts;
     }
 
-    public function setProposedAdvertOnPR($advertId, $prId) {
+    public function setProposedAdvertOnPR($advertId, $prId)
+    {
         try {
             $storage = $this->entityTypeManager->getStorage('node');
             $pr = $storage->load($prId);
             if (isset($pr) && $pr instanceof NodeInterface && $pr->bundle() == 'property_request') {
-                Drupal::logger('rir_interface')->debug('Find ' . $advertId . ', In: ' . json_encode($pr->get('field_pr_proposed_properties')->value));
-                if (!in_array($advertId, (array)$pr->get('field_pr_proposed_properties')->value)) {
+                Drupal::logger('rir_interface')->debug('Find ' . $advertId . ', In: '
+                    . json_encode($pr->get('field_pr_proposed_properties.target_id')->value));
+                if (!in_array($advertId, (array)$pr->get('field_pr_proposed_properties.target_id')->value)) {
                     $pr->field_pr_proposed_properties[] = ['target_id' => $advertId];
                     $pr->save();
                 }
