@@ -35,7 +35,7 @@ class PropertyRequestsService
                 $storage = $this->entityTypeManager->getStorage('node');
                 $query = $storage->getQuery()
                     ->condition('type', 'property_request')
-                    ->condition('field_pr_proposed_properties.target_id', $advert->id());
+                    ->condition('field_pr_proposed_properties.target_id', $advert->id(), 'IN');
                 $prIds = $query->execute();
                 Drupal::logger('rir_interface')->debug('PR ids: ' . json_encode($prIds));
             } catch (InvalidPluginDefinitionException $e) {
