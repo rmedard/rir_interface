@@ -504,6 +504,12 @@ function rir_interface_mail($key, &$message, $params)
             $message['subject'] = t('Alert: Adverts expiring today', $options);
             $message['body'][] = $params['message'];
             break;
+        case 'advert_first_published_notify_prs':
+            $message['from'] = Drupal::config('system.site')->get('name') .
+                ' <' . Drupal::config('system.site')->get('mail') . '>';
+            $message['subject'] = t('Notification: We have a property that may interest you', $options);
+            $message['body'][] = $params['message'];
+            break;
     }
 }
 
