@@ -68,7 +68,8 @@ class AdvertsService
             $storage = $this->entityTypeManager->getStorage('node');
             $pr = $storage->load($prId);
             if (isset($pr) && $pr instanceof NodeInterface && $pr->bundle() == 'property_request') {
-                if (!in_array($advertId, $pr->get('field_pr_proposed_properties')->getValue())) {
+                Drupal::logger('rir_interface')->debug('Find ' . $advertId . ', In: ' . json_encode($pr->get('field_pr_proposed_properties')->value));
+                if (!in_array($advertId, (array)$pr->get('field_pr_proposed_properties')->value)) {
                     $pr->field_pr_proposed_properties[] = ['target_id' => $advertId];
                     $pr->save();
                 }
