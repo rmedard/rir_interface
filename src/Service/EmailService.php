@@ -74,6 +74,7 @@ class EmailService
 
         if ($data->notificationType === Constants::ADVERT_VALIDATED_NOTIFY_PR) {
             $entity = $data->entity;
+            Drupal::logger('PR Notification')->notice('About to send notification...');
             if ($entity instanceof NodeInterface) {
                 $key = 'advert_first_published_notify_prs';
 
