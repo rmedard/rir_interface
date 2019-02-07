@@ -7,6 +7,9 @@ services:
     arguments: ["@entity_type.manager"]
   rir_interface.email_service:
     class: Drupal\rir_interface\Service\EmailService
+  rir_interface.property_requests_service:
+    class: Drupal\rir_interface\Service\PropertyRequestsService
+    arguments: ["@entity_type.manager"]
   rir_interface.route_subscriber:
     class: Drupal\rir_interface\Routing\RouteSubscriber
     tags:

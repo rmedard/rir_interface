@@ -12,7 +12,6 @@ namespace Drupal\rir_interface\Service;
 use Drupal;
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\node\Entity\Node;
@@ -68,10 +67,7 @@ class AdvertsService
         try {
             $storage = $this->entityTypeManager->getStorage('node');
             $pr = $storage->load($prId);
-//            $pr = Node::load($prId);
             if (isset($pr) && $pr instanceof NodeInterface && $pr->bundle() == 'property_request') {
-//                $pr->set('field_pr_proposed_properties.target_id', $advertId)->save();
-                Drupal::logger('PR')->debug('About to save: ' . $prId);
                 $pr->field_pr_proposed_properties[] = ['target_id' => $advertId];
                 $pr->save();
             }
@@ -80,6 +76,7 @@ class AdvertsService
         } catch (PluginNotFoundException $e) {
             Drupal::logger('rir_interface')->error('Plugin not found: ' . $e->getMessage());
         } catch (EntityStorageException $e) {
+            Drupal::logger('rir_interface')->error('Entity storage exception: ' . $e->getMessage());
         }
     }
 }

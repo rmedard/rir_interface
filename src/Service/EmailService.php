@@ -71,6 +71,18 @@ class EmailService
                 Drupal::logger('rir_interface')->error('Advert validated notification: Wrong entity type');
             }
         }
+
+        if ($data->notificationType === Constants::ADVERT_VALIDATED_NOTIFY_PR) {
+            $entity = $data->entity;
+            if ($entity instanceof NodeInterface) {
+                $mailManager = Drupal::service('plugin.manager.mail');
+                $module = 'rir_interface';
+                $key = 'advert_first_published';
+
+                $PRsService = Drupal::service('rir_interface.property_requests_service');
+                $PRsService->loadPRsForAdvert($entity);
+            }
+        }
     }
 
 }

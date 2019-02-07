@@ -124,6 +124,14 @@ function rir_interface_entity_update(EntityInterface $entity)
                 'entity' => $entity
             ];
             $emailService->send($data);
+
+            if (!$entity->get('field_pr_proposed_properties')->isEmpty()) {
+                $pr_data = (object)[
+                    'notificationType' => Constants::ADVERT_VALIDATED_NOTIFY_PR,
+                    'entity' => $entity
+                ];
+                $emailService->send($pr_data);
+            }
         }
 
         // Set this advert to target PR if any
