@@ -94,13 +94,13 @@ class EmailService
                                 $message = t('There was a problem sending notification email to PR for advert: @id.', [
                                     '@id' => $entity->id(),
                                 ]);
-                                Drupal::logger('rir_interface')
+                                Drupal::logger('PR Notification')
                                     ->error($message . ' Whole Error: ' . json_encode($result, TRUE));
                             } else {
                                 $message = t('An email notification has been sent to PR for advert id: @id.', [
                                     '@id' => $entity->id(),
                                 ]);
-                                Drupal::logger('rir_interface')->notice($message);
+                                Drupal::logger('PR Notification')->notice($message);
                             }
                         }
                     }
