@@ -85,7 +85,8 @@ class EmailService
                             $to = $pr->get('field_pr_email')->value;
                             $reply = Drupal::config('system.site')->get('mail');
                             $params['cc'] = Drupal::config('system.site')->get('mail');
-                            $params['message'] = Markup::create(getEmailHtmlContent('advert_validated_notify_pr', $entity, $pr->get('field_pr_first_name')->value));
+                            $params['message'] = Markup::create(getEmailHtmlContent('advert_validated_notify_pr',
+                                $entity, $pr->get('field_pr_first_name')->value));
                             $langcode = Drupal::languageManager()->getDefaultLanguage()->getId();
                             $send = TRUE;
                             $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
