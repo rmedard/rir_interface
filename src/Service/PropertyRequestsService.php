@@ -32,8 +32,8 @@ class PropertyRequestsService
         if ($advert instanceof NodeInterface) {
             try {
                 $storage = $this->entityTypeManager->getStorage('node');
-                $storage->loadByProperties(array('type' => 'property_request', 'field_pr_proposed_properties'
-                => $advert->id()));
+                return $storage
+                    ->loadByProperties(array('type' => 'property_request', 'field_pr_proposed_properties' => $advert->id()));
             } catch (InvalidPluginDefinitionException $e) {
                 Drupal::logger('rir_interface')->error('Invalid plugin: ' . $e->getMessage());
             } catch (PluginNotFoundException $e) {
