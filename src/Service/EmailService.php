@@ -105,6 +105,8 @@ class EmailService
                             }
                         }
                     }
+                } else {
+                    Drupal::logger('PR Notification')->notice(t('No PR\'s to notify about advert @id', array('@id' => $entity->id())));
                 }
             }
         }
