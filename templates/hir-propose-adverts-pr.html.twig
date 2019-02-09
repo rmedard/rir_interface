@@ -552,7 +552,7 @@
                                 {% set manyAdverts = adverts|length > 1 ? true : false %}
                                 <h3>Interesting advert{% if manyAdverts %}s{% endif %} from {{ drupal_token('site:name') }}</h3>
                                 <p><strong>Dear {{ recipient }}, </strong>
-                                    <br>You receive this email because you have submitted a property request to {{ drupal_token('site:url') }}.
+                                    <br>You receive this email because you have submitted a property request to <a href="{{ drupal_token('site:url') }}">{{ drupal_token('site:url') }}</a>.
                                     Please find below the latest propert{% if manyAdverts %}ies{% else %}y{% endif %} we have for you:</p>
 
                                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
