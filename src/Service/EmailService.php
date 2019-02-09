@@ -71,11 +71,10 @@ class EmailService
                 Drupal::logger('rir_interface')->error('Advert validated notification: Wrong entity type');
             }
         } elseif ($data->notificationType === Constants::ADVERT_VALIDATED_NOTIFY_PR) {
-
             $entity = $data->entity;
             Drupal::logger('PR Notification')->notice('About to send notification...');
             if ($entity instanceof NodeInterface) {
-                $key = 'advert_first_published_notify_prs';
+                $key = Constants::ADVERT_VALIDATED_NOTIFY_PR;
 
                 $PRsService = Drupal::service('rir_interface.property_requests_service');
                 $PRs = $PRsService->loadPRsForAdvert($entity);

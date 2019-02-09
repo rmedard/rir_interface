@@ -16,6 +16,19 @@ use Drupal\taxonomy\Entity\Term;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\ViewExecutable;
 
+
+/**
+ * Implements hook_entity_create().
+ */
+function rir_interface_entity_create(EntityInterface $entity)
+{
+    if ($entity instanceof NodeInterface and $entity->bundle() == 'property_request') {
+        $queryString = Drupal::request()->getQueryString();
+        kint($queryString);
+        die();
+    }
+}
+
 /**
  * Implements hook_entity_insert().
  */
@@ -530,7 +543,7 @@ function rir_interface_mail($key, &$message, $params)
             $message['subject'] = t('Alert: Adverts expiring today', $options);
             $message['body'][] = $params['message'];
             break;
-        case 'advert_first_published_notify_prs':
+        case Constants::ADVERT_VALIDATED_NOTIFY_PR:
             $message['from'] = Drupal::config('system.site')->get('name') .
                 ' <' . Drupal::config('system.site')->get('mail') . '>';
             $message['subject'] = t('Notification: We have a property that may interest you', $options);
