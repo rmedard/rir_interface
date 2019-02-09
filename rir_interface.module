@@ -24,7 +24,7 @@ use Drupal\views\ViewExecutable;
 function rir_interface_entity_create(EntityInterface $entity)
 {
     if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
-        $queryString = Drupal::request()->getQueryString();
+        $queryString = Drupal::request()->get('advert_target_pr');
         kint($queryString);
         die();
     }
