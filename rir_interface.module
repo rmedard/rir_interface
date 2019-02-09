@@ -151,22 +151,21 @@ function rir_interface_entity_update(EntityInterface $entity)
     }
 
     if ($entity instanceof NodeInterface and $entity->bundle() == 'property_request') {
-        $diff = array_udiff(
+        $proposedAdverts = array_udiff(
             $entity->field_pr_proposed_properties->referencedEntities(),
             $entity->original->field_pr_proposed_properties->referencedEntities(),
             function ($new, $original) {
                 return $new->id() - $original->id();
             });
-
-//        $difference = array_diff(
-//            $entity->field_pr_proposed_properties->referencedEntities(),
-//            $entity->original->field_pr_proposed_properties->referencedEntities());
-        kint(array(
-            'original' => $entity->original->field_pr_proposed_properties->referencedEntities(),
-            'new' => $entity->field_pr_proposed_properties->referencedEntities(),
-            'difference' => $diff));
-        die();
-        $originalProposesAdverts = $entity->get('field_pr_proposed_properties')->value;
+        if (isset($proposedAdverts) && count($proposedAdverts) > 0) {
+            $data = (object)[
+                'notificationType' => Constants::PROPOSED_ADVERTS_TO_PR,
+                'pr' => $entity,
+                'adverts' => $proposedAdverts
+            ];
+            $emailService = Drupal::service('rir_interface.email_service');
+            $emailService->send($data);
+        }
     }
 }
 
@@ -419,22 +418,22 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
     }
 }
 
-function getEmailHtmlContent($email_type, $entity, $recipientName = NULL)
+function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL)
 {
     $template_path = '';
     $variables = [];
     $twig_service = Drupal::service('twig');
     switch ($email_type) {
         case 'advert_validated':
-            if ($entity instanceof NodeInterface) {
+            if ($emailPayload instanceof NodeInterface) {
                 $langcode = Drupal::languageManager()->getDefaultLanguage()->getId();
-                $nodePath = Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $entity->id(), $langcode);
+                $nodePath = Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $emailPayload->id(), $langcode);
                 Drupal::logger('rir_interface')->warning('Langcode : ' . $langcode . '|Node path: ' . $nodePath);
-                if ($nodePath == '/node/' . $entity->id()) {
+                if ($nodePath == '/node/' . $emailPayload->id()) {
                     $connection = Drupal::database();
                     $result = $connection->select('url_alias', 'al')
                         ->fields('al', ['alias'])
-                        ->condition('source', '/node/' . $entity->id())
+                        ->condition('source', '/node/' . $emailPayload->id())
                         ->execute();
                     if ($result and $result instanceof StatementInterface) {
                         Drupal::logger('rir_interface')->debug('Query string: ' . $result->getQueryString());
@@ -445,7 +444,7 @@ function getEmailHtmlContent($email_type, $entity, $recipientName = NULL)
                     }
                 }
                 $variables = [
-                    'advert' => $entity,
+                    'advert' => $emailPayload,
                     'advert_url' => Drupal::request()->getSchemeAndHttpHost() . $nodePath,
                 ];
                 $template_path = '/templates/hir-advert-validated.html.twig';
@@ -453,24 +452,32 @@ function getEmailHtmlContent($email_type, $entity, $recipientName = NULL)
             break;
         case 'advert_received':
             $variables = [
-                'advert' => $entity,
+                'advert' => $emailPayload,
                 'phone' => Drupal::config('system.site')->get('phone'),
             ];
             $template_path = '/templates/hir-advert-received.html.twig';
             break;
         case 'agent_received':
             $variables = [
-                'agent' => $entity,
+                'agent' => $emailPayload,
             ];
             $template_path = '/templates/hir-agent-received.html.twig';
             break;
         case 'advert_validated_notify_pr':
             $variables = [
-                'advert' => $entity,
+                'advert' => $emailPayload,
                 'recipient' => $recipientName
             ];
             $template_path = '/templates/hir-proposed-advert-notify-pr.html.twig';
             break;
+        case Constants::PROPOSED_ADVERTS_TO_PR:
+            $variables = [
+                'adverts' => $emailPayload,
+                'recipient' => $recipientName
+            ];
+            $template_path = '/templates/hir-propose-adverts-pr.html.twig';
+            break;
+
     }
     return $twig_service->loadTemplate(drupal_get_path('module', 'rir_interface') . $template_path)
         ->render($variables);
@@ -527,6 +534,12 @@ function rir_interface_mail($key, &$message, $params)
             $message['from'] = Drupal::config('system.site')->get('name') .
                 ' <' . Drupal::config('system.site')->get('mail') . '>';
             $message['subject'] = t('Notification: We have a property that may interest you', $options);
+            $message['body'][] = $params['message'];
+            break;
+        case Constants::PROPOSED_ADVERTS_TO_PR:
+            $message['from'] = Drupal::config('system.site')->get('name') .
+                ' <' . Drupal::config('system.site')->get('mail') . '>';
+            $message['subject'] = t('Notification: We have properties that may interest you', $options);
             $message['body'][] = $params['message'];
             break;
     }

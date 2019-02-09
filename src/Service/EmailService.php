@@ -70,9 +70,8 @@ class EmailService
             } else {
                 Drupal::logger('rir_interface')->error('Advert validated notification: Wrong entity type');
             }
-        }
+        } elseif ($data->notificationType === Constants::ADVERT_VALIDATED_NOTIFY_PR) {
 
-        if ($data->notificationType === Constants::ADVERT_VALIDATED_NOTIFY_PR) {
             $entity = $data->entity;
             Drupal::logger('PR Notification')->notice('About to send notification...');
             if ($entity instanceof NodeInterface) {
@@ -81,7 +80,7 @@ class EmailService
                 $PRsService = Drupal::service('rir_interface.property_requests_service');
                 $PRs = $PRsService->loadPRsForAdvert($entity);
                 if (isset($PRs) and !empty($PRs)) {
-                    foreach ($PRs as $pr){
+                    foreach ($PRs as $pr) {
                         if ($pr instanceof NodeInterface) {
                             $to = $pr->get('field_pr_email')->value;
                             $reply = Drupal::config('system.site')->get('mail');
@@ -108,6 +107,27 @@ class EmailService
                 } else {
                     Drupal::logger('PR Notification')->notice(t('No PR\'s to notify about advert @id', array('@id' => $entity->id())));
                 }
+            }
+        } elseif ($data->notificationType === Constants::PROPOSED_ADVERTS_TO_PR) {
+            $pr = $data->pr;
+            $adverts = $data->adverts;
+            $key = Constants::PROPOSED_ADVERTS_TO_PR;
+
+            $to = $pr->get('field_pr_email')->value;
+            $reply = Drupal::config('system.site')->get('mail');
+//            $params['cc'] = Drupal::config('system.site')->get('mail');
+            $params['message'] = Markup::create(getEmailHtmlContent(Constants::PROPOSED_ADVERTS_TO_PR,
+                $adverts, $pr->get('field_pr_first_name')->value));
+            $langcode = Drupal::languageManager()->getDefaultLanguage()->getId();
+            $send = TRUE;
+            $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
+            if (intval($result['result']) != 1) {
+                $message = t('There was a problem sending notification email to PR.');
+                Drupal::logger('PR Notification')
+                    ->error($message . ' Whole Error: ' . json_encode($result, TRUE));
+            } else {
+                $message = t('An email notification has been sent to PR.');
+                Drupal::logger('PR Notification')->notice($message);
             }
         }
     }
