@@ -151,13 +151,20 @@ function rir_interface_entity_update(EntityInterface $entity)
     }
 
     if ($entity instanceof NodeInterface and $entity->bundle() == 'property_request') {
-        $difference = array_diff(
+        $diff = array_udiff(
             $entity->field_pr_proposed_properties->referencedEntities(),
-            $entity->original->field_pr_proposed_properties->referencedEntities());
+            $entity->original->field_pr_proposed_properties->referencedEntities(),
+            function ($new, $original) {
+                return $new->id() - $original->id();
+            });
+
+//        $difference = array_diff(
+//            $entity->field_pr_proposed_properties->referencedEntities(),
+//            $entity->original->field_pr_proposed_properties->referencedEntities());
         kint(array(
             'original' => $entity->original->field_pr_proposed_properties->referencedEntities(),
             'new' => $entity->field_pr_proposed_properties->referencedEntities(),
-            'difference' => $difference));
+            'difference' => $diff));
         die();
         $originalProposesAdverts = $entity->get('field_pr_proposed_properties')->value;
     }
