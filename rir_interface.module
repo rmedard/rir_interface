@@ -151,7 +151,7 @@ function rir_interface_entity_update(EntityInterface $entity)
     }
 
     if ($entity instanceof NodeInterface and $entity->bundle() == 'property_request') {
-        kint(array($entity->get('field_pr_proposed_properties')->value,
+        kint(array($entity->get('field_pr_proposed_properties')->getValue(),
             $entity->field_pr_proposed_properties->referencedEntities()));
         die();
         $originalProposesAdverts = $entity->get('field_pr_proposed_properties')->value;
