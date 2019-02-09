@@ -22,7 +22,7 @@ use Drupal\views\ViewExecutable;
  */
 function rir_interface_entity_create(EntityInterface $entity)
 {
-    if ($entity instanceof NodeInterface and $entity->bundle() == 'property_request') {
+    if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
         $queryString = Drupal::request()->getQueryString();
         kint($queryString);
         die();
