@@ -151,8 +151,13 @@ function rir_interface_entity_update(EntityInterface $entity)
     }
 
     if ($entity instanceof NodeInterface and $entity->bundle() == 'property_request') {
-        kint(array($entity->get('field_pr_proposed_properties')->getValue(),
-            $entity->field_pr_proposed_properties->referencedEntities()));
+        $difference = array_diff(
+            $entity->field_pr_proposed_properties->referencedEntities(),
+            $entity->original->field_pr_proposed_properties->referencedEntities());
+        kint(array(
+            'original' => $entity->original->field_pr_proposed_properties->referencedEntities(),
+            'new' => $entity->field_pr_proposed_properties->referencedEntities(),
+            'difference' => $difference));
         die();
         $originalProposesAdverts = $entity->get('field_pr_proposed_properties')->value;
     }
