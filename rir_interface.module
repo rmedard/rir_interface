@@ -465,10 +465,10 @@ function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL)
             break;
         case 'advert_validated_notify_pr':
             $variables = [
-                'advert' => $emailPayload,
+                'adverts' => array($emailPayload),
                 'recipient' => $recipientName
             ];
-            $template_path = '/templates/hir-proposed-advert-notify-pr.html.twig';
+            $template_path = '/templates/hir-propose-adverts-pr.html.twig';
             break;
         case Constants::PROPOSED_ADVERTS_TO_PR:
             $variables = [
