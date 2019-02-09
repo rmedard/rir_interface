@@ -112,7 +112,6 @@ class EmailService
             $pr = $data->pr;
             $adverts = $data->adverts;
             $key = Constants::PROPOSED_ADVERTS_TO_PR;
-
             $to = $pr->get('field_pr_email')->value;
             $reply = Drupal::config('system.site')->get('mail');
 //            $params['cc'] = Drupal::config('system.site')->get('mail');
