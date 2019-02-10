@@ -62,6 +62,11 @@ class RiRRealTimeFigures extends BlockBase {
           ->count();
         $agents_count = $agents->execute();
 
+        $prs = Drupal::entityQuery('node')
+            ->condition('type', 'property_request')
+            ->count();
+        $prs_count = $prs->execute();
+
         $output = [];
         $output[]['#cache']['max-age'] = 0;
         $output[] = [
@@ -70,6 +75,7 @@ class RiRRealTimeFigures extends BlockBase {
           '#sale' => $sale_count,
           '#agents' => $agents_count,
           '#auctions' => $auction_count,
+          '#prs' => $prs_count,
         ];
         return $output;
     }
