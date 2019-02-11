@@ -113,7 +113,7 @@ class EmailService
             $key = Constants::PROPOSED_ADVERTS_TO_PR;
             $to = $pr->get('field_pr_email')->value;
             $reply = Drupal::config('system.site')->get('mail');
-//            $params['cc'] = Drupal::config('system.site')->get('mail');
+            $params['cc'] = Drupal::config('system.site')->get('mail');
             $params['message'] = Markup::create(getEmailHtmlContent(Constants::PROPOSED_ADVERTS_TO_PR,
                 $adverts, $pr->get('field_pr_first_name')->value));
             $langcode = Drupal::languageManager()->getDefaultLanguage()->getId();
