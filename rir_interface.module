@@ -549,13 +549,13 @@ function rir_interface_mail($key, &$message, $params)
         case Constants::ADVERT_VALIDATED_NOTIFY_PR:
             $message['from'] = Drupal::config('system.site')->get('name') .
                 ' <' . Drupal::config('system.site')->get('mail') . '>';
-            $message['subject'] = t('Interesting advert from @siteName', array_merge(array('@siteName' => $message['from'], $options)));
+            $message['subject'] = t('Interesting advert from @siteName', array_merge(array('@siteName' => $message['from']), $options));
             $message['body'][] = $params['message'];
             break;
         case Constants::PROPOSED_ADVERTS_TO_PR:
             $message['from'] = Drupal::config('system.site')->get('name') .
                 ' <' . Drupal::config('system.site')->get('mail') . '>';
-            $message['subject'] = t('Interesting advert from @siteName', array_merge(array('@siteName' => $message['from'], $options)));
+            $message['subject'] = t('Interesting advert from @siteName', array_merge(array('@siteName' => $message['from']), $options));
             $message['body'][] = $params['message'];
             break;
     }
