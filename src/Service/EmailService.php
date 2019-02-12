@@ -79,9 +79,11 @@ class EmailService
                 $PRsService = Drupal::service('rir_interface.property_requests_service');
                 $PRs = $PRsService->loadPRsForAdvert($entity);
                 if (isset($PRs) and !empty($PRs)) {
+                    $dummyDomains = array('@test.com', '@example.com', '@random.com');
                     foreach ($PRs as $pr) {
-                        if ($pr instanceof NodeInterface) {
-                            $to = $pr->get('field_pr_email')->value;
+                        $email = $pr->get('field_pr_email')->value;
+                        if ($pr instanceof NodeInterface && strlen(str_replace($dummyDomains, '', $email)) == strlen($email)) {
+                            $to = $email;
                             $reply = Drupal::config('system.site')->get('mail');
                             $params['cc'] = Drupal::config('system.site')->get('mail');
                             $params['message'] = Markup::create(getEmailHtmlContent('advert_validated_notify_pr',
