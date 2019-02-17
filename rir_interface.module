@@ -622,9 +622,8 @@ function rir_interface_token_info()
     );
 
     return array(
-//        'types' => ['customtoken' => $type],
-        'types' => ['site'],
-        'tokens' => ['customtoken' => $tokens]
+        'types' => ['custom_token' => $type],
+        'tokens' => ['custom_token' => $tokens]
     );
 }
 
