@@ -612,8 +612,8 @@ function rir_interface_form_alter(&$form, FormStateInterface $form_state, $form_
 function rir_interface_token_info()
 {
     $type = [
-        'name' => t('Custom Token'),
-        'description' => t('Custom Hir Tokens.'),
+        'name' => t('Custom Hir Tokens'),
+        'description' => t('Additional custom Hir Tokens.'),
     ];
 
     $tokens['phone'] = array(
@@ -633,7 +633,7 @@ function rir_interface_token_info()
 function rir_interface_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata)
 {
     $replacements = array();
-    if($type == 'site') {
+    if($type == 'custom_token') {
         foreach ($tokens as $name => $original) {
             switch ($name) {
                 case 'phone':
