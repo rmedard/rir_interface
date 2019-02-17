@@ -622,7 +622,8 @@ function rir_interface_token_info()
     );
 
     return array(
-        'types' => ['customtoken' => $type],
+//        'types' => ['customtoken' => $type],
+        'types' => ['site'],
         'tokens' => ['customtoken' => $tokens]
     );
 }
@@ -633,7 +634,7 @@ function rir_interface_token_info()
 function rir_interface_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata)
 {
     $replacements = array();
-    if($type == 'customtoken') {
+    if($type == 'site') {
         foreach ($tokens as $name => $original) {
             switch ($name) {
                 case 'phone':
