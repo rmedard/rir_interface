@@ -616,16 +616,14 @@ function rir_interface_token_info()
         'description' => t('Custom Hir Tokens.'),
     ];
 
-    $site['phone'] = array(
+    $tokens['phone'] = array(
         'name' => t('Site Telephone'),
         'description' => t('Telephone number of the site')
     );
 
     return array(
-        'types' => ['custom' => $type],
-        'tokens' => array(
-            'phone' => $site
-        )
+        'types' => ['customtoken' => $type],
+        'tokens' => ['customtoken' => $tokens]
     );
 }
 
@@ -635,7 +633,7 @@ function rir_interface_token_info()
 function rir_interface_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata)
 {
     $replacements = array();
-    if($type == 'custom' && !empty($data['phone'])) {
+    if($type == 'customtoken') {
         foreach ($tokens as $name => $original) {
             switch ($name) {
                 case 'phone':
