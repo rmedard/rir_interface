@@ -83,7 +83,7 @@ class AdvertsService
                 $pr->field_pr_proposed_properties[] = ['target_id' => $advertId];
                 $pr->save();
                 Drupal::logger('rir_interface')
-                    ->error(t('Advert @id proposed to PR @prId', array('@id' => $advertId, '@prId' => $prId)));
+                    ->info(t('Advert @id proposed to PR @prId', array('@id' => $advertId, '@prId' => $prId)));
             }
         } catch (InvalidPluginDefinitionException $e) {
             Drupal::logger('rir_interface')->error('Invalid plugin: ' . $e->getMessage());
