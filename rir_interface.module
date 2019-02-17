@@ -7,6 +7,7 @@
 use Drupal\Core\Database\StatementInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\Markup;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
@@ -434,7 +435,7 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
     }
 }
 
-function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL)
+function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL, $options = array())
 {
     $template_path = '';
     $variables = [];
@@ -482,14 +483,16 @@ function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL)
         case 'advert_validated_notify_pr':
             $variables = [
                 'adverts' => array($emailPayload),
-                'recipient' => $recipientName
+                'recipient' => $recipientName,
+                'prId' => $options['prId']
             ];
             $template_path = '/templates/hir-propose-adverts-pr.html.twig';
             break;
         case Constants::PROPOSED_ADVERTS_TO_PR:
             $variables = [
                 'adverts' => $emailPayload,
-                'recipient' => $recipientName
+                'recipient' => $recipientName,
+                'prId' => $options['prId']
             ];
             $template_path = '/templates/hir-propose-adverts-pr.html.twig';
             break;
@@ -603,6 +606,43 @@ function rir_interface_form_alter(&$form, FormStateInterface $form_state, $form_
     }
 }
 
+/**
+ * Implements hook_token_info().
+ */
+function rir_interface_token_info()
+{
+    $types['site'][] = array();
+    $tokens['phone'] = array(
+        'name' => t('Site Telephone'),
+        'description' => t('Telephone number of the site')
+    );
+
+    return array(
+        'types' => $types,
+        'tokens' => array(
+            'phone' => $tokens
+        )
+    );
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function rir_interface_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata)
+{
+    $replacements = array();
+    if($type == 'site') {
+        foreach ($tokens as $name => $original) {
+            switch ($name) {
+                case 'phone':
+                    $text = Drupal::config('system.site')->get('phone');
+                    $replacements[$original] = $text;
+                    break;
+            }
+        }
+    }
+    return $replacements;
+}
 
 function get_email_attachment_files()
 {
