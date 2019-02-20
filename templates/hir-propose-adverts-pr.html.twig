@@ -86,6 +86,7 @@
                     below:</p>
             </td>
         </tr>
+        {% for advert in adverts %}
         <tr>
             <td class="tg-0pky">
                 {% if advert.field_advert_picture is not empty %}
@@ -97,16 +98,14 @@
                 {% endif %}
             </td>
             <td class="tg-0pky">
-                <p id="titleId"><a
-                            href="{{ drupal_url('node/' ~ advert.id, {absolute: true}) }}">{{ advert.title.value|capitalize }}</a>
-                    - Ref: <span>{{ advert.field_advert_reference.value }}</span> -
-                    <span>{{ advert.field_advert_price.value }} {{ advert.field_advert_currency.value|upper }}</span>
-                    <br/>
+                <p id="titleId">
+                    <a href="{{ drupal_url('node/' ~ advert.id, {absolute: true}) }}">{{ advert.title.value|capitalize }}</a> - Ref: <span>{{ advert.field_advert_reference.value }}</span> - <span>{{ advert.field_advert_price.value }} {{ advert.field_advert_currency.value|upper }}</span><br/>
                     {{ advert.field_advert_district.entity.name.value }}, {{ advert.field_advert_sector.value }}<br/>
-                    {{ advert.field_advert_property_type.value|capitalize }}
-                    for {{ advert.field_advert_type.value|capitalize }}</p>
+                    {{ advert.field_advert_property_type.value|capitalize }} for {{ advert.field_advert_type.value|capitalize }}
+                </p>
             </td>
         </tr>
+        {% endfor %}
         <tr>
             <td class="tg-0pky" colspan="2">
                 <p>Best regards, <br>
