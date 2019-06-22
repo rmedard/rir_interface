@@ -19,7 +19,7 @@
                             <small>Ref: {{ advert.field_advert_reference.value }}</small>
                         </h5>
                         <small>
-                            <i class="fas fa-map-marker-alt"></i> {{ advert.field_advert_district.entity.name.value }}, {{ advert.field_advert_sector.value }}
+                            <i class="fas fa-map-marker-alt"></i> {{ advert.field_advert_district.entity.name.value|capitalize }}, {{ advert.field_advert_sector.value|capitalize }}
                         </small>
                         <br>
                         <small>
