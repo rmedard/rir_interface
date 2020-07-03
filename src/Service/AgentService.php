@@ -5,7 +5,6 @@ namespace Drupal\rir_interface\Service;
 use Drupal;
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
-use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\node\Entity\Node;
 
 /**
@@ -24,7 +23,7 @@ class AgentService {
      *
      * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
      */
-    public function __construct(EntityTypeManager $entityTypeManager) {
+    public function __construct(\Drupal\Core\Entity\EntityTypeManager $entityTypeManager) {
         $this->entityTypeManager = $entityTypeManager;
     }
 
