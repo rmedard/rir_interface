@@ -662,6 +662,14 @@ function rir_interface_tokens($type, $tokens, array $data, array $options, Bubbl
     return $replacements;
 }
 
+/**
+ * Implements hook_page_top().
+ */
+function rir_interface_page_top(array &$page_top)
+{
+    array_push($page_top, Markup::create('<span id="geolocation-google-places-api-attribution"></span>'));
+}
+
 function get_email_attachment_files()
 {
     $file1 = new stdClass();
