@@ -667,7 +667,7 @@ function rir_interface_tokens($type, $tokens, array $data, array $options, Bubbl
  */
 function rir_interface_page_top(array &$page_top)
 {
-    array_push($page_top, '<span id="geolocation-google-places-api-attribution"></span>');
+//    array_push($page_top, '<span id="geolocation-google-places-api-attribution"></span>');
 //    kint($page_top);
 }
 
