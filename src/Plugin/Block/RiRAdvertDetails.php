@@ -41,6 +41,7 @@ class RiRAdvertDetails extends BlockBase
      * @see \Drupal\block\BlockViewBuilder
      */
     public function build() {
+        Drupal::logger('rir_interface')->info('Route: ' . Drupal::routeMatch()->getRouteName());
         $node = Drupal::routeMatch()->getParameter('node');
         $output = [];
         $output[]['#cache']['max-age'] = 0; //No cache. Very important.
