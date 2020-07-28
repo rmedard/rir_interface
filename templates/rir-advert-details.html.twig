@@ -1,4 +1,16 @@
 <div id="advert-details-block">
+    {% if advert.field_advert_video_presentation is not empty %}
+    <div class="panel panel-default">
+        <div class="panel-heading" style="font-weight: bolder; font-size: large">Property video presentation</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    {{ advert.field_advert_video_presentation }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
     <div class="panel panel-default">
         <div class="panel-heading" style="font-weight: bolder; font-size: large">Property details</div>
         <div class="panel-body">
