@@ -41,12 +41,13 @@ class RiRAdvertDetails extends BlockBase
      * @see \Drupal\block\BlockViewBuilder
      */
     public function build() {
-        Drupal::logger('rir_interface')->info('Route: ' . Drupal::routeMatch()->getRouteName());
-        $node = Drupal::routeMatch()->getParameter('node');
         $output = [];
-        $output[]['#cache']['max-age'] = 0; //No cache. Very important.
-        if ($node and $node instanceof NodeInterface and $node->bundle() == 'advert') {
-            $output[] = ['#theme' => 'rir_advert_details', '#advert' => $node];
+        if (Drupal::routeMatch()->getRouteName() == 'entity.node.canonical') {
+            $node = Drupal::routeMatch()->getParameter('node');
+            $output[]['#cache']['max-age'] = 0; //No cache. Very important.
+            if ($node and $node instanceof NodeInterface and $node->bundle() == 'advert') {
+                $output[] = ['#theme' => 'rir_advert_details', '#advert' => $node];
+            }
         }
         return $output;
     }
