@@ -5,8 +5,7 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-12">
-                    {{ advert.id }}
-                    {{ drupal_field('field_advert_video_presentation', 'node', 1593, 'twig_display') }}
+                    {{ drupal_field('field_advert_video_presentation', 'node', advert.id, 'twig_display') }}
                 </div>
             </div>
         </div>
