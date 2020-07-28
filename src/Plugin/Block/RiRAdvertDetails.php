@@ -42,7 +42,7 @@ class RiRAdvertDetails extends BlockBase
      */
     public function build() {
         $output = [];
-        if (Drupal::routeMatch()->getRouteName() == 'entity.node.canonical') {
+        if (Drupal::routeMatch()->getRouteName() == 'entity.node.canonical') { //Only display on node, not edit page
             $node = Drupal::routeMatch()->getParameter('node');
             $output[]['#cache']['max-age'] = 0; //No cache. Very important.
             if ($node and $node instanceof NodeInterface and $node->bundle() == 'advert') {
