@@ -142,4 +142,16 @@
             </div>
         </div>
     {% endif %}
+    {% if advert.field_advert_location is not empty %}
+        <div class="panel panel-default">
+            <div class="panel-heading" style="font-weight: bolder; font-size: large">Property on the map</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        {{ drupal_field('field_advert_location', 'node', advert.id, 'twig_display') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 </div>
