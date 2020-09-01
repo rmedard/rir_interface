@@ -66,9 +66,9 @@ function rir_interface_entity_insert(EntityInterface $entity)
         $params['advert_title'] = $entity->label();
         $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
 
-        $attachments = get_email_attachment_files();
-        $params['attachments'][] = $attachments[0];
-        $params['attachments'][] = $attachments[1];
+//        $attachments = get_email_attachment_files();
+//        $params['attachments'][] = $attachments[0];
+//        $params['attachments'][] = $attachments[1];
 
         $langcode = Drupal::currentUser()->getPreferredLangcode();
         $send = TRUE;
@@ -105,9 +105,9 @@ function rir_interface_entity_insert(EntityInterface $entity)
         $params['cc'] = $reply;
         $params['message'] = Markup::create(getEmailHtmlContent('agent_received', $entity));
 
-        $attachments = get_email_attachment_files();
-        $params['attachments'][] = $attachments[0];
-        $params['attachments'][] = $attachments[1];
+//        $attachments = get_email_attachment_files();
+//        $params['attachments'][] = $attachments[0];
+//        $params['attachments'][] = $attachments[1];
 
         $langcode = Drupal::currentUser()->getPreferredLangcode();
         $send = TRUE;

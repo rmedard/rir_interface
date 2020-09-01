@@ -47,10 +47,10 @@ class EmailService
                 $params['advert_title'] = $entity->label();
                 $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
 
-                $attachments = get_email_attachment_files();
-                $params['attachments'][] = $attachments[0];
-                $params['attachments'][] = $attachments[1];
-                $params['attachments'][] = $attachments[2];
+//                $attachments = get_email_attachment_files();
+//                $params['attachments'][] = $attachments[0];
+//                $params['attachments'][] = $attachments[1];
+//                $params['attachments'][] = $attachments[2];
 
                 $langcode = Drupal::languageManager()->getDefaultLanguage()->getId();
                 $send = TRUE;
