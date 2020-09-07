@@ -53,7 +53,7 @@ function rir_interface_node_view(array &$build, EntityInterface $entity, EntityV
         and $entity->bundle() == 'advert') {
         if ($entity->get('field_advert_type')->value == 'auction'
             and isset($entity->get('field_advert_type')->value)
-            and intval($entity->get('field_advert_type')->value) == 1 ) {
+            and intval($entity->get('field_bid_is_online')->value) == 1 ) {
             Drupal::messenger()->addStatus("End date: " . $entity->get('field_bid_expiration')->value);
         }
     }
