@@ -54,7 +54,7 @@ function rir_interface_node_view(array &$build, EntityInterface $entity, EntityV
         if ($entity->get('field_advert_type')->value == 'auction'
             and isset($entity->get('field_advert_type')->value)
             and intval($entity->get('field_bid_is_online')->value) == 1 ) {
-            $expirationDate = $entity->get('field_bid_expiration');
+            $expirationDate = $entity->get('field_bid_expiration')->get(0);
             $build['#attached']['drupalSettings']['bid']['expiration'] = $expirationDate->format('Y-m-d H:i:s');
         }
     }
