@@ -46,10 +46,7 @@ function rir_interface_entity_create(EntityInterface $entity)
  */
 function rir_interface_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode)
 {
-    Drupal::logger('rir_interface')->info('Node ' . $entity->id() . ' | mode ' . $view_mode);
-    if ($view_mode == 'full'
-        and $entity instanceof NodeInterface
-        and $entity->bundle() == 'advert') {
+    if ($view_mode == 'full' and $entity instanceof NodeInterface and $entity->bundle() == 'advert') {
         if ($entity->get('field_advert_type')->value == 'auction'
             and isset($entity->get('field_advert_type')->value)
             and intval($entity->get('field_bid_is_online')->value) == 1) {
