@@ -47,6 +47,7 @@ function rir_interface_entity_create(EntityInterface $entity)
  */
 function rir_interface_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode)
 {
+    Drupal::logger('rir_interface')->info('Node ' . $entity->id());
     if ($view_mode == 'full'
         and $entity instanceof NodeInterface
         and $entity->bundle() == 'advert') {
