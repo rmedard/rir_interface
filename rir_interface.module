@@ -5,6 +5,7 @@
  */
 
 use Drupal\Core\Database\StatementInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\BubbleableMetadata;
@@ -37,6 +38,22 @@ function rir_interface_entity_create(EntityInterface $entity)
             if ($assocParam[0] == 'field_advert_posting_plan') {
                 $entity->set('field_advert_posting_plan', $assocParam[1]);
             }
+        }
+    }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function rir_interface_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode)
+{
+    if ($view_mode == 'full'
+        and $entity instanceof NodeInterface
+        and $entity->bundle() == 'advert') {
+        if ($entity->get('field_advert_type')->value == 'auction'
+            and isset($entity->get('field_advert_type')->value)
+            and intval($entity->get('field_advert_type')->value) == 1 ) {
+            Drupal::messenger()->addStatus("End date: " . $entity->get('field_bid_expiration')->value);
         }
     }
 }
