@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\Markup;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItem;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\rir_interface\Utils\Constants;
@@ -55,7 +56,9 @@ function rir_interface_node_view(array &$build, EntityInterface $entity, EntityV
             and isset($entity->get('field_advert_type')->value)
             and intval($entity->get('field_bid_is_online')->value) == 1 ) {
             $expirationDate = $entity->get('field_bid_expiration')->get(0);
-            $build['#attached']['drupalSettings']['bid']['expiration'] = $expirationDate->format('Y-m-d H:i:s');
+            if ($expirationDate instanceof DateTimeItem) {
+                $build['#attached']['drupalSettings']['bid']['expiration'] = $expirationDate->value->format('Y-m-d H:i:s');
+            }
         }
     }
 }
