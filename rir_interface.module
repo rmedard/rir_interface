@@ -46,9 +46,9 @@ function rir_interface_entity_create(EntityInterface $entity)
  */
 function rir_interface_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode)
 {
-    if ($view_mode == 'full' and $entity instanceof NodeInterface and $entity->bundle() == 'advert') {
+    if ($entity->bundle() == 'advert' and $view_mode == 'full' and $entity instanceof NodeInterface) {
         if ($entity->get('field_advert_type')->value == 'auction'
-            and isset($entity->get('field_advert_type')->value)
+            and isset($entity->get('field_bid_is_online')->value)
             and intval($entity->get('field_bid_is_online')->value) == 1) {
             $build['#attached']['drupalSettings']['bid']['expiration'] = $entity->get('field_bid_expiration')->date->format('Y/m/d H:i:s');
         }
