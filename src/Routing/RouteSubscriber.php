@@ -17,7 +17,7 @@ class RouteSubscriber extends RouteSubscriberBase {
     /**
      * Alters existing routes for a specific collection.
      *
-     * @param \Symfony\Component\Routing\RouteCollection $collection
+     * @param RouteCollection $collection
      *   The route collection for adding routes.
      */
     protected function alterRoutes(RouteCollection $collection) {

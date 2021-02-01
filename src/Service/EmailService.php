@@ -86,8 +86,8 @@ class EmailService
                             $to = $email;
                             $reply = Drupal::config('system.site')->get('mail');
                             $params['cc'] = Drupal::config('system.site')->get('mail');
-                            $params['message'] = Markup::create(getEmailHtmlContent('advert_validated_notify_pr',
-                                $entity, $pr->get('field_pr_first_name')->value), array('prId' => $pr->id()));
+                            $params['message'] = Markup::create(getEmailHtmlContent(Constants::ADVERT_VALIDATED_NOTIFY_PR,
+                                $entity, $pr->get('field_pr_first_name')->value, ['prId' => $pr->id()]));
                             $langcode = Drupal::languageManager()->getDefaultLanguage()->getId();
                             $send = TRUE;
                             $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
@@ -117,7 +117,7 @@ class EmailService
             $reply = Drupal::config('system.site')->get('mail');
             $params['cc'] = Drupal::config('system.site')->get('mail');
             $params['message'] = Markup::create(getEmailHtmlContent(Constants::PROPOSED_ADVERTS_TO_PR,
-                $adverts, $pr->get('field_pr_first_name')->value, array('prId' => $pr->id())));
+                $adverts, $pr->get('field_pr_first_name')->value, ['prId' => $pr->id()]));
             $langcode = Drupal::languageManager()->getDefaultLanguage()->getId();
             $send = TRUE;
             $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);

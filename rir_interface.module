@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\Markup;
+use Drupal\Core\TypedData\Exception\MissingDataException;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\rir_interface\Utils\Constants;
@@ -144,6 +145,8 @@ function rir_interface_entity_insert(EntityInterface $entity)
 
 /**
  * Implements hook_entity_update().
+ * @param EntityInterface $entity
+ * @throws MissingDataException
  */
 function rir_interface_entity_update(EntityInterface $entity)
 {
@@ -191,7 +194,7 @@ function rir_interface_entity_update(EntityInterface $entity)
 
     if ($entity instanceof NodeInterface and $entity->bundle() == 'property_request') {
         $proposedAdverts = array_udiff(
-            $entity->field_pr_proposed_properties->referencedEntities(),
+            $entity->get('field_pr_proposed_properties')->referencedEntities(),
             $entity->original->field_pr_proposed_properties->referencedEntities(),
             function ($new, $original) {
                 return $new->id() - $original->id();
@@ -208,7 +211,7 @@ function rir_interface_entity_update(EntityInterface $entity)
     }
 }
 
-function generateRandomStr()
+function generateRandomStr(): string
 {
     $randomPart = '';
     srand((double)microtime(TRUE) * 1000000);
@@ -259,8 +262,13 @@ function generateRandomStr()
 
 /**
  * Implements hook_theme().
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ * @return array
  */
-function rir_interface_theme($existing, $type, $theme, $path)
+function rir_interface_theme($existing, $type, $theme, $path): array
 {
 
     return [
@@ -317,6 +325,7 @@ function rir_interface_theme($existing, $type, $theme, $path)
 
 /**
  * Implements hook_entity_presave().
+ * @param EntityInterface $entity
  */
 function rir_interface_entity_presave(EntityInterface $entity)
 {
@@ -409,6 +418,8 @@ function rir_interface_entity_presave(EntityInterface $entity)
 
 /**
  * Implements hook_views_query_alter().
+ * @param ViewExecutable $view
+ * @param QueryPluginBase $query
  */
 function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $query)
 {
@@ -457,13 +468,13 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
     }
 }
 
-function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL, $options = array())
+function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL, $options = [])
 {
     $template_path = '';
     $variables = [];
     $twig_service = Drupal::service('twig');
     switch ($email_type) {
-        case 'advert_validated':
+        case Constants::ADVERT_VALIDATED:
             if ($emailPayload instanceof NodeInterface) {
                 $langcode = Drupal::languageManager()->getDefaultLanguage()->getId();
                 $nodePath = Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $emailPayload->id(), $langcode);
@@ -502,7 +513,7 @@ function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL, 
             ];
             $template_path = '/templates/hir-agent-received.html.twig';
             break;
-        case 'advert_validated_notify_pr':
+        case Constants::ADVERT_VALIDATED_NOTIFY_PR:
             $variables = [
                 'adverts' => array($emailPayload),
                 'recipient' => $recipientName,
@@ -527,6 +538,9 @@ function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL, 
 
 /**
  * Implements hook_mail().
+ * @param $key
+ * @param $message
+ * @param $params
  */
 function rir_interface_mail($key, &$message, $params)
 {
@@ -575,20 +589,20 @@ function rir_interface_mail($key, &$message, $params)
             $message['from'] = Drupal::config('system.site')->get('name') .
                 ' <' . Drupal::config('system.site')->get('mail') . '>';
             $message['headers']['Cc'] = $params['cc'];
-            $message['subject'] = t('Interesting advert from @siteName', array_merge(array('@siteName' => $message['from']), $options));
+            $message['subject'] = t('Interesting advert from @siteName', array_merge(['@siteName' => $message['from']], $options));
             $message['body'][] = $params['message'];
             break;
         case Constants::PROPOSED_ADVERTS_TO_PR:
             $message['from'] = Drupal::config('system.site')->get('name') .
                 ' <' . Drupal::config('system.site')->get('mail') . '>';
             $message['headers']['Cc'] = $params['cc'];
-            $message['subject'] = t('Interesting advert from @siteName', array_merge(array('@siteName' => $message['from']), $options));
+            $message['subject'] = t('Interesting advert from @siteName', array_merge(['@siteName' => $message['from']], $options));
             $message['body'][] = $params['message'];
             break;
         case 'send_campaign_email':
             $message['from'] = Drupal::config('system.site')->get('name') .
                 ' <' . Drupal::config('system.site')->get('mail') . '>';
-            $message['subject'] = t('Interesting adverts from @siteName', array_merge(array('@siteName' => $message['from']), $options));
+            $message['subject'] = t('Interesting adverts from @siteName', array_merge(['@siteName' => $message['from']], $options));
             $message['body'][] = $params['message'];
             break;
     }
