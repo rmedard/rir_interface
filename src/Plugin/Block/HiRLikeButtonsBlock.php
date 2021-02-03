@@ -9,8 +9,10 @@
 namespace Drupal\rir_interface\Plugin\Block;
 
 
+use Drupal;
 use Drupal\Core\Block\Annotation\Block;
 use Drupal\Core\Block\BlockBase;
+use Drupal\rir_interface\Form\SocialMediaSettingsForm;
 
 /**
  * Class HiRLikeButtonsBlock
@@ -39,8 +41,16 @@ class HiRLikeButtonsBlock extends BlockBase
      */
     public function build(): array
     {
-        return[
+        $facebook = Drupal::config(SocialMediaSettingsForm::SETTINGS)->get('facebook_page');
+        $instagram = Drupal::config(SocialMediaSettingsForm::SETTINGS)->get('instagram_page');
+        $twitter = Drupal::config(SocialMediaSettingsForm::SETTINGS)->get('twitter_page');
+        $youtube = Drupal::config(SocialMediaSettingsForm::SETTINGS)->get('youtube_page');
+        return [
             '#theme' => 'hir_like_buttons',
+            '#facebook' => trim($facebook),
+            '#twitter' => trim($twitter),
+            '#instagram' => trim($instagram),
+            '#youtube' => trim($youtube)
         ];
     }
 }
