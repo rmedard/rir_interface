@@ -24,7 +24,7 @@ class DirectAccessForm extends FormBase
      * @return string
      *   The unique string identifying the form.
      */
-    public function getFormId()
+    public function getFormId(): string
     {
         return 'direct_access_form';
     }
@@ -34,13 +34,13 @@ class DirectAccessForm extends FormBase
      *
      * @param array $form
      *   An associative array containing the structure of the form.
-     * @param \Drupal\Core\Form\FormStateInterface $form_state
+     * @param FormStateInterface $form_state
      *   The current state of the form.
      *
      * @return array
      *   The form structure.
      */
-    public function buildForm(array $form, FormStateInterface $form_state)
+    public function buildForm(array $form, FormStateInterface $form_state): array
     {
         $form['reference_number'] = array(
             '#type' => 'textfield',
@@ -68,7 +68,7 @@ class DirectAccessForm extends FormBase
      *
      * @param array $form
      *   An associative array containing the structure of the form.
-     * @param \Drupal\Core\Form\FormStateInterface $form_state
+     * @param FormStateInterface $form_state
      *   The current state of the form.
      */
     public function submitForm(array &$form, FormStateInterface $form_state)
