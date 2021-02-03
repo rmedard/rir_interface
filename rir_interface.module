@@ -309,7 +309,12 @@ function rir_interface_theme($existing, $type, $theme, $path): array
             'variables' => [],
         ],
         'hir_like_buttons' => [
-            'variables' => [],
+            'variables' => [
+                'facebook' => '',
+                'twitter' => '',
+                'instagram' => '',
+                'youtube' => ''
+            ],
         ],
         'hir_similar_adverts' => [
             'variables' => [
