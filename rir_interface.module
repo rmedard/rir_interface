@@ -305,9 +305,6 @@ function rir_interface_theme($existing, $type, $theme, $path): array
                 'advert' => NULL,
             ],
         ],
-        'hir_create_agent' => [
-            'variables' => [],
-        ],
         'hir_management_page' => [
             'variables' => [],
         ],
