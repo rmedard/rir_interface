@@ -21,7 +21,8 @@ class RedirectOn403InvalidUrl extends HttpExceptionSubscriberBase
         Drupal::logger('rir_interface')->debug($event->getRequest()->getRequestUri());
 //        if (!RequestHelper::isCleanUrl($event->getRequest())) {
             Drupal::logger('rir_interface')->warning('403 with invalid Url with /index.php detected.');
-            $cleanRequestUri = $this->cleanPath($event->getRequest()->getRequestUri());
+            $cleanRequestUri = trim($this->cleanPath($event->getRequest()->getRequestUri()));
+            $cleanRequestUri = $cleanRequestUri === '' ? Drupal::config('system.site')->get('page.front') : $cleanRequestUri;
             $response = new TrustedRedirectResponse($cleanRequestUri, 302);
             $response->headers->set('X-Drupal-Route-Normalizer', 1);
             $event->setResponse($response);

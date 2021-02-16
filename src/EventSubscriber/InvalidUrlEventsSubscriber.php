@@ -33,8 +33,9 @@ class InvalidUrlEventsSubscriber implements EventSubscriberInterface
      */
     public function onInvalidRequestUrl(FilterResponseEvent $responseEvent) {
         if (!RequestHelper::isCleanUrl($responseEvent->getRequest())) {
-            Drupal::logger('rir_interface')->warning('Invalid Url with /index.php detected.');
-            $cleanRequestUri = $this->cleanPath($responseEvent->getRequest()->getRequestUri());
+            Drupal::logger('rir_interface')->warning('with invalid Url with /index.php detected.');
+            $cleanRequestUri = trim($this->cleanPath($responseEvent->getRequest()->getRequestUri()));
+            $cleanRequestUri = $cleanRequestUri === '' ? Drupal::config('system.site')->get('page.front') : $cleanRequestUri;
             $response = new TrustedRedirectResponse($cleanRequestUri, 302);
             $response->headers->set('X-Drupal-Route-Normalizer', 1);
             $responseEvent->setResponse($response);
