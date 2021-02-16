@@ -5,6 +5,8 @@ namespace Drupal\rir_interface\Service;
 use Drupal;
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\node\Entity\Node;
 
 /**
@@ -21,9 +23,9 @@ class AgentService {
     /**
      * AgentService constructor.
      *
-     * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+     * @param EntityTypeManager $entityTypeManager
      */
-    public function __construct(\Drupal\Core\Entity\EntityTypeManager $entityTypeManager) {
+    public function __construct(EntityTypeManager $entityTypeManager) {
         $this->entityTypeManager = $entityTypeManager;
     }
 
@@ -31,9 +33,10 @@ class AgentService {
      * @param $agent_id
      * @param int $status Status of the adverts. Defaults to PUBLISHED
      *
-     * @return \Drupal\Core\Entity\EntityInterface[]|static[]
+     * @return EntityInterface[]|static[]
      */
-    public function loadAdverts($agent_id, $status = Node::PUBLISHED){
+    public function loadAdverts($agent_id, $status = Node::PUBLISHED): array
+    {
         $data = [];
         try {
             $storage = $this->entityTypeManager->getStorage('node');
@@ -43,9 +46,7 @@ class AgentService {
                 ->condition('field_advert_advertiser.target_id', $agent_id); // Could be field_advert_advertiser.entity.field_name (other than id)
             $advert_ids = $query->execute();
             $data = $storage->loadMultiple($advert_ids);
-        } catch (InvalidPluginDefinitionException $e) {
-            Drupal::logger('rir_interface')->error("Load adverts failed: " . $e->getMessage());
-        } catch (PluginNotFoundException $e) {
+        } catch (InvalidPluginDefinitionException | PluginNotFoundException $e) {
             Drupal::logger('rir_interface')->error("Load adverts failed: " . $e->getMessage());
         }
         return $data;

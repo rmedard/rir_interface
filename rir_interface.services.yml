@@ -14,3 +14,7 @@ services:
     class: Drupal\rir_interface\Routing\RouteSubscriber
     tags:
       - { name: event_subscriber }
+  rir_interface.invalid_url_events:
+    class: Drupal\rir_interface\EventSubscriber\InvalidUrlEventsSubscriber
+    tags:
+      - { name: event_subscriber }
