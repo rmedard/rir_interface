@@ -18,6 +18,7 @@ class RedirectOn403InvalidUrl extends HttpExceptionSubscriberBase
     }
 
     public function on403(GetResponseForExceptionEvent $event) {
+        Drupal::logger('rir_interface')->debug($event->getRequest()->getRequestUri());
         if (!RequestHelper::isCleanUrl($event->getRequest())) {
             Drupal::logger('rir_interface')->warning('403 with invalid Url with /index.php detected.');
             $cleanRequestUri = $this->cleanPath($event->getRequest()->getRequestUri());
