@@ -22,6 +22,7 @@ use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_entity_create().
+ * @param EntityInterface $entity
  */
 function rir_interface_entity_create(EntityInterface $entity)
 {
@@ -44,6 +45,10 @@ function rir_interface_entity_create(EntityInterface $entity)
 
 /**
  * Implements hook_ENTITY_TYPE_view().
+ * @param array $build
+ * @param EntityInterface $entity
+ * @param EntityViewDisplayInterface $display
+ * @param $view_mode
  */
 function rir_interface_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode)
 {
@@ -58,6 +63,7 @@ function rir_interface_node_view(array &$build, EntityInterface $entity, EntityV
 
 /**
  * Implements hook_entity_insert().
+ * @param EntityInterface $entity
  */
 function rir_interface_entity_insert(EntityInterface $entity)
 {
@@ -612,6 +618,9 @@ function rir_interface_mail($key, &$message, $params)
 
 /**
  * Implements hook_form_FORM_ID_alter().
+ * @param $form
+ * @param FormStateInterface $form_state
+ * @param $form_id
  */
 function rir_interface_form_system_site_information_settings_alter(&$form, FormStateInterface $form_state, $form_id)
 {
@@ -628,7 +637,7 @@ function rir_interface_form_system_site_information_settings_alter(&$form, FormS
  * Form callback to save site phone
  *
  * @param array $form
- * @param \Drupal\Core\Form\FormStateInterface $formState
+ * @param FormStateInterface $formState
  */
 function rir_interface_site_information_phone_submit(array &$form, FormStateInterface $formState)
 {
@@ -638,6 +647,9 @@ function rir_interface_site_information_phone_submit(array &$form, FormStateInte
 
 /**
  * Implements hook_form_alter().
+ * @param $form
+ * @param FormStateInterface $form_state
+ * @param $form_id
  */
 function rir_interface_form_alter(&$form, FormStateInterface $form_state, $form_id)
 {
@@ -655,28 +667,34 @@ function rir_interface_form_alter(&$form, FormStateInterface $form_state, $form_
 /**
  * Implements hook_token_info().
  */
-function rir_interface_token_info()
+function rir_interface_token_info(): array
 {
     $type = [
         'name' => t('Custom Hir Tokens'),
         'description' => t('Additional custom Hir Tokens.'),
     ];
 
-    $tokens['phone'] = array(
+    $tokens['phone'] = [
         'name' => t('Site Telephone'),
         'description' => t('Telephone number of the site')
-    );
+    ];
 
-    return array(
+    return [
         'types' => ['custom_token' => $type],
         'tokens' => ['custom_token' => $tokens]
-    );
+    ];
 }
 
 /**
  * Implements hook_tokens().
+ * @param $type
+ * @param $tokens
+ * @param array $data
+ * @param array $options
+ * @param BubbleableMetadata $bubbleable_metadata
+ * @return array
  */
-function rir_interface_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata)
+function rir_interface_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata): array
 {
     $replacements = array();
     if ($type == 'custom_token') {
@@ -692,16 +710,7 @@ function rir_interface_tokens($type, $tokens, array $data, array $options, Bubbl
     return $replacements;
 }
 
-/**
- * Implements hook_page_top().
- */
-function rir_interface_page_top(array &$page_top)
-{
-//    array_push($page_top, '<span id="geolocation-google-places-api-attribution"></span>');
-//    kint($page_top);
-}
-
-function get_email_attachment_files()
+function get_email_attachment_files(): array
 {
     $file1 = new stdClass();
     $file1->uri = 'sites/default/files/email_attachments/Advertisement_ServiceCard.pdf';
