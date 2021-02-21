@@ -1,4 +1,4 @@
-name: RIR Interface Module
+name: RIR Interface
 type: module
 description: 'This RIR module handles all GUI manipulations.'
 package: RIR Custom Modules
@@ -12,3 +12,4 @@ dependencies:
   - votingapi
   - block
 version: '8.x-1.0'
+project: 'rir_interface'
