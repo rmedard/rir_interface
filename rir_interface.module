@@ -4,6 +4,7 @@
  * A description of what your module does.
  */
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Database\StatementInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -13,6 +14,7 @@ use Drupal\Core\Render\Markup;
 use Drupal\Core\TypedData\Exception\MissingDataException;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\rir_interface\Form\CurrencyConverterSettingsForm;
 use Drupal\rir_interface\Utils\Constants;
 use Drupal\smart_ip\SmartIpLocation;
 use Drupal\taxonomy\Entity\Term;
@@ -370,13 +372,23 @@ function rir_interface_entity_presave(EntityInterface $entity)
          * Update price in RWF
          */
         if ($entity->get('field_advert_currency')->value == 'usd') {
-            $response = Unirest\Request::get("https://free.currencyconverterapi.com/api/v5/convert?q=USD_RWF&compact=ultra");
             $converted = $entity->get('field_advert_price')->value * Drupal::state()->get(Constants::USD_RWF_EXCHANGE_RATE);
-            if ($response->code === 200) {
-                Drupal::state()->set(Constants::USD_RWF_EXCHANGE_RATE, $response->body->USD_RWF);
-                $converted = $entity->get('field_advert_price')->value * $response->body->USD_RWF;
-            } else {
-                Drupal::logger('rir_interface')->error('Currency Converter Error. Response Code: ' . $response->code . ' Advert NID: ' . $entity->id());
+            $converterUrl = Drupal::config(CurrencyConverterSettingsForm::SETTINGS)->get('currency_converter_url');
+            if (isset($converterUrl) and trim($converterUrl) !== '') {
+                $response = Drupal::httpClient()->get($converterUrl);
+                if ($response->getStatusCode() === 200) {
+                    $rate = Json::decode($response->getBody()->getContents())['USD_RWF'];
+                    Drupal::state()->set(Constants::USD_RWF_EXCHANGE_RATE, $rate);
+                    $converted = $entity->get('field_advert_price')->value * $rate;
+                } else {
+                    Drupal::logger('rir_interface')
+                        ->error(t('Currency Converter Error. Advert NID: @nid | Code: @code | Message: @message',
+                        [
+                            '@nid' => $entity->id(),
+                            '@code' => $response->getStatusCode(),
+                            '@message' => $response->getReasonPhrase()
+                        ]));
+                }
             }
             $entity->set('field_price_in_rwf', $converted);
         } else {

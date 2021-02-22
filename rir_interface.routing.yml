@@ -13,3 +13,11 @@ rir_interface.social_media.settings:
     _title: 'Social Media Settings'
   requirements:
     _permission: 'administer site configuration'
+
+rir_interface.currency_converter.settings:
+  path: '/admin/manage/settings/currency-converter'
+  defaults:
+    _form: '\Drupal\rir_interface\Form\CurrencyConverterSettingsForm'
+    _title: 'Currency converter settings'
+  requirements:
+    _permission: 'administer site configuration'
