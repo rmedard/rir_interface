@@ -485,7 +485,7 @@ function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL, 
         case Constants::ADVERT_VALIDATED:
             if ($emailPayload instanceof NodeInterface) {
                 $langcode = Drupal::languageManager()->getDefaultLanguage()->getId();
-                $nodePath = Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $emailPayload->id(), $langcode);
+                $nodePath = Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $emailPayload->id(), $langcode);
                 Drupal::logger('rir_interface')->warning('Langcode : ' . $langcode . '|Node path: ' . $nodePath);
                 if ($nodePath == '/node/' . $emailPayload->id()) {
                     $connection = Drupal::database();
