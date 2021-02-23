@@ -5,6 +5,8 @@ services:
   rir_interface.adverts_service:
     class: Drupal\rir_interface\Service\AdvertsService
     arguments: ["@entity_type.manager"]
+  rir_interface.currency_converter_service:
+    class: Drupal\rir_interface\Service\CurrencyConverterService
   rir_interface.email_service:
     class: Drupal\rir_interface\Service\EmailService
   rir_interface.property_requests_service:

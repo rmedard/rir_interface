@@ -372,25 +372,10 @@ function rir_interface_entity_presave(EntityInterface $entity)
          * Update price in RWF
          */
         if ($entity->get('field_advert_currency')->value == 'usd') {
-            $converted = $entity->get('field_advert_price')->value * Drupal::state()->get(Constants::USD_RWF_EXCHANGE_RATE);
-            $converterUrl = Drupal::config(CurrencyConverterSettingsForm::SETTINGS)->get('currency_converter_url');
-            if (isset($converterUrl) and trim($converterUrl) !== '') {
-                $response = Drupal::httpClient()->get($converterUrl);
-                if ($response->getStatusCode() === 200) {
-                    $rate = Json::decode($response->getBody()->getContents())['USD_RWF'];
-                    Drupal::state()->set(Constants::USD_RWF_EXCHANGE_RATE, $rate);
-                    $converted = $entity->get('field_advert_price')->value * $rate;
-                } else {
-                    Drupal::logger('rir_interface')
-                        ->error(t('Currency Converter Error. Advert NID: @nid | Code: @code | Message: @message',
-                        [
-                            '@nid' => $entity->id(),
-                            '@code' => $response->getStatusCode(),
-                            '@message' => $response->getReasonPhrase()
-                        ]));
-                }
+            $rate = Drupal::service('rir_interface.currency_converter_service')->getUsdRwfRate();
+            if (isset($rate)) {
+                $entity->set('field_price_in_rwf', $entity->get('field_advert_price')->value * $rate);
             }
-            $entity->set('field_price_in_rwf', $converted);
         } else {
             $entity->set('field_price_in_rwf', $entity->get('field_advert_price')->value);
         }
