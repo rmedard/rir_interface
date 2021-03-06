@@ -627,7 +627,17 @@ function rir_interface_form_system_site_information_settings_alter(&$form, FormS
         '#title' => t('Site phone'),
         '#default_value' => Drupal::config('system.site')->get('phone'),
     ];
-    $form['#submit'][] = 'rir_interface_site_information_phone_submit';
+    $form['site_default_email_sender'] = [
+        '#type' => 'email',
+        '#title' => t('Site default email sender'),
+        '#default_value' => Drupal::config('system.site')->get('emailSender'),
+    ];
+    $form['site_default_email_replyto'] = [
+        '#type' => 'email',
+        '#title' => t('Site default email \'reply to\''),
+        '#default_value' => Drupal::config('system.site')->get('emailReplyTo'),
+    ];
+    $form['#submit'][] = 'rir_interface_site_information_submit';
 }
 
 /**
@@ -636,10 +646,12 @@ function rir_interface_form_system_site_information_settings_alter(&$form, FormS
  * @param array $form
  * @param FormStateInterface $formState
  */
-function rir_interface_site_information_phone_submit(array &$form, FormStateInterface $formState)
+function rir_interface_site_information_submit(array &$form, FormStateInterface $formState)
 {
     $config = Drupal::configFactory()->getEditable('system.site');
     $config->set('phone', $formState->getValue('site_phone'))->save();
+    $config->set('emailSender', $formState->getValue('site_default_email_sender'))->save();
+    $config->set('emailReplyTo', $formState->getValue('site_default_email_replyto'))->save();
 }
 
 /**
