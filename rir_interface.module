@@ -553,61 +553,52 @@ function rir_interface_mail($key, &$message, $params)
         'langcode' => $message['langcode'],
     ];
 
+    $siteConfig = Drupal::config('system.site');
+    $siteName = $siteConfig->get('name');
+    $defaultEmailSender = $siteConfig->get('emailSender') ?: $siteConfig->get('mail');
+
     switch ($key) {
         case 'advert_insert_alert':
-            $message['from'] = Drupal::config('system.site')
-                    ->get('name') . ' <' . Drupal::config('system.site')->get('mail') . '>';
+            $message['from'] = $siteName . ' <' . $defaultEmailSender . '>';
             $message['headers']['Cc'] = $params['cc'];
-            $message['subject'] = t('Your advert was posted on @site', [
-                '@site' => Drupal::config('system.site')->get('name'),
-            ], $options);
+            $message['subject'] = t('Your advert was posted on @site', ['@site' => $siteName], $options);
             $message['params']['files'] = $params['attachments'];
             $message['body'][] = $params['message'];
             break;
-        case 'advert_first_published':
-            $message['from'] = Drupal::config('system.site')
-                    ->get('name') . ' <' . Drupal::config('system.site')->get('mail') . '>';
+        case Constants::ADVERT_VALIDATED:
+            $message['from'] = $siteName . ' <' . $defaultEmailSender . '>';
             $message['headers']['Cc'] = $params['cc'];
-            $message['subject'] = t('Your advert at @site has been validated', [
-                '@site' => Drupal::config('system.site')->get('name'),
-            ], $options);
+            $message['subject'] = t('Your advert at @site has been validated', ['@site' => $siteName], $options);
             $message['params']['files'] = $params['attachments'];
             $message['body'][] = $params['message'];
             break;
         case 'agent_insert_alert':
-            $message['from'] = Drupal::config('system.site')
-                    ->get('name') . ' <' . Drupal::config('system.site')->get('mail') . '>';
+            $message['from'] = $siteName . ' <' . $defaultEmailSender . '>';
             $message['headers']['Cc'] = $params['cc'];
-            $message['subject'] = t('Confirmation: Your profile was created on  @site', [
-                '@site' => Drupal::config('system.site')->get('name'),
-            ], $options);
+            $message['subject'] = t('Your advertiser profile was created on  @site', ['@site' => $siteName], $options);
             $message['params']['files'] = $params['attachments'];
             $message['body'][] = $params['message'];
             break;
         case 'expiring_adverts_alert':
-            $message['from'] = Drupal::config('system.site')
-                    ->get('name') . ' <' . Drupal::config('system.site')->get('mail') . '>';
+            $message['from'] = $siteName . ' <' . $defaultEmailSender . '>';
             $message['subject'] = t('Alert: Adverts expiring today', $options);
             $message['body'][] = $params['message'];
             break;
         case Constants::ADVERT_VALIDATED_NOTIFY_PR:
-            $message['from'] = Drupal::config('system.site')->get('name') .
-                ' <' . Drupal::config('system.site')->get('mail') . '>';
+            $message['from'] = $siteName . ' <' . $defaultEmailSender . '>';
             $message['headers']['Cc'] = $params['cc'];
-            $message['subject'] = t('Interesting advert from @siteName', array_merge(['@siteName' => $message['from']], $options));
+            $message['subject'] = t('Interesting advert from @siteName', ['@siteName' => $siteName], $options);
             $message['body'][] = $params['message'];
             break;
         case Constants::PROPOSED_ADVERTS_TO_PR:
-            $message['from'] = Drupal::config('system.site')->get('name') .
-                ' <' . Drupal::config('system.site')->get('mail') . '>';
+            $message['from'] = $siteName . ' <' . $defaultEmailSender . '>';
             $message['headers']['Cc'] = $params['cc'];
-            $message['subject'] = t('Interesting advert from @siteName', array_merge(['@siteName' => $message['from']], $options));
+            $message['subject'] = t('New properties on the market matching your request');
             $message['body'][] = $params['message'];
             break;
         case 'send_campaign_email':
-            $message['from'] = Drupal::config('system.site')->get('name') .
-                ' <' . Drupal::config('system.site')->get('mail') . '>';
-            $message['subject'] = t('Interesting adverts from @siteName', array_merge(['@siteName' => $message['from']], $options));
+            $message['from'] = $siteName . ' <' . $defaultEmailSender . '>';
+            $message['subject'] = t('New properties on the market matching your request');
             $message['body'][] = $params['message'];
             break;
     }

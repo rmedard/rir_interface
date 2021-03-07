@@ -26,7 +26,7 @@
                         <td valign="top" id="templateBody">
                             <!-- BEGIN MODULE: BODY CONTENT // -->
                             <div>
-                                <h3>Advertiser validation confirmation</h3>
+                                <h3>Your advertiser profile has been posted on {{ drupal_token('site:name') }}</h3>
 
                                 <p><strong>Dear {{ agent.title.value }}!</strong></p>
 
@@ -47,18 +47,17 @@
                                     <li><strong>TIN</strong>: {{ agent.field_agent_tin_nbr.value }}</li>
                                 </ul>
                                 <br>
-                                <p>Thank you.</p>
-                                <br>
-                                <strong>Our Services:</strong>
-                                <p>Please ask us about our property advertising services below.</p>
+                                <strong>Our Property Advertisement Services:</strong>
                                 <ul>
-                                    <li><strong>Standard</strong>: It is a self-service and your adverts appear online for on month and only one picture of the property is displayed online.</li>
-                                    <li><strong>Featured</strong>: It is a self-service, your adverts appear on our homepage for as long as needed and you can upload as many pictures of your property as you need.</li>
-                                    <li><strong>Featured Plus</strong>: We assess your property, we take as many pictures as needed, we post them on our homepage and they stay on top of the featured listing for a maximum visibility.</li>
-                                    <li><strong>Super Featured</strong>: Maximum visibility as your adverts are guaranteed to stay on top of the featured list.</li>
+                                    <li><strong>Featured:</strong> This is a self-service. You describe and post your adverts and they are approved and pushed online within a few hours. We share them on our social networks with your contact details for customer inquiries and they stay on our homepage for one month.</li>
+                                    <li><strong>Super Featured:</strong> This service is suitable for a quick sale. We take professional photos, videos, and a website banner of your property that also stays on top of our homepage to attract maximum visibility. The advert stays on our homepage till it is stored/rented.</li>
+                                    <li><strong>Brokers subscription:</strong> Reserved only for professional real estate brokers, we create your own private space on our platform. It is a self-service and you can reach us anytime (24/7) for technical support.</li>
+                                    <li><strong>Enterprise Pack:</strong> Reserved for all real estate professionals: auctioneers, real estate developers, financial institutions, etc... We create a web banner, news, videos and surveys for your adverts/projects and regularly share them through our newsletters.</li>
                                 </ul>
-
-                                <p>Best regards, <br>{{ drupal_token('site:name') }}</p>
+                                <br>
+                                <p>Did you find our services helpful? Please share with you friends and family.</p>
+                                <br>
+                                <p>Best regards, <br>{{ drupal_token('site:name') }}<br>T: {{ drupal_token('site:phone') }}<br/>E: {{ drupal_token('site:mail') }}</p>
                             </div>
                             <!-- // END MODULE: BODY CONTENT -->
                         </td>

@@ -76,14 +76,12 @@
         <tr>
             <td class="tg-0lax" colspan="2">
                 {% set manyAdverts = adverts|length > 1 ? true : false %}
-                <h3>Interesting advert{% if manyAdverts %}s{% endif %} from {{ drupal_token('site:name') }}</h3>
+                <h3>New propert{% if manyAdverts %}ies{% else %}y{% endif %} matching your request are available!</h3>
 
-                <h4>Dear {{ recipient }}, </h4>
-
-                <p>Following your <a href="{{ drupal_url('node/' ~ prId, {absolute: true}) }}">Property request</a>
-                    submitted on our website,
-                    we would like to draw you attention to the propert{% if manyAdverts %}ies{% else %}y{% endif %}
-                    below:</p>
+                <p><strong>Dear {{ recipient }}, </strong></p>
+                <br>
+                <p>You receive this email because you have subscribed to our alerts from {{ drupal_token('site:url') }}.
+                    Please find below the latest properties on the real estate market that match your selection:</p>
             </td>
         </tr>
         {% for advert in adverts %}
@@ -112,9 +110,12 @@
         {% endfor %}
         <tr>
             <td class="tg-0pky" colspan="2">
-                <p>Best regards, <br>
-                    {{ drupal_token('site:name') }} <br>
-                    {{ drupal_token('custom_token:phone') }}</p>
+                <br>
+                <p>We would love to hear from you, please send us your feedback.
+                    <br>Should you have found this email helpful, please don’t hesitate to forward it to your friends and family.
+                </p>
+                <br>
+                <p>Best regards, <br>{{ drupal_token('site:name') }}<br>T: {{ drupal_token('site:phone') }}<br/>E: {{ drupal_token('site:mail') }}</p>
             </td>
         </tr>
     </table>

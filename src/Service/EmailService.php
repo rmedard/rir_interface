@@ -39,7 +39,7 @@ class EmailService
                     $recipients .= ',' . $visit_email_2;
                 }
 
-                $key = 'advert_first_published';
+                $key = Constants::ADVERT_VALIDATED;
                 $to = $recipients;
                 $reply = Drupal::config('system.site')->get('mail');
                 $params['cc'] = Drupal::config('system.site')->get('mail');
