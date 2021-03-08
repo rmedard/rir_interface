@@ -349,7 +349,7 @@ function rir_interface_entity_presave(EntityInterface $entity)
 
             $locationObj = new SmartIpLocation();
             $location = $locationObj->get('city') . ', ' . $locationObj->get('country') . '(' . $locationObj->get('countryCode') . ')';
-            $entity->set('field_advert_creator_location', $location);
+            $entity->set('field_advert_creator_geolocation', $location);
         }
 
         /**
