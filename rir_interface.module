@@ -562,21 +562,21 @@ function rir_interface_mail($key, &$message, $params)
             $message['from'] = $siteName . ' <' . $defaultEmailSender . '>';
             $message['headers']['Cc'] = $params['cc'];
             $message['subject'] = t('Your advert was posted on @site', ['@site' => $siteName], $options);
-            $message['params']['files'] = $params['attachments'];
+//            $message['params']['files'] = $params['attachments'];
             $message['body'][] = $params['message'];
             break;
         case Constants::ADVERT_VALIDATED:
             $message['from'] = $siteName . ' <' . $defaultEmailSender . '>';
             $message['headers']['Cc'] = $params['cc'];
             $message['subject'] = t('Your advert at @site has been validated', ['@site' => $siteName], $options);
-            $message['params']['files'] = $params['attachments'];
+//            $message['params']['files'] = $params['attachments'];
             $message['body'][] = $params['message'];
             break;
         case 'agent_insert_alert':
             $message['from'] = $siteName . ' <' . $defaultEmailSender . '>';
             $message['headers']['Cc'] = $params['cc'];
             $message['subject'] = t('Your advertiser profile was created on  @site', ['@site' => $siteName], $options);
-            $message['params']['files'] = $params['attachments'];
+//            $message['params']['files'] = $params['attachments'];
             $message['body'][] = $params['message'];
             break;
         case 'expiring_adverts_alert':
