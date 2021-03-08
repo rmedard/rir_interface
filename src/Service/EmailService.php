@@ -43,7 +43,7 @@ class EmailService
                 $to = $recipients;
                 $reply = Drupal::config('system.site')->get('mail');
                 $params['cc'] = Drupal::config('system.site')->get('mail');
-                $params['message'] = Markup::create(getEmailHtmlContent('advert_validated', $entity));
+                $params['message'] = Markup::create(getEmailHtmlContent(Constants::ADVERT_VALIDATED, $entity));
                 $params['advert_title'] = $entity->label();
                 $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
 
