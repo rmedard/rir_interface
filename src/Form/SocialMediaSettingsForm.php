@@ -31,6 +31,12 @@ class SocialMediaSettingsForm extends ConfigFormBase
             '#default_value' => $config->get('facebook_page'),
             '#description' => $this->t('The full URL to the target facebook page')
         ];
+        $form['linkedin_page'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('Linkedin page'),
+            '#default_value' => $config->get('linkedin_page'),
+            '#description' => $this->t('The full URL to the target linkedin page')
+        ];
         $form['twitter_page'] = [
             '#type' => 'textfield',
             '#title' => $this->t('Twitter page'),
