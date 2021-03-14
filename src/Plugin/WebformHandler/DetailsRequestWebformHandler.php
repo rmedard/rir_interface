@@ -72,5 +72,5 @@ function getHtmlContent($advert, $contact_name, $phone, $email, $names, $message
         'message' => $message
     ];
     $twig_service = Drupal::service('twig');
-    return $twig_service->loadTemplate(drupal_get_path('module', 'rir_interface') . '/templates/rir-request-info.html.twig')->render($variables);
+    return $twig_service->loadTemplate(drupal_get_path('theme', 'rir') . '/emails/rir-request-info.html.twig')->render($variables);
 }

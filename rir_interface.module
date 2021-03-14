@@ -517,7 +517,7 @@ function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL, 
                     'advert' => $emailPayload,
                     'advert_url' => Drupal::request()->getSchemeAndHttpHost() . $nodePath,
                 ];
-                $template_path = '/templates/hir-advert-validated.html.twig';
+                $template_path = '/emails/hir-advert-validated.html.twig';
             }
             break;
         case 'advert_received':
@@ -525,13 +525,13 @@ function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL, 
                 'advert' => $emailPayload,
                 'phone' => Drupal::config('system.site')->get('phone'),
             ];
-            $template_path = '/templates/hir-advert-received.html.twig';
+            $template_path = '/emails/hir-advert-received.html.twig';
             break;
         case 'agent_received':
             $variables = [
                 'agent' => $emailPayload,
             ];
-            $template_path = '/templates/hir-agent-received.html.twig';
+            $template_path = '/emails/hir-agent-received.html.twig';
             break;
         case Constants::ADVERT_VALIDATED_NOTIFY_PR:
             $variables = [
@@ -539,7 +539,7 @@ function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL, 
                 'recipient' => $recipientName,
                 'prId' => $options['prId'],
             ];
-            $template_path = '/templates/hir-propose-adverts-pr.html.twig';
+            $template_path = '/emails/hir-propose-adverts-pr.html.twig';
             break;
         case Constants::PROPOSED_ADVERTS_TO_PR:
             $variables = [
@@ -547,11 +547,11 @@ function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL, 
                 'recipient' => $recipientName,
                 'prId' => $options['prId'],
             ];
-            $template_path = '/templates/hir-propose-adverts-pr.html.twig';
+            $template_path = '/emails/hir-propose-adverts-pr.html.twig';
             break;
 
     }
-    return $twig_service->loadTemplate(drupal_get_path('module', 'rir_interface') . $template_path)
+    return $twig_service->loadTemplate(drupal_get_path('theme', 'rir') . $template_path)
         ->render($variables);
 }
 
@@ -706,6 +706,26 @@ function rir_interface_token_info(): array
         'name' => 'Phone Number',
         'description' => t('The main phone number of the site'),
     ];
+    $info['tokens']['site']['facebook'] = [
+        'name' => 'Facebook Account',
+        'description' => t('The main facebook account of the site'),
+    ];
+    $info['tokens']['site']['linkedin'] = [
+        'name' => 'Linkedin Account',
+        'description' => t('The main linkedin account of the site'),
+    ];
+    $info['tokens']['site']['twitter'] = [
+        'name' => 'Twitter Account',
+        'description' => t('The main twitter account of the site'),
+    ];
+    $info['tokens']['site']['youtube'] = [
+        'name' => 'Youtube Channel',
+        'description' => t('The main youtube channel of the site'),
+    ];
+    $info['tokens']['site']['instagram'] = [
+        'name' => 'Instagram Account',
+        'description' => t('The main instagram account of the site'),
+    ];
     return $info;
 }
 
@@ -723,10 +743,31 @@ function rir_interface_token_info(): array
 function rir_interface_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata): array
 {
     $replacements = [];
+    $socialMediaConfig = Drupal::config('hir_settings.social_media');
     foreach ($tokens as $name => $original) {
         switch ($name) {
             case 'phone':
                 $text = Drupal::config('system.site')->get('phone');
+                $replacements[$original] = $text;
+                break;
+            case 'facebook':
+                $text = $socialMediaConfig->get('facebook_page');
+                $replacements[$original] = $text;
+                break;
+            case 'linkedin':
+                $text = $socialMediaConfig->get('linkedin_page');
+                $replacements[$original] = $text;
+                break;
+            case 'twitter':
+                $text = $socialMediaConfig->get('twitter_page');
+                $replacements[$original] = $text;
+                break;
+            case 'youtube':
+                $text = $socialMediaConfig->get('youtube_page');
+                $replacements[$original] = $text;
+                break;
+            case 'instagram':
+                $text = $socialMediaConfig->get('instagram_page');
                 $replacements[$original] = $text;
                 break;
         }
