@@ -4,7 +4,6 @@
  * A description of what your module does.
  */
 
-use Drupal\Component\Serialization\Json;
 use Drupal\Core\Database\StatementInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -14,7 +13,6 @@ use Drupal\Core\Render\Markup;
 use Drupal\Core\TypedData\Exception\MissingDataException;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Drupal\rir_interface\Form\CurrencyConverterSettingsForm;
 use Drupal\rir_interface\Utils\Constants;
 use Drupal\smart_ip\SmartIpLocation;
 use Drupal\taxonomy\Entity\Term;
@@ -24,6 +22,7 @@ use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_entity_create().
+ *
  * @param EntityInterface $entity
  */
 function rir_interface_entity_create(EntityInterface $entity)
@@ -47,6 +46,7 @@ function rir_interface_entity_create(EntityInterface $entity)
 
 /**
  * Implements hook_ENTITY_TYPE_view().
+ *
  * @param array $build
  * @param EntityInterface $entity
  * @param EntityViewDisplayInterface $display
@@ -65,6 +65,7 @@ function rir_interface_node_view(array &$build, EntityInterface $entity, EntityV
 
 /**
  * Implements hook_entity_insert().
+ *
  * @param EntityInterface $entity
  */
 function rir_interface_entity_insert(EntityInterface $entity)
@@ -81,7 +82,7 @@ function rir_interface_entity_insert(EntityInterface $entity)
 
         $mailManager = Drupal::service('plugin.manager.mail');
         $module = 'rir_interface';
-        $key = 'advert_insert_alert';
+        $key = Constants::ADVERT_CREATED;
         $to = $entity->get('field_advert_contact_email')->value;
         $reply = Drupal::config('system.site')->get('mail');
         $params['cc'] = $cc_recipients;
@@ -89,9 +90,9 @@ function rir_interface_entity_insert(EntityInterface $entity)
         $params['advert_title'] = $entity->label();
         $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
 
-//        $attachments = get_email_attachment_files();
-//        $params['attachments'][] = $attachments[0];
-//        $params['attachments'][] = $attachments[1];
+        //        $attachments = get_email_attachment_files();
+        //        $params['attachments'][] = $attachments[0];
+        //        $params['attachments'][] = $attachments[1];
 
         $langcode = Drupal::currentUser()->getPreferredLangcode();
         $send = TRUE;
@@ -128,9 +129,9 @@ function rir_interface_entity_insert(EntityInterface $entity)
         $params['cc'] = $reply;
         $params['message'] = Markup::create(getEmailHtmlContent('agent_received', $entity));
 
-//        $attachments = get_email_attachment_files();
-//        $params['attachments'][] = $attachments[0];
-//        $params['attachments'][] = $attachments[1];
+        //        $attachments = get_email_attachment_files();
+        //        $params['attachments'][] = $attachments[0];
+        //        $params['attachments'][] = $attachments[1];
 
         $langcode = Drupal::currentUser()->getPreferredLangcode();
         $send = TRUE;
@@ -153,7 +154,9 @@ function rir_interface_entity_insert(EntityInterface $entity)
 
 /**
  * Implements hook_entity_update().
+ *
  * @param EntityInterface $entity
+ *
  * @throws MissingDataException
  */
 function rir_interface_entity_update(EntityInterface $entity)
@@ -175,13 +178,13 @@ function rir_interface_entity_update(EntityInterface $entity)
             $emailService = Drupal::service('rir_interface.email_service');
             $data = (object)[
                 'notificationType' => Constants::ADVERT_VALIDATED,
-                'entity' => $entity
+                'entity' => $entity,
             ];
             $emailService->send($data);
 
             $pr_data = (object)[
                 'notificationType' => Constants::ADVERT_VALIDATED_NOTIFY_PR,
-                'entity' => $entity
+                'entity' => $entity,
             ];
             $emailService->send($pr_data);
         }
@@ -211,7 +214,7 @@ function rir_interface_entity_update(EntityInterface $entity)
             $data = (object)[
                 'notificationType' => Constants::PROPOSED_ADVERTS_TO_PR,
                 'pr' => $entity,
-                'adverts' => $proposedAdverts
+                'adverts' => $proposedAdverts,
             ];
             $emailService = Drupal::service('rir_interface.email_service');
             $emailService->send($data);
@@ -270,10 +273,12 @@ function generateRandomStr(): string
 
 /**
  * Implements hook_theme().
+ *
  * @param $existing
  * @param $type
  * @param $theme
  * @param $path
+ *
  * @return array
  */
 function rir_interface_theme($existing, $type, $theme, $path): array
@@ -290,7 +295,7 @@ function rir_interface_theme($existing, $type, $theme, $path): array
         ],
         'rir_address' => [
             'variables' => [
-                'title' => t('Get in touch')
+                'title' => t('Get in touch'),
             ],
         ],
         'rir_services' => [
@@ -305,7 +310,7 @@ function rir_interface_theme($existing, $type, $theme, $path): array
                 'sale' => 0,
                 'agents' => 0,
                 'auctions' => 0,
-                'prs' => 0
+                'prs' => 0,
             ],
         ],
         'rir_advert_details' => [
@@ -321,13 +326,13 @@ function rir_interface_theme($existing, $type, $theme, $path): array
                 'facebook' => '',
                 'twitter' => '',
                 'instagram' => '',
-                'youtube' => ''
+                'youtube' => '',
             ],
         ],
         'hir_similar_adverts' => [
             'variables' => [
                 'title' => t('Similar adverts'),
-                'adverts' => []
+                'adverts' => [],
             ],
         ],
     ];
@@ -335,6 +340,7 @@ function rir_interface_theme($existing, $type, $theme, $path): array
 
 /**
  * Implements hook_entity_presave().
+ *
  * @param EntityInterface $entity
  */
 function rir_interface_entity_presave(EntityInterface $entity)
@@ -372,7 +378,8 @@ function rir_interface_entity_presave(EntityInterface $entity)
          * Update price in RWF
          */
         if ($entity->get('field_advert_currency')->value == 'usd') {
-            $rate = Drupal::service('rir_interface.currency_converter_service')->getUsdRwfRate();
+            $rate = Drupal::service('rir_interface.currency_converter_service')
+                ->getUsdRwfRate();
             if (isset($rate)) {
                 $entity->set('field_price_in_rwf', $entity->get('field_advert_price')->value * $rate);
             }
@@ -387,7 +394,8 @@ function rir_interface_entity_presave(EntityInterface $entity)
         $expiry_date = DateTime::createFromFormat('Y-m-d', $entity->get('field_advert_expirydate')->value);
         if ($expiry_date < $today and intval($entity->get('status')->value) === Node::PUBLISHED) {
             $entity->set('status', Node::NOT_PUBLISHED);
-            Drupal::logger('rir_interface')->warning('Publishing failed: The advert cannot be published because it is expired!');
+            Drupal::logger('rir_interface')
+                ->warning('Publishing failed: The advert cannot be published because it is expired!');
         }
 
         /**
@@ -397,7 +405,8 @@ function rir_interface_entity_presave(EntityInterface $entity)
             and intval($entity->get('field_advert_advertiser')->entity->get('status')->value) === Node::NOT_PUBLISHED
             and intval($entity->get('status')->value) === Node::PUBLISHED) {
             $entity->set('status', Node::NOT_PUBLISHED);
-            Drupal::logger('rir_interface')->warning('Publishing failed: The agent of this advert is not published!');
+            Drupal::logger('rir_interface')
+                ->warning('Publishing failed: The agent of this advert is not published!');
         }
 
         /**
@@ -423,6 +432,7 @@ function rir_interface_entity_presave(EntityInterface $entity)
 
 /**
  * Implements hook_views_query_alter().
+ *
  * @param ViewExecutable $view
  * @param QueryPluginBase $query
  */
@@ -436,10 +446,10 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
             $node = Drupal::routeMatch()->getParameter('node');
             if (isset($node)) {
                 // Sort images as the are arranged in the edit page
-                $query->orderby[1] = array(
+                $query->orderby[1] = [
                     'field' => 'node__field_advert_picture.delta',
-                    'description' => 'ASC'
-                );
+                    'description' => 'ASC',
+                ];
                 // Limit number of images by posting plan
                 $advert = Node::load($node->id());
                 if ($advert->get('field_advert_posting_plan')->value === 'standard') {
@@ -482,8 +492,10 @@ function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL, 
         case Constants::ADVERT_VALIDATED:
             if ($emailPayload instanceof NodeInterface) {
                 $langcode = Drupal::languageManager()->getDefaultLanguage()->getId();
-                $nodePath = Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $emailPayload->id(), $langcode);
-                Drupal::logger('rir_interface')->warning('Langcode : ' . $langcode . '|Node path: ' . $nodePath);
+                $nodePath = Drupal::service('path_alias.manager')
+                    ->getAliasByPath('/node/' . $emailPayload->id(), $langcode);
+                Drupal::logger('rir_interface')
+                    ->warning('Langcode : ' . $langcode . '|Node path: ' . $nodePath);
                 if ($nodePath == '/node/' . $emailPayload->id()) {
                     $connection = Drupal::database();
                     $result = $connection->select('url_alias', 'al')
@@ -491,9 +503,11 @@ function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL, 
                         ->condition('source', '/node/' . $emailPayload->id())
                         ->execute();
                     if ($result and $result instanceof StatementInterface) {
-                        Drupal::logger('rir_interface')->debug('Query string: ' . $result->getQueryString());
+                        Drupal::logger('rir_interface')
+                            ->debug('Query string: ' . $result->getQueryString());
                         while ($row = $result->fetchAssoc()) {
-                            Drupal::logger('rir_interface')->debug('Query not empty: ' . $row['alias']);
+                            Drupal::logger('rir_interface')
+                                ->debug('Query not empty: ' . $row['alias']);
                             $nodePath = $row['alias'];
                         }
                     }
@@ -520,9 +534,9 @@ function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL, 
             break;
         case Constants::ADVERT_VALIDATED_NOTIFY_PR:
             $variables = [
-                'adverts' => array($emailPayload),
+                'adverts' => [$emailPayload],
                 'recipient' => $recipientName,
-                'prId' => $options['prId']
+                'prId' => $options['prId'],
             ];
             $template_path = '/templates/hir-propose-adverts-pr.html.twig';
             break;
@@ -530,7 +544,7 @@ function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL, 
             $variables = [
                 'adverts' => $emailPayload,
                 'recipient' => $recipientName,
-                'prId' => $options['prId']
+                'prId' => $options['prId'],
             ];
             $template_path = '/templates/hir-propose-adverts-pr.html.twig';
             break;
@@ -543,6 +557,7 @@ function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL, 
 
 /**
  * Implements hook_mail().
+ *
  * @param $key
  * @param $message
  * @param $params
@@ -555,49 +570,47 @@ function rir_interface_mail($key, &$message, $params)
 
     $siteConfig = Drupal::config('system.site');
     $siteName = $siteConfig->get('name');
-    $defaultEmailSender = $siteConfig->get('emailSender') ?: $siteConfig->get('mail');
 
     switch ($key) {
-        case 'advert_insert_alert':
-            $message['from'] = $siteName . ' <' . $defaultEmailSender . '>';
+        case Constants::ADVERT_CREATED:
+            $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
             $message['headers']['Cc'] = $params['cc'];
             $message['subject'] = t('Your advert was posted on @site', ['@site' => $siteName], $options);
-//            $message['params']['files'] = $params['attachments'];
+            //            $message['params']['files'] = $params['attachments'];
             $message['body'][] = $params['message'];
             break;
         case Constants::ADVERT_VALIDATED:
-            $message['from'] = $siteName . ' <' . $defaultEmailSender . '>';
+            $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
             $message['headers']['Cc'] = $params['cc'];
             $message['subject'] = t('Your advert at @site has been validated', ['@site' => $siteName], $options);
-//            $message['params']['files'] = $params['attachments'];
+            //            $message['params']['files'] = $params['attachments'];
             $message['body'][] = $params['message'];
             break;
         case 'agent_insert_alert':
-            $message['from'] = $siteName . ' <' . $defaultEmailSender . '>';
+            $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
             $message['headers']['Cc'] = $params['cc'];
             $message['subject'] = t('Your advertiser profile was created on  @site', ['@site' => $siteName], $options);
-//            $message['params']['files'] = $params['attachments'];
+            //            $message['params']['files'] = $params['attachments'];
             $message['body'][] = $params['message'];
             break;
         case 'expiring_adverts_alert':
-            $message['from'] = $siteName . ' <' . $defaultEmailSender . '>';
             $message['subject'] = t('Alert: Adverts expiring today', $options);
             $message['body'][] = $params['message'];
             break;
         case Constants::ADVERT_VALIDATED_NOTIFY_PR:
-            $message['from'] = $siteName . ' <' . $defaultEmailSender . '>';
+            $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
             $message['headers']['Cc'] = $params['cc'];
             $message['subject'] = t('Interesting advert from @siteName', ['@siteName' => $siteName], $options);
             $message['body'][] = $params['message'];
             break;
         case Constants::PROPOSED_ADVERTS_TO_PR:
-            $message['from'] = $siteName . ' <' . $defaultEmailSender . '>';
+            $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
             $message['headers']['Cc'] = $params['cc'];
             $message['subject'] = t('New properties on the market matching your request');
             $message['body'][] = $params['message'];
             break;
-        case 'send_campaign_email':
-            $message['from'] = $siteName . ' <' . $defaultEmailSender . '>';
+        case Constants::CAMPAIGN_ALERT_EMAIL:
+            $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
             $message['subject'] = t('New properties on the market matching your request');
             $message['body'][] = $params['message'];
             break;
@@ -605,7 +618,23 @@ function rir_interface_mail($key, &$message, $params)
 }
 
 /**
+ * Implements hook_swiftmailer_alter().
+ *
+ * @param \Swift_Mailer $swiftMailer
+ * @param \Swift_Message $swiftMessage
+ * @param $message
+ */
+function rir_interface_swiftmailer_alter(Swift_Mailer &$swiftMailer, Swift_Message &$swiftMessage, $message)
+{
+    $siteConfig = Drupal::config('system.site');
+    $siteName = $siteConfig->get('name');
+    $defaultEmailSender = $siteConfig->get('emailSender') ?: $siteConfig->get('mail');
+    $swiftMessage->setFrom($defaultEmailSender, $siteName);
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
+ *
  * @param $form
  * @param FormStateInterface $form_state
  * @param $form_id
@@ -641,12 +670,15 @@ function rir_interface_site_information_submit(array &$form, FormStateInterface 
 {
     $config = Drupal::configFactory()->getEditable('system.site');
     $config->set('phone', $formState->getValue('site_phone'))->save();
-    $config->set('emailSender', $formState->getValue('site_default_email_sender'))->save();
-    $config->set('emailReplyTo', $formState->getValue('site_default_email_replyto'))->save();
+    $config->set('emailSender', $formState->getValue('site_default_email_sender'))
+        ->save();
+    $config->set('emailReplyTo', $formState->getValue('site_default_email_replyto'))
+        ->save();
 }
 
 /**
  * Implements hook_form_alter().
+ *
  * @param $form
  * @param FormStateInterface $form_state
  * @param $form_id
@@ -669,42 +701,33 @@ function rir_interface_form_alter(&$form, FormStateInterface $form_state, $form_
  */
 function rir_interface_token_info(): array
 {
-    $type = [
-        'name' => t('Custom Hir Tokens'),
-        'description' => t('Additional custom Hir Tokens.'),
+    $info['tokens']['site']['phone'] = [
+        'name' => 'Phone Number',
+        'description' => t('The main phone number of the site'),
     ];
-
-    $tokens['phone'] = [
-        'name' => t('Site Telephone'),
-        'description' => t('Telephone number of the site')
-    ];
-
-    return [
-        'types' => ['custom_token' => $type],
-        'tokens' => ['custom_token' => $tokens]
-    ];
+    return $info;
 }
 
 /**
  * Implements hook_tokens().
+ *
  * @param $type
  * @param $tokens
  * @param array $data
  * @param array $options
  * @param BubbleableMetadata $bubbleable_metadata
+ *
  * @return array
  */
 function rir_interface_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata): array
 {
-    $replacements = array();
-    if ($type == 'custom_token') {
-        foreach ($tokens as $name => $original) {
-            switch ($name) {
-                case 'phone':
-                    $text = Drupal::config('system.site')->get('phone');
-                    $replacements[$original] = $text;
-                    break;
-            }
+    $replacements = [];
+    foreach ($tokens as $name => $original) {
+        switch ($name) {
+            case 'phone':
+                $text = Drupal::config('system.site')->get('phone');
+                $replacements[$original] = $text;
+                break;
         }
     }
     return $replacements;
@@ -727,5 +750,5 @@ function get_email_attachment_files(): array
     $file3->filename = 'Professional_Subscription_Service.pdf';
     $file3->filemime = 'application/pdf';
 
-    return array($file1, $file2, $file3);
+    return [$file1, $file2, $file3];
 }
