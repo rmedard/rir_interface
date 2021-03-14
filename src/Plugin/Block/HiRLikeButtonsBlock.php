@@ -41,12 +41,14 @@ class HiRLikeButtonsBlock extends BlockBase
      */
     public function build(): array
     {
+        $linkedin = Drupal::config(SocialMediaSettingsForm::SETTINGS)->get('linkedin_page');
         $facebook = Drupal::config(SocialMediaSettingsForm::SETTINGS)->get('facebook_page');
         $instagram = Drupal::config(SocialMediaSettingsForm::SETTINGS)->get('instagram_page');
         $twitter = Drupal::config(SocialMediaSettingsForm::SETTINGS)->get('twitter_page');
         $youtube = Drupal::config(SocialMediaSettingsForm::SETTINGS)->get('youtube_page');
         return [
             '#theme' => 'hir_like_buttons',
+            '#linkedin' => trim($linkedin),
             '#facebook' => trim($facebook),
             '#twitter' => trim($twitter),
             '#instagram' => trim($instagram),

@@ -25,6 +25,12 @@ class SocialMediaSettingsForm extends ConfigFormBase
     public function buildForm(array $form, FormStateInterface $form_state): array
     {
         $config = $this->config(static::SETTINGS);
+        $form['linkedin_page'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('Linkedin page'),
+            '#default_value' => $config->get('linkedin_page'),
+            '#description' => $this->t('The full URL to the target linkedin page')
+        ];
         $form['facebook_page'] = [
             '#type' => 'textfield',
             '#title' => $this->t('Facebook page'),
@@ -54,6 +60,12 @@ class SocialMediaSettingsForm extends ConfigFormBase
 
     public function validateForm(array &$form, FormStateInterface $form_state)
     {
+        if (!$form_state->isValueEmpty('linkedin_page')) {
+            $isValid = filter_var($form_state->getValue('linkedin_page'), FILTER_VALIDATE_URL);
+            if ($isValid === false) {
+                $form_state->setErrorByName('linkedin_page', t('This must be a valid URL starting with http/https'));
+            }
+        }
         if (!$form_state->isValueEmpty('facebook_page')) {
             $isValid = filter_var($form_state->getValue('facebook_page'), FILTER_VALIDATE_URL);
             if ($isValid === false) {
@@ -84,6 +96,7 @@ class SocialMediaSettingsForm extends ConfigFormBase
     public function submitForm(array &$form, FormStateInterface $form_state)
     {
         $this->configFactory->getEditable(static::SETTINGS)
+            ->set('linkedin_page', $form_state->getValue('linkedin_page'))
             ->set('facebook_page', $form_state->getValue('facebook_page'))
             ->set('twitter_page', $form_state->getValue('twitter_page'))
             ->set('instagram_page', $form_state->getValue('instagram_page'))
