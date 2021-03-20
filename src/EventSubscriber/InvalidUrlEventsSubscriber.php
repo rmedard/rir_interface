@@ -8,7 +8,7 @@ use Drupal;
 use Drupal\Core\Routing\RequestHelper;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -29,9 +29,9 @@ class InvalidUrlEventsSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param FilterResponseEvent $responseEvent
+     * @param ResponseEvent $responseEvent
      */
-    public function onInvalidRequestUrl(FilterResponseEvent $responseEvent) {
+    public function onInvalidRequestUrl(ResponseEvent $responseEvent) {
         if (!RequestHelper::isCleanUrl($responseEvent->getRequest())) {
             Drupal::logger('rir_interface')->warning('with invalid Url with /index.php detected.');
             $cleanRequestUri = trim($this->cleanPath($responseEvent->getRequest()->getRequestUri()));
