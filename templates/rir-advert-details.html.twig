@@ -143,24 +143,19 @@
         </div>
     {% endif %}
     {% if advert.field_advert_location is not empty %}
-        <button class="btn btn-primary btn-sm" type="button" data-toggle="collapse"
-                data-target="#advertLocationMap" aria-expanded="false"
-                aria-controls="advertLocationMap"><i class="fas fa-map-marked-alt"></i> View map</button>
-        <div class="panel panel-default collapse" id="advertLocationMap">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        {{ drupal_field('field_advert_location', 'node', advert.id, 'twig_display') }}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Map</button>
-        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#advertLocationMap"><i class="fas fa-map-marked-alt"></i> View map</button>
+        <div class="modal fade bs-example-modal-lg" id="advertLocationMap" tabindex="-1" role="dialog" aria-labelledby="advertLocationMapModalLabel">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
-                    {{ drupal_field('field_advert_location', 'node', advert.id, 'twig_display') }}
+                    <div class="panel panel-default" id="advertLocationMap">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {{ drupal_field('field_advert_location', 'node', advert.id, 'twig_display') }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
