@@ -143,8 +143,9 @@
         </div>
     {% endif %}
     {% if advert.field_advert_location is not empty %}
-        <div class="panel panel-default">
-            <div class="panel-heading" style="font-weight: bolder; font-size: large">Property on the map</div>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#advertLocationMap"
+        aria-expanded="false" aria-controls="advertLocationMap">View map</button>
+        <div class="panel panel-default" id="advertLocationMap">
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
