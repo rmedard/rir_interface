@@ -155,5 +155,14 @@
                 </div>
             </div>
         </div>
+
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Map</button>
+        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    {{ drupal_field('field_advert_location', 'node', advert.id, 'twig_display') }}
+                </div>
+            </div>
+        </div>
     {% endif %}
 </div>
