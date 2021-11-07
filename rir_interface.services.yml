@@ -9,6 +9,8 @@ services:
     class: Drupal\rir_interface\Service\CurrencyConverterService
   rir_interface.email_service:
     class: Drupal\rir_interface\Service\EmailService
+  rir_interface.theming_service:
+    class: Drupal\rir_interface\Service\ThemingService
   rir_interface.property_requests_service:
     class: Drupal\rir_interface\Service\PropertyRequestsService
     arguments: ["@entity_type.manager"]

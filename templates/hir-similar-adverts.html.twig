@@ -1,85 +1,12 @@
-{% if adverts is defined and adverts is not null and adverts|length > 0 %}
-<div class="panel panel-primary similar-adverts-block">
-    <div class="panel-heading text-center">{{ title }}</div>
-    <ul class="list-group">
-        {% for advert in adverts %}
-            <li class="list-group-item">
-                <div class="media">
-                    <div class="media-left">
-                        <a href="{{ path('entity.node.canonical', {'node':advert.id}) }}">
-                            <img src="{{ advert.field_advert_picture[0].entity.uri.value|image_style('smallest_50x50') }}"
-                                 class="media-object img-rounded" alt="{{ advert.title.value }}">
-                        </a>
-                    </div>
-                    <div class="media-body">
-                        <h5 class="media-heading">
-                            <a href="{{ path('entity.node.canonical', {'node':advert.id}) }}">
-                                {{ advert.title.value|slice(0, 20)|capitalize }}...
-                            </a>
-                            <small>Ref: {{ advert.field_advert_reference.value }}</small>
-                        </h5>
-                        <small>
-                            <i class="fas fa-map-marker-alt"></i> {{ advert.field_advert_district.entity.name.value|capitalize }}, {{ advert.field_advert_sector.value|capitalize }}
-                        </small>
-                        <br>
-                        <small>
-                            {% set property_type = advert.field_advert_property_type.value %}
-                            {% if property_type == 'house' %}
-                                <span class="label label-primary">{{ property_type|capitalize }}</span>
-                            {% elseif property_type == 'apartment' %}
-                                <span class="label label-danger">{{ property_type|capitalize }}</span>
-                            {% elseif property_type == 'room' or property_type == 'shared_room' %}
-                                <span class="label label-warning">Room</span>
-                            {% elseif property_type == 'building' %}
-                                <span class="label label-success">{{ property_type|capitalize }}</span>
-                            {% elseif property_type == 'commerce' %}
-                                <span class="label label-default">{{ property_type|capitalize }}</span>
-                            {% elseif property_type == 'office' %}
-                                <span class="label label-violet">{{ property_type|capitalize }}</span>
-                            {% elseif property_type == 'land' %}
-                                <span class="label label-yellow">{{ property_type|capitalize }}</span>
-                            {% endif %}
-
-                            {% set advert_type = advert.field_advert_type.value %}
-                            {% if advert_type == 'buy' %}
-                                <span class="label label-info">Sale</span>
-                            {% else %}
-                                <span class="label label-info">{{ advert_type|capitalize }}</span>
-                            {% endif %}
-
-                            {% if advert_type == 'rent' or advert_type == 'buy' %}
-                                |
-                                <span class="label label-default">
-                                {% if advert.field_advert_price_negociable.value == '1' %}
-                                    Negotiable
-                                {% else %}
-                                    {{ advert.field_advert_price.value }} {{ advert.field_advert_currency.value|upper }}
-                                    <small>
-                                        {% set payment = advert.field_advert_payment.value %}
-                                        {% if advert_type == 'rent' %}
-                                            {% if payment == 'monthly' %}
-                                                /month
-                                            {% elseif payment == 'weekly' %}
-                                                /week
-                                            {% elseif payment == 'daily' %}
-                                                /day
-                                            {% elseif payment == 'nightly' %}
-                                                /night
-                                            {% elseif payment == 'yearly' %}
-                                                /year
-                                            {% endif %}
-                                        {% elseif advert_type == 'buy' %}
-                                            /sale
-                                        {% endif %}
-                                    </small>
-                                {% endif %}
-                                </span>
-                            {% endif %}
-                        </small>
-                    </div>
-                </div>
-            </li>
-        {% endfor %}
+{% if advertIds is defined and advertIds is not null and advertIds|length > 0 %}
+  <div class="card similar-adverts-block border-secondary mb-3">
+    <div class="card-header text-center bg-secondary text-white">{{ title }}</div>
+    <ul class="list-group list-group-flush">
+      {% for advertId in advertIds %}
+        <li class="list-group-item p-2">
+          {{ drupal_entity('node', advertId, 'tiny_advert_view_mode') }}
+        </li>
+      {% endfor %}
     </ul>
-</div>
+  </div>
 {% endif %}

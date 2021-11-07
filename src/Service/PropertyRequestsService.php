@@ -17,7 +17,7 @@ use Drupal\node\NodeInterface;
 
 class PropertyRequestsService
 {
-    protected $entityTypeManager;
+    protected EntityTypeManager $entityTypeManager;
 
     /**
      * PropertyRequestsService constructor.

@@ -10,6 +10,7 @@ namespace Drupal\rir_interface\Plugin\Block;
 
 
 use Drupal;
+use Drupal\Core\Block\Annotation\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\node\NodeInterface;
 
@@ -38,7 +39,7 @@ class RiRSimilarAdverts extends BlockBase
      *
      * @see \Drupal\block\BlockViewBuilder
      */
-    public function build()
+    public function build(): array
     {
         $node = Drupal::routeMatch()->getParameter('node');
         $output = [];
@@ -47,7 +48,7 @@ class RiRSimilarAdverts extends BlockBase
             $advertsService = Drupal::service('rir_interface.adverts_service');
             $output[] = [
                 '#theme' => 'hir_similar_adverts',
-                '#adverts' => $advertsService->loadSimilarAdverts($node)
+                '#advertIds' => $advertsService->loadSimilarAdverts($node)
             ];
         }
         return $output;

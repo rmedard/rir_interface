@@ -9,6 +9,8 @@
 namespace Drupal\rir_interface\Plugin\Block;
 
 
+use Drupal;
+use Drupal\Core\Block\Annotation\Block;
 use Drupal\Core\Block\BlockBase;
 
 /**
@@ -36,8 +38,8 @@ class DirectAccessBlock extends BlockBase {
    *
    * @see \Drupal\block\BlockViewBuilder
    */
-  public function build() {
-    $form = \Drupal::formBuilder()->getForm('Drupal\rir_interface\Form\DirectAccessForm');
-    return $form;
+  public function build(): array
+  {
+    return Drupal::formBuilder()->getForm('Drupal\rir_interface\Form\DirectAccessForm');
   }
 }

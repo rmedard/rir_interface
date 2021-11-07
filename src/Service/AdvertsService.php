@@ -15,13 +15,12 @@ use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Entity\EntityTypeManager;
-use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 
 class AdvertsService
 {
 
-    protected $entityTypeManager;
+    protected EntityTypeManager $entityTypeManager;
 
     /**
      * AdvertsService constructor.
@@ -32,14 +31,14 @@ class AdvertsService
         $this->entityTypeManager = $entityTypeManager;
     }
 
-    public function loadSimilarAdverts(NodeInterface $advert_node)
+    public function loadSimilarAdverts(NodeInterface $advert_node): array
     {
-        $adverts = array();
+        $advertIds = array();
         try {
             $storage = $this->entityTypeManager->getStorage('node');
             $query = $storage->getQuery()->range(0, 5)
                 ->condition('type', 'advert')
-                ->condition('status', Node::PUBLISHED)
+                ->condition('status', NodeInterface::PUBLISHED)
                 ->condition('field_advert_type', $advert_node->get('field_advert_type')->value)
                 ->condition('field_advert_district.target_id', $advert_node->get('field_advert_district')->target_id);
 
@@ -53,15 +52,14 @@ class AdvertsService
             $advertsIds = $query->execute();
 
             if ($advertsIds && !empty($advertsIds)) {
-                $ids = array_diff($advertsIds, [$advert_node->id()]);
-                $adverts = $storage->loadMultiple($ids);
+                $advertIds = array_diff($advertsIds, [$advert_node->id()]);
             }
         } catch (InvalidPluginDefinitionException $e) {
             Drupal::logger('rir_interface')->error('Invalid plugin: ' . $e->getMessage());
         } catch (PluginNotFoundException $e) {
             Drupal::logger('rir_interface')->error('Plugin not found: ' . $e->getMessage());
         }
-        return $adverts;
+        return $advertIds;
     }
 
     public function setProposedAdvertOnPR($advertId, $prId)

@@ -12,7 +12,7 @@ use Drupal;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
 use function count;
 
 class DirectAccessForm extends FormBase
@@ -38,7 +38,7 @@ class DirectAccessForm extends FormBase
      *   The current state of the form.
      *
      * @return array
-     *   The form structure.
+     *   The form structures.
      */
     public function buildForm(array $form, FormStateInterface $form_state): array
     {
@@ -76,7 +76,7 @@ class DirectAccessForm extends FormBase
         $reference = trim($form_state->getValue('reference_number'));
         $nodeQuery = Drupal::entityQuery('node')
             ->condition('type', 'advert')
-            ->condition('status', Node::PUBLISHED)
+            ->condition('status', NodeInterface::PUBLISHED)
             ->condition('field_advert_reference', $reference);
         $node_ids = $nodeQuery->execute();
         if (isset($node_ids) and !empty($node_ids)) {
