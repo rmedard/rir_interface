@@ -11,6 +11,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\TypedData\Exception\MissingDataException;
+use Drupal\field\Entity\FieldConfig;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\image\Plugin\ImageEffect\ScaleAndCropImageEffect;
 use Drupal\node\Entity\Node;
@@ -710,6 +711,32 @@ function rir_interface_form_alter(&$form, FormStateInterface $form_state, $form_
       }
       break;
   }
+}
+
+/**
+ * Implements hook_field_widget_form_alter().
+ */
+function rir_interface_field_widget_form_alter(&$element, FormStateInterface $form_state, $context)
+{
+  $field_definition = $context['items']->getFieldDefinition();
+  if (!$field_definition instanceof FieldConfig) {
+    return;
+  }
+
+  $removable_text_formatters = ['field_property_description', 'field_agent_summary'];
+  if (in_array($field_definition->getName(), $removable_text_formatters)) {
+    $element['#allowed_formats'] = ['full_html'];
+    $element['#after_build'][] = 'rir_interface_after_build';
+  }
+}
+
+function rir_interface_after_build(array $element, FormStateInterface $form_state): array
+{
+  unset($element['format']['help']);
+  unset($element['format']['guidelines']);
+  unset($element['format']['#type']);
+  unset($element['format']['#theme_wrappers']);
+  return $element;
 }
 
 /**
