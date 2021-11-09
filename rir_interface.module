@@ -325,11 +325,6 @@ function rir_interface_theme($existing, $type, $theme, $path): array
         'prs' => 0,
       ],
     ],
-    'rir_advert_details' => [
-      'variables' => [
-        'advert' => NULL,
-      ],
-    ],
     'hir_management_page' => [
       'variables' => [],
     ],

@@ -18,4 +18,8 @@ interface Constants
     const ADVERT_VALIDATED_NOTIFY_PR = 'advert_validated_notify_pr';
     const PROPOSED_ADVERTS_TO_PR = 'proposed_adverts_to_pr';
     const CAMPAIGN_ALERT_EMAIL = 'send_campaign_email';
+
+    const SECTOR = 'sector';
+    const DISTRICT = 'district';
+    const PROVINCE = 'province';
 }

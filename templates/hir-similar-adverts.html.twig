@@ -1,10 +1,10 @@
 {% if advertIds is defined and advertIds is not null and advertIds|length > 0 %}
-  <div class="card similar-adverts-block border-secondary mb-3">
+  <div class="card similar-adverts-block border-secondary">
     <div class="card-header text-center bg-secondary text-white">{{ title }}</div>
     <ul class="list-group list-group-flush">
       {% for advertId in advertIds %}
         <li class="list-group-item p-2">
-          {{ drupal_entity('node', advertId, 'tiny_advert_view_mode') }}
+          {{ drupal_entity('node', advertId, 'tiny') }}
         </li>
       {% endfor %}
     </ul>
