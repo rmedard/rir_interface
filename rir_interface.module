@@ -863,18 +863,18 @@ function rir_interface_block_access(Block $block, $operation, AccountInterface $
 /**
  * Implements hook_cron().
  */
-function rir_interface_cron()
-{
-  $ids = Drupal::entityTypeManager()->getStorage('node')->getQuery()
-    ->condition('type', 'advert')
-    ->condition('status', 1)
-    ->notExists('field_advert_locality')->execute();
-  if (!empty($ids)) {
-    $updator = Drupal::queue('update_adverts_processor');
-    foreach ($ids as $id) {
-      $updator->createItem($id);
-    }
-  } else {
-    Drupal::logger('Updator')->warning('No adverts tp update found');
-  }
-}
+//function rir_interface_cron()
+//{
+//  $ids = Drupal::entityTypeManager()->getStorage('node')->getQuery()
+//    ->condition('type', 'advert')
+//    ->condition('status', 1)
+//    ->notExists('field_advert_locality')->execute();
+//  if (!empty($ids)) {
+//    $updator = Drupal::queue('update_adverts_processor');
+//    foreach ($ids as $id) {
+//      $updator->createItem($id);
+//    }
+//  } else {
+//    Drupal::logger('Updator')->warning('No adverts tp update found');
+//  }
+//}
