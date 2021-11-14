@@ -10,6 +10,8 @@ use Drupal\Core\Database\StatementInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\Markup;
@@ -20,6 +22,9 @@ use Drupal\image\Entity\ImageStyle;
 use Drupal\image\Plugin\ImageEffect\ScaleAndCropImageEffect;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\rir_interface\Plugin\Field\AdvertDistrictComputedField;
+use Drupal\rir_interface\Plugin\Field\AdvertProvinceComputedField;
+use Drupal\rir_interface\Plugin\Field\AdvertSectorComputedField;
 use Drupal\rir_interface\Utils\Constants;
 use Drupal\smart_ip\SmartIpLocation;
 use Drupal\taxonomy\Entity\Term;
@@ -380,9 +385,9 @@ function rir_interface_entity_presave(EntityInterface $entity)
     /**
      * Update address signature
      */
-    $term = Term::load($entity->get('field_advert_district')->target_id);
+    $term = Term::load($entity->get('field_advert_locality')->target_id);
     $district = str_replace(' ', '', strtolower($term->getName()));
-    $sector = str_replace(' ', '', strtolower($entity->get('field_advert_sector')->value));
+    $sector = str_replace(' ', '', strtolower($entity->get('field_advert_locality')->value));
     $village = str_replace(' ', '', strtolower($entity->get('field_advert_village')->value));
     $cell = str_replace(' ', '', strtolower($entity->get('field_advert_cell')->value));
     $street = str_replace(' ', '', strtolower($entity->get('field_advert_street')->value));
@@ -650,6 +655,37 @@ function rir_interface_swiftmailer_alter(Swift_Mailer &$swiftMailer, Swift_Messa
   $siteName = $siteConfig->get('name');
   $defaultEmailSender = $siteConfig->get('emailSender') ?: $siteConfig->get('mail');
   $swiftMessage->setFrom($defaultEmailSender, $siteName);
+}
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function rir_interface_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle)
+{
+  if ($entity_type->id() === 'node' && $bundle === 'advert') {
+    $fields['location_sector'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Sector'))
+      ->setName(t('Sector'))
+      ->setComputed(true)
+      ->setDescription(t('Location of the advert: Sector'))
+      ->setDisplayOptions('view', ['label' => 'inline', 'weight' => -5])
+      ->setClass(AdvertSectorComputedField::class);
+    $fields['location_district'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('District'))
+      ->setName(t('District'))
+      ->setComputed(true)
+      ->setDescription(t('Location of the advert: District'))
+      ->setDisplayOptions('view', ['label' => 'inline', 'weight' => -4])
+      ->setClass(AdvertDistrictComputedField::class);
+    $fields['location_province'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Province'))
+      ->setName(t('Province'))
+      ->setComputed(true)
+      ->setDescription(t('Location of the advert: Province'))
+      ->setDisplayConfigurable('view', true)
+      ->setClass(AdvertProvinceComputedField::class)
+      ->setDisplayOptions('view', ['label' => 'inline', 'weight' => -3]);
+  }
 }
 
 /**
