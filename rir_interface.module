@@ -788,7 +788,7 @@ function rir_interface_token_info(): array
 function rir_interface_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata): array
 {
   $replacements = [];
-  $socialMediaConfig = Drupal::config('hir_settings.social_media');
+  $socialMediaConfig = Drupal::config('rir_interface.social_media');
   foreach ($tokens as $name => $original) {
     switch ($name) {
       case 'phone':

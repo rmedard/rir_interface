@@ -10,7 +10,7 @@ use Drupal\Core\Form\FormStateInterface;
 class SocialMediaSettingsForm extends ConfigFormBase
 {
 
-    const SETTINGS = 'hir_settings.social_media';
+    const SETTINGS = 'rir_interface.social_media';
 
     protected function getEditableConfigNames(): array
     {
