@@ -866,7 +866,9 @@ function rir_interface_block_access(Block $block, $operation, AccountInterface $
 function rir_interface_cron()
 {
   $ids = Drupal::entityTypeManager()->getStorage('node')->getQuery()
-    ->condition('type', 'advert')->notExists('field_advert_locality')->execute();
+    ->condition('type', 'advert')
+    ->condition('status', 1)
+    ->notExists('field_advert_locality')->execute();
   if (!empty($ids)) {
     $updator = Drupal::queue('update_adverts_processor');
     foreach ($ids as $id) {
