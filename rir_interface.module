@@ -574,7 +574,7 @@ function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL, 
       break;
 
   }
-  return $twig_service->loadTemplate(drupal_get_path('theme', 'rir') . $template_path)
+  return $twig_service->loadTemplate(drupal_get_path('theme', 'houseinrwanda_theme') . $template_path)
     ->render($variables);
 }
 
