@@ -28,6 +28,8 @@ use Drupal\rir_interface\Plugin\Field\AdvertSectorComputedField;
 use Drupal\rir_interface\Utils\Constants;
 use Drupal\smart_ip\SmartIpLocation;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\taxonomy\TermInterface;
+use Drupal\taxonomy\TermStorageInterface;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\ViewExecutable;
 
@@ -369,7 +371,7 @@ function rir_interface_theme($existing, $type, $theme, $path): array
  */
 function rir_interface_entity_presave(EntityInterface $entity)
 {
-  if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
+  if ($entity instanceof NodeInterface and $entity->bundle() === 'advert') {
 
     /**
      * In case of new entity: Set advert reference and creator location
@@ -451,6 +453,15 @@ function rir_interface_entity_presave(EntityInterface $entity)
 
       $entity->set('field_advert_is_first_published', NodeInterface::PUBLISHED);
     }
+
+    /**
+     * Update locality fields
+     */
+    $locality = $entity->get('field_advert_locality')->entity;
+    $localityEntities = Drupal::service('rir_interface.locality_service')->getLocality($locality->id());
+    $entity->set('field_advert_locality_sector', $localityEntities[Constants::SECTOR]);
+    $entity->set('field_advert_locality_district', $localityEntities[Constants::DISTRICT]);
+    $entity->set('field_advert_locality_province', $localityEntities[Constants::PROVINCE]);
   }
 }
 
@@ -655,37 +666,6 @@ function rir_interface_swiftmailer_alter(Swift_Mailer &$swiftMailer, Swift_Messa
   $siteName = $siteConfig->get('name');
   $defaultEmailSender = $siteConfig->get('emailSender') ?: $siteConfig->get('mail');
   $swiftMessage->setFrom($defaultEmailSender, $siteName);
-}
-
-/**
- * Implements hook_entity_bundle_field_info_alter().
- */
-function rir_interface_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle)
-{
-  if ($entity_type->id() === 'node' && $bundle === 'advert') {
-    $fields['location_sector'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Sector'))
-      ->setName(t('Sector'))
-      ->setComputed(true)
-      ->setDescription(t('Location of the advert: Sector'))
-      ->setDisplayOptions('view', ['label' => 'inline', 'weight' => -5])
-      ->setClass(AdvertSectorComputedField::class);
-    $fields['location_district'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('District'))
-      ->setName(t('District'))
-      ->setComputed(true)
-      ->setDescription(t('Location of the advert: District'))
-      ->setDisplayOptions('view', ['label' => 'inline', 'weight' => -4])
-      ->setClass(AdvertDistrictComputedField::class);
-    $fields['location_province'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Province'))
-      ->setName(t('Province'))
-      ->setComputed(true)
-      ->setDescription(t('Location of the advert: Province'))
-      ->setDisplayConfigurable('view', true)
-      ->setClass(AdvertProvinceComputedField::class)
-      ->setDisplayOptions('view', ['label' => 'inline', 'weight' => -3]);
-  }
 }
 
 /**
@@ -894,4 +874,20 @@ function rir_interface_block_access(Block $block, $operation, AccountInterface $
     }
   }
   return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_field_formatter_info_alter().
+ */
+function rir_interface_field_formatter_info_alter(array &$info)
+{
+  $info['string']['field_types'][] = 'advert_sector_string';
+}
+
+/**
+ * Implements hook_field_widget_info_alter().
+ */
+function rir_interface_field_widget_info_alter(array &$info)
+{
+  $info['string_textfield']['field_types'][] = 'advert_sector_string';
 }
