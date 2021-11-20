@@ -458,10 +458,12 @@ function rir_interface_entity_presave(EntityInterface $entity)
      * Update locality fields
      */
     $locality = $entity->get('field_advert_locality')->entity;
-    $localityEntities = Drupal::service('rir_interface.locality_service')->getLocality($locality->id());
-    $entity->set('field_advert_locality_sector', $localityEntities[Constants::SECTOR]);
-    $entity->set('field_advert_locality_district', $localityEntities[Constants::DISTRICT]);
-    $entity->set('field_advert_locality_province', $localityEntities[Constants::PROVINCE]);
+    if ($locality instanceof TermInterface) {
+      $localityEntities = Drupal::service('rir_interface.locality_service')->getLocality($locality->id());
+      $entity->set('field_advert_locality_sector', $localityEntities[Constants::SECTOR] ?? '');
+      $entity->set('field_advert_locality_district', $localityEntities[Constants::DISTRICT] ?? '');
+      $entity->set('field_advert_locality_province', $localityEntities[Constants::PROVINCE] ?? '');
+    }
   }
 }
 
