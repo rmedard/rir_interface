@@ -460,9 +460,12 @@ function rir_interface_entity_presave(EntityInterface $entity)
     $locality = $entity->get('field_advert_locality')->entity;
     if ($locality instanceof TermInterface) {
       $localityEntities = Drupal::service('rir_interface.locality_service')->getLocality($locality->id());
-      $entity->set('field_advert_locality_sector', $localityEntities[Constants::SECTOR] ?? '');
-      $entity->set('field_advert_locality_district', $localityEntities[Constants::DISTRICT] ?? '');
-      $entity->set('field_advert_locality_province', $localityEntities[Constants::PROVINCE] ?? '');
+      $sector = array_key_exists(Constants::SECTOR, $localityEntities) ? $localityEntities[Constants::SECTOR] : '';
+      $district = array_key_exists(Constants::DISTRICT, $localityEntities) ? $localityEntities[Constants::DISTRICT] : '';
+      $province = array_key_exists(Constants::PROVINCE, $localityEntities) ? $localityEntities[Constants::PROVINCE] : '';
+      $entity->set('field_advert_locality_sector', $sector);
+      $entity->set('field_advert_locality_district', $district);
+      $entity->set('field_advert_locality_province', $province);
     }
   }
 }
