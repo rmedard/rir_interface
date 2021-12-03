@@ -231,6 +231,11 @@ function rir_interface_entity_update(EntityInterface $entity)
       function ($new, $original) {
         return $new->id() - $original->id();
       });
+
+//    $proposedAdverts = array_filter($proposedAdverts, function ($advert) {
+//      return $advert instanceof NodeInterface and $advert->isPublished();
+//    }, ARRAY_FILTER_USE_KEY);
+
     if (isset($proposedAdverts) && count($proposedAdverts) > 0) {
       $data = (object)[
         'notificationType' => Constants::PROPOSED_ADVERTS_TO_PR,

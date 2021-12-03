@@ -9,6 +9,7 @@
 namespace Drupal\rir_interface\Plugin\Block;
 
 
+use Drupal\Core\Block\Annotation\Block;
 use Drupal\Core\Block\BlockBase;
 
 /**

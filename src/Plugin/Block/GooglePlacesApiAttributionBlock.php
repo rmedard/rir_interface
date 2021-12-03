@@ -6,6 +6,7 @@ namespace Drupal\rir_interface\Plugin\Block;
 
 use Drupal\Core\Block\Annotation\Block;
 use Drupal\Core\Block\BlockBase;
+use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Provides a 'Fax' block.
@@ -18,11 +19,12 @@ use Drupal\Core\Block\BlockBase;
 class GooglePlacesApiAttributionBlock extends BlockBase
 {
 
-    /**
-     * {@inheritdoc}
-     */
-    public function build(): array
-    {
-        return ['#markup' => '<span id="geolocation-google-places-api-attribution"></span>'];
-    }
+  /**
+   * {@inheritdoc}
+   */
+  #[ArrayShape(['#markup' => "string"])]
+  public function build(): array
+  {
+    return ['#markup' => '<span id="geolocation-google-places-api-attribution"></span>'];
+  }
 }

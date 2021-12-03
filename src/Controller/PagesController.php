@@ -10,14 +10,18 @@ namespace Drupal\rir_interface\Controller;
 
 
 use Drupal\Core\Controller\ControllerBase;
+use JetBrains\PhpStorm\ArrayShape;
 
 class PagesController extends ControllerBase
 {
-    public function hirManagementPage()
-    {
-        $element = array(
-            '#theme' => 'hir_management_page'
-        );
-        return $element;
-    }
+  /**
+   * @return string[]
+   */
+  #[ArrayShape(['#theme' => "string"])]
+  public function hirManagementPage(): array
+  {
+    return array(
+      '#theme' => 'hir_management_page'
+    );
+  }
 }

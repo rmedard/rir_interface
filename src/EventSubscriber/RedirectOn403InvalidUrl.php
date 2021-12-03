@@ -29,7 +29,7 @@ class RedirectOn403InvalidUrl extends HttpExceptionSubscriberBase
     }
 
     private function isInvalid($path): bool {
-        return substr($path, 0, 10) === '/index.php';
+        return str_starts_with($path, '/index.php');
     }
 
     private function cleanPath($pathStr): string {

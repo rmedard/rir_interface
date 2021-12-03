@@ -29,12 +29,12 @@ class AgentService {
         $this->entityTypeManager = $entityTypeManager;
     }
 
-    /**
-     * @param $agent_id
-     * @param int $status Status of the adverts. Defaults to PUBLISHED
-     *
-     * @return EntityInterface[]|static[]
-     */
+  /**
+   * @param $agent_id
+   * @param int $status Status of the adverts. Defaults to PUBLISHED
+   *
+   * @return array
+   */
     public function loadAdverts($agent_id, int $status = NodeInterface::PUBLISHED): array
     {
         $data = [];

@@ -9,6 +9,7 @@
 namespace Drupal\rir_interface\Plugin\WebformHandler;
 
 use Drupal;
+use Drupal\webform\Annotation\WebformHandler;
 use Drupal\webform\Plugin\WebformHandler\EmailWebformHandler;
 use Drupal\webform\WebformSubmissionInterface;
 

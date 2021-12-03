@@ -39,26 +39,14 @@ class ThemingService
         $currency = $this->getListValue($advert->get('field_advert_currency'));
         $payable = '';
         if ($advertType === 'rent') {
-          switch ($advert->get('field_advert_payment')->value) {
-            case 'monthly':
-              $payable = '/month';
-              break;
-            case 'weekly':
-              $payable = '/week';
-              break;
-            case 'daily':
-              $payable = '/day';
-              break;
-            case 'nightly':
-              $payable = '/night';
-              break;
-            case 'yearly':
-              $payable = '/year';
-              break;
-            default:
-              $payable = '';
-              break;
-          }
+          $payable = match ($advert->get('field_advert_payment')->value) {
+            'monthly' => '/month',
+            'weekly' => '/week',
+            'daily' => '/day',
+            'nightly' => '/night',
+            'yearly' => '/year',
+            default => '',
+          };
         }
         $value = $price . ' ' . $currency . '<small>'. $payable .'</small>';
       }

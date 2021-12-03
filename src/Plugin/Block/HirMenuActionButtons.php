@@ -4,6 +4,7 @@ namespace Drupal\rir_interface\Plugin\Block;
 
 use Drupal\Core\Block\Annotation\Block;
 use Drupal\Core\Block\BlockBase;
+use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * @package Drupal\rir_interface\Plugin\Block
@@ -16,6 +17,7 @@ use Drupal\Core\Block\BlockBase;
 class HirMenuActionButtons extends BlockBase
 {
 
+  #[ArrayShape(['#theme' => "string"])]
   public function build(): array
   {
     return[

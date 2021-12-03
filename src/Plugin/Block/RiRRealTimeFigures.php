@@ -10,6 +10,7 @@ namespace Drupal\rir_interface\Plugin\Block;
 
 
 use Drupal;
+use Drupal\Core\Block\Annotation\Block;
 use Drupal\Core\Block\BlockBase;
 
 /**
@@ -38,7 +39,8 @@ class RiRRealTimeFigures extends BlockBase {
      *
      * @see \Drupal\block\BlockViewBuilder
      */
-    public function build() {
+    public function build(): array
+    {
         $rent = Drupal::entityQuery('node')
           ->condition('type', 'advert')
           ->condition('field_advert_type', 'rent')
