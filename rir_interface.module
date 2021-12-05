@@ -232,11 +232,11 @@ function rir_interface_entity_update(EntityInterface $entity)
         return $new->id() - $original->id();
       });
 
-//    $proposedAdverts = array_filter($proposedAdverts, function ($advert) {
-//      return $advert instanceof NodeInterface and $advert->isPublished();
-//    }, ARRAY_FILTER_USE_KEY);
+    $proposedAdverts = array_filter($proposedAdverts, function ($advert) {
+      return $advert instanceof NodeInterface and $advert->isPublished();
+    }, ARRAY_FILTER_USE_BOTH);
 
-    if (isset($proposedAdverts) && count($proposedAdverts) > 0) {
+    if (count($proposedAdverts) > 0) {
       $data = (object)[
         'notificationType' => Constants::PROPOSED_ADVERTS_TO_PR,
         'pr' => $entity,
