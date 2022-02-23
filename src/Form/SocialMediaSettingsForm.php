@@ -55,6 +55,12 @@ class SocialMediaSettingsForm extends ConfigFormBase
             '#default_value' => $config->get('youtube_page'),
             '#description' => $this->t('The full URL to the target youtube page')
         ];
+        $form['email_banner_image'] = [
+          '#type' => 'textfield',
+          '#title' => $this->t('Email banner image'),
+          '#default_value' => $config->get('email_banner_image'),
+          '#description' => $this->t('The full URL to the email banner image')
+        ];
         return parent::buildForm($form, $form_state);
     }
 
@@ -90,6 +96,12 @@ class SocialMediaSettingsForm extends ConfigFormBase
                 $form_state->setErrorByName('youtube_page', t('This must be a valid URL starting with http/https'));
             }
         }
+        if (!$form_state->isValueEmpty('email_banner_image')) {
+          $isValid = filter_var($form_state->getValue('email_banner_image'), FILTER_VALIDATE_URL);
+          if ($isValid === false) {
+            $form_state->setErrorByName('email_banner_image', t('This must be a valid URL starting with http/https'));
+          }
+        }
         parent::validateForm($form, $form_state);
     }
 
@@ -101,6 +113,7 @@ class SocialMediaSettingsForm extends ConfigFormBase
             ->set('twitter_page', $form_state->getValue('twitter_page'))
             ->set('instagram_page', $form_state->getValue('instagram_page'))
             ->set('youtube_page', $form_state->getValue('youtube_page'))
+            ->set('email_banner_image', $form_state->getValue('email_banner_image'))
             ->save();
         parent::submitForm($form, $form_state);
     }
