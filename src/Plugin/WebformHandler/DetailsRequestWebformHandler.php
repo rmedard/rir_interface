@@ -37,6 +37,12 @@ class DetailsRequestWebformHandler extends EmailWebformHandler
             $phone = $webform_submission->getElementData('visitor_phone_number');
             $email = $webform_submission->getElementData('visitor_email');
             $names = $webform_submission->getElementData('visitor_names');
+            $purposes = [
+              'ask_for_info' => $webform_submission->getElementData('ask_for_info'),
+              'schedule_visit' => $webform_submission->getElementData('schedule_visit'),
+              'check_availability' => $webform_submission->getElementData('check_availability')
+            ];
+            $timeframe = $webform_submission->getElementData('check_in_date') . ' - ' . $webform_submission->getElementData('check_out_date');
             $email_message = $webform_submission->getElementData('visitor_message');
 
             $options = array(
@@ -53,7 +59,7 @@ class DetailsRequestWebformHandler extends EmailWebformHandler
                 array('@site' => Drupal::config('system.site')->get('name')), $options);
             $message['html'] = TRUE;
 
-            $message['body'] = getHtmlContent($node, $contact_name, $phone, $email, $names, $email_message);
+            $message['body'] = getHtmlContent($node, $contact_name, $phone, $email, $names, $email_message, $purposes, $timeframe);
             Drupal::logger('rir_interface')->debug('Request for further info sent by: ' . $email);
         } else {
             Drupal::logger('rir_interface')->warning("Request for info sent with empty advert node.");
@@ -62,7 +68,7 @@ class DetailsRequestWebformHandler extends EmailWebformHandler
     }
 }
 
-function getHtmlContent($advert, $contact_name, $phone, $email, $names, $message)
+function getHtmlContent($advert, $contact_name, $phone, $email, $names, $message, $purposes, $timeframe)
 {
     $variables = [
         'advert' => $advert,
@@ -70,8 +76,11 @@ function getHtmlContent($advert, $contact_name, $phone, $email, $names, $message
         'phone' => $phone,
         'email' => $email,
         'names' => $names,
-        'message' => $message
+        'message' => $message,
+        'purposes' => $purposes,
+        'timeframe' => $timeframe
     ];
     $twig_service = Drupal::service('twig');
-    return $twig_service->loadTemplate(drupal_get_path('theme', 'rir') . '/emails/rir-request-info.html.twig')->render($variables);
+    $themePath = Drupal::service('extension.list.theme')->getPath('houseinrwanda_theme');
+    return $twig_service->loadTemplate($themePath . '/emails/rir-request-info.html.twig')->render($variables);
 }
