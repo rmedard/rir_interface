@@ -38,7 +38,7 @@ class ThemingService
         $price = number_format($advert->get('field_advert_price')->value);
         $currency = $this->getListValue($advert->get('field_advert_currency'));
         $payable = '';
-        if ($advertType === 'rent') {
+        if (in_array($advertType, ['rent', 'short_rent'])) {
           $payable = match ($advert->get('field_advert_payment')->value) {
             'monthly' => '/month',
             'weekly' => '/week',
