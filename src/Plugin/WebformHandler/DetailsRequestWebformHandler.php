@@ -80,7 +80,8 @@ function getHtmlContent($advert, $contact_name, $phone, $email, $names, $message
         'purposes' => $purposes,
         'timeframe' => $timeframe
     ];
-    $twig_service = Drupal::service('twig');
     $themePath = Drupal::service('extension.list.theme')->getPath('houseinrwanda_theme');
-    return $twig_service->loadTemplate($themePath . '/emails/rir-request-info.html.twig')->render($variables);
+    return Drupal::service('twig')
+      ->loadTemplate($themePath . '/emails/rir-request-info.html.twig')
+      ->render($variables);
 }
