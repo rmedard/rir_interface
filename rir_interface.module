@@ -6,6 +6,7 @@
 
 use Drupal\block\Entity\Block;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Asset\AttachedAssetsInterface;
 use Drupal\Core\Database\StatementInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -731,6 +732,10 @@ function rir_interface_form_alter(&$form, FormStateInterface $form_state, $form_
       $form['created'] = ['#type' => 'date'];
       $form['field_advert_expirydate_value'] = ['#type' => 'date'];
     }
+  }
+
+  if ($form_id == 'node_advert_edit_form') {
+    $form['#attached']['library'][] = 'rir_interface/jquery-number';
   }
 }
 
