@@ -6,3 +6,10 @@ jquery-number:
     gpl-compatible: true
   js:
     /libraries/jquery-number/jquery.number.min.js: { minified: true }
+
+custom:
+  js:
+    js/custom_interface.js: { }
+  dependencies:
+    - core/jquery
+    - core/drupal

@@ -734,8 +734,9 @@ function rir_interface_form_alter(&$form, FormStateInterface $form_state, $form_
     }
   }
 
-  if ($form_id == 'node_advert_edit_form') {
+  if (in_array($form_id, ['node_advert_form', 'node_advert_edit_form'])) {
     $form['#attached']['library'][] = 'rir_interface/jquery-number';
+    $form['#attached']['library'][] = 'rir_interface/custom';
   }
 }
 
