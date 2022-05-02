@@ -354,7 +354,7 @@ function rir_interface_theme($existing, $type, $theme, $path): array
     ],
     'hir_similar_adverts' => [
       'variables' => [
-        'title' => t('Similar adverts'),
+        'title' => t('Similar properties'),
         'advertIds' => [],
       ],
     ],
