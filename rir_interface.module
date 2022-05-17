@@ -61,7 +61,7 @@ function rir_interface_entity_create(EntityInterface $entity)
  * @param EntityViewDisplayInterface $display
  * @param $view_mode
  */
-function rir_interface_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode)
+function rir_interface_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode): void
 {
   if ($entity->bundle() == 'advert' and $view_mode == 'full' and $entity instanceof NodeInterface) {
     $style = ImageStyle::load('flexslider_thumbnail');
@@ -78,7 +78,7 @@ function rir_interface_node_view(array &$build, EntityInterface $entity, EntityV
       and intval($entity->get('field_bid_is_online')->value) == 1) {
       $expiration = $entity->get('field_bid_expiration')->date;
       if ($expiration instanceof DrupalDateTime) {
-        $formatted = $expiration->format(DateTimeInterface::ISO8601);
+        $formatted = $expiration->format(DateTimeInterface::ATOM);
         $build['#attached']['drupalSettings']['bid']['expiration'] = $formatted;
       }
     }
