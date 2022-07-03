@@ -33,7 +33,7 @@ class ThemingService
     } else {
       $negotiable = boolval($advert->get('field_advert_price_negociable')->value);
       if ($negotiable) {
-        $value = 'Negotiable';
+        $value = 'Price on request';
       } else {
         $price = number_format($advert->get('field_advert_price')->value);
         $currency = $this->getListValue($advert->get('field_advert_currency'));
