@@ -8,15 +8,13 @@
               settings.auctions.forEach((item, index, arr) => {
                 const advert = document.querySelector("article[data-history-node-id='" + item.nid + "']");
                 const countDownSpan = advert.querySelector('#countdown');
-                const expirationDate = moment.tz(item.expiration, "UCT");
-                countDown(countDownSpan, expirationDate);
+                countDown(countDownSpan, new Date(Date.parse(item.expiration)));
               });
             }
           }
         } else if (settings.viewMode === 'full' && settings.expiration !== undefined) {
-          const expirationDate = moment.tz(settings.expiration, "UCT");
           const countDownSpan = document.getElementById('countdown');
-          countDown(countDownSpan, expirationDate);
+          countDown(countDownSpan, new Date(Date.parse(settings.expiration)));
         }
       }
 
@@ -25,20 +23,20 @@
         const counter = setInterval(function () {
           const distance = expirationDate - new Date().getTime();
           const days = daysFormat(Math.floor(distance / (1000 * 60 * 60 * 24)));
-          const hours = integerFormat(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)), 2, 'h');
-          const minutes = integerFormat(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)), 2, 'm');
-          const seconds = integerFormat(Math.floor((distance % (1000 * 60)) / 1000), 2, 's');
-          countDownSpan.innerHTML = (days + " " + hours + " " + minutes + " " + seconds).trim();
+          const hours = integerFormat(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),'h');
+          const minutes = integerFormat(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),'m');
+          const seconds = integerFormat(Math.floor((distance % (1000 * 60)) / 1000),'s');
+          countDownSpan.innerHTML = `${days} ${hours} ${minutes} ${seconds}`.trim();
           if (distance < 0) {
             clearInterval(counter);
-            countDownSpan.innerHTML = "Closed";
+            countDownSpan.innerHTML = 'Closed';
           }
         }, 1000);
       }
 
-      function integerFormat(number, size, unity) {
+      function integerFormat(number, unity) {
         number = number.toString();
-        while (number.length < size) number = "0" + number;
+        number = number.length < 2 ? '0' + number : number;
         return number + unity;
       }
 

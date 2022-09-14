@@ -18,5 +18,4 @@ auction-countdown:
   js:
     js/auction_countdown.js: { }
   dependencies:
-    - houseinrwanda_theme/moment-tz
     - core/drupal
