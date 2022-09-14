@@ -6,7 +6,8 @@
 
 use Drupal\block\Entity\Block;
 use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Asset\AttachedAssetsInterface;
+use Drupal\Core\Access\AccessResultForbidden;
+use Drupal\Core\Access\AccessResultNeutral;
 use Drupal\Core\Database\StatementInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -23,7 +24,6 @@ use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\rir_interface\Utils\Constants;
 use Drupal\smart_ip\SmartIpLocation;
-use Drupal\taxonomy\Entity\Term;
 use Drupal\taxonomy\TermInterface;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\ViewExecutable;
@@ -34,7 +34,7 @@ use Drupal\views\ViewExecutable;
  *
  * @param EntityInterface $entity
  */
-function rir_interface_entity_create(EntityInterface $entity)
+function rir_interface_entity_create(EntityInterface $entity): void
 {
   if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
     $targetPrId = Drupal::request()->get('advert_target_pr');
@@ -63,25 +63,53 @@ function rir_interface_entity_create(EntityInterface $entity)
  */
 function rir_interface_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode): void
 {
-  if ($entity->bundle() == 'advert' and $view_mode == 'full' and $entity instanceof NodeInterface) {
-    $style = ImageStyle::load('flexslider_thumbnail');
-    foreach ($style->getEffects() as $uuid => $effect) {
-      if ($effect instanceof ScaleAndCropImageEffect) {
-        $width = $effect->getConfiguration()['data']['width'];
-        $build['#attached']['drupalSettings']['flexslider_thumbnail_width'] = $width;
-        break;
+  if ($entity->bundle() == 'advert' and $entity instanceof NodeInterface) {
+    if ($view_mode == 'full') {
+      $style = ImageStyle::load('flexslider_thumbnail');
+      foreach ($style->getEffects() as $uuid => $effect) {
+        if ($effect instanceof ScaleAndCropImageEffect) {
+          $width = $effect->getConfiguration()['data']['width'];
+          $build['#attached']['drupalSettings']['flexslider_thumbnail_width'] = $width;
+          break;
+        }
       }
-    }
 
-    if ($entity->get('field_advert_type')->value == 'auction'
-      and isset($entity->get('field_bid_is_online')->value)
-      and intval($entity->get('field_bid_is_online')->value) == 1) {
-      $expiration = $entity->get('field_bid_expiration')->date;
-      if ($expiration instanceof DrupalDateTime) {
-        $formatted = $expiration->format(DateTimeInterface::ATOM);
-        $build['#attached']['drupalSettings']['bid']['expiration'] = $formatted;
+      if ($entity->get('field_advert_type')->value == 'auction'
+        and isset($entity->get('field_bid_is_online')->value)
+        and intval($entity->get('field_bid_is_online')->value) == 1) {
+        $build['#attached']['library'][] = 'rir_interface/auction-countdown';
+        $build['#attached']['drupalSettings']['viewMode'] = 'full';
+        $expiration = $entity->get('field_bid_expiration')->date;
+        if ($expiration instanceof DrupalDateTime) {
+          $formatted = $expiration->format(DateTimeInterface::ATOM);
+          $build['#attached']['drupalSettings']['expiration'] = $formatted;
+        }
       }
     }
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function rir_interface_views_pre_render(ViewExecutable $view): void
+{
+  if ($view->storage->id() == 'auctions_slider' and $view->current_display == 'block_top_auctions') {
+    $view->element['#attached']['library'][] = 'rir_interface/auction-countdown';
+    $rows = $view->result;
+    $auctions = [];
+    foreach ($rows as $row) {
+      $advert = $row->_entity;
+      if ($advert instanceof NodeInterface) {
+        $expiration = $advert->get('field_bid_expiration')->date;
+        if ($expiration instanceof DrupalDateTime) {
+          $formatted = $expiration->format(DateTimeInterface::ATOM);
+          $auctions[] = ['nid' => $advert->id(), 'expiration' => $formatted];
+        }
+      }
+    }
+    $view->element['#attached']['drupalSettings']['viewMode'] = 'view';
+    $view->element['#attached']['drupalSettings']['auctions'] = $auctions;
   }
 }
 
@@ -90,7 +118,7 @@ function rir_interface_node_view(array &$build, EntityInterface $entity, EntityV
  *
  * @param EntityInterface $entity
  */
-function rir_interface_entity_insert(EntityInterface $entity)
+function rir_interface_entity_insert(EntityInterface $entity): void
 {
 
   if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
@@ -181,7 +209,7 @@ function rir_interface_entity_insert(EntityInterface $entity)
  *
  * @throws MissingDataException
  */
-function rir_interface_entity_update(EntityInterface $entity)
+function rir_interface_entity_update(EntityInterface $entity): void
 {
   if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
     Drupal::cache('render')->deleteAll();
@@ -190,25 +218,28 @@ function rir_interface_entity_update(EntityInterface $entity)
      * Send validation notification on first publishing
      */
     $is_first_published = $entity->get('field_advert_is_first_published')->value;
-    $is_original_first_published = $entity->original->get('field_advert_is_first_published')->value;
+    $original_advert = $entity->original;
+    if ($original_advert instanceof NodeInterface) {
+      $is_original_first_published = $original_advert->get('field_advert_is_first_published')->value;
 
-    if (isset($is_first_published)
-      and isset($is_original_first_published)
-      and intval($is_first_published) === NodeInterface::PUBLISHED
-      and intval($is_original_first_published) === NodeInterface::NOT_PUBLISHED) {
+      if (isset($is_first_published)
+        and isset($is_original_first_published)
+        and intval($is_first_published) === NodeInterface::PUBLISHED
+        and intval($is_original_first_published) === NodeInterface::NOT_PUBLISHED) {
 
-      $emailService = Drupal::service('rir_interface.email_service');
-      $data = (object)[
-        'notificationType' => Constants::ADVERT_VALIDATED,
-        'entity' => $entity,
-      ];
-      $emailService->send($data);
+        $emailService = Drupal::service('rir_interface.email_service');
+        $data = (object)[
+          'notificationType' => Constants::ADVERT_VALIDATED,
+          'entity' => $entity,
+        ];
+        $emailService->send($data);
 
-      $pr_data = (object)[
-        'notificationType' => Constants::ADVERT_VALIDATED_NOTIFY_PR,
-        'entity' => $entity,
-      ];
-      $emailService->send($pr_data);
+        $pr_data = (object)[
+          'notificationType' => Constants::ADVERT_VALIDATED_NOTIFY_PR,
+          'entity' => $entity,
+        ];
+        $emailService->send($pr_data);
+      }
     }
   }
 
@@ -369,7 +400,7 @@ function rir_interface_theme($existing, $type, $theme, $path): array
  *
  * @param EntityInterface $entity
  */
-function rir_interface_entity_presave(EntityInterface $entity)
+function rir_interface_entity_presave(EntityInterface $entity): void
 {
   if ($entity instanceof NodeInterface and $entity->bundle() === 'advert') {
 
@@ -454,8 +485,7 @@ function rir_interface_entity_presave(EntityInterface $entity)
      */
 
     if (!isset($entity->get('field_visit_email_address1')->value)) {
-      $entity->set('field_visit_email_address1', Drupal::config('system.site')
-        ->get('mail'));
+      $entity->set('field_visit_email_address1', Drupal::config('system.site')->get('mail'));
     }
 
     /**
@@ -476,7 +506,7 @@ function rir_interface_entity_presave(EntityInterface $entity)
  * @param ViewExecutable $view
  * @param QueryPluginBase $query
  */
-function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $query)
+function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $query): void
 {
   if ($view->storage->get('id') === 'adverts') {
     if (in_array($view->current_display, [
@@ -485,7 +515,7 @@ function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $
     ])) {
       $node = Drupal::routeMatch()->getParameter('node');
       if (isset($node)) {
-        // Sort images as the are arranged in the edit page
+        // Sort images as they are arranged in the edit page
         $query->orderby[1] = [
           'field' => 'node__field_advert_picture.delta',
           'description' => 'ASC',
@@ -543,11 +573,9 @@ function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL, 
             ->condition('source', '/node/' . $emailPayload->id())
             ->execute();
           if ($result and $result instanceof StatementInterface) {
-            Drupal::logger('rir_interface')
-              ->debug('Query string: ' . $result->getQueryString());
+            Drupal::logger('rir_interface')->debug('Query string: ' . $result->getQueryString());
             while ($row = $result->fetchAssoc()) {
-              Drupal::logger('rir_interface')
-                ->debug('Query not empty: ' . $row['alias']);
+              Drupal::logger('rir_interface')->debug('Query not empty: ' . $row['alias']);
               $nodePath = $row['alias'];
             }
           }
@@ -602,7 +630,7 @@ function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL, 
  * @param $message
  * @param $params
  */
-function rir_interface_mail($key, &$message, $params)
+function rir_interface_mail($key, &$message, $params): void
 {
   $options = [
     'langcode' => $message['langcode'],
@@ -665,7 +693,7 @@ function rir_interface_mail($key, &$message, $params)
  * @param Swift_Message $swiftMessage
  * @param $message
  */
-function rir_interface_swiftmailer_alter(Swift_Mailer &$swiftMailer, Swift_Message &$swiftMessage, $message)
+function rir_interface_swiftmailer_alter(Swift_Mailer &$swiftMailer, Swift_Message &$swiftMessage, $message): void
 {
   $siteConfig = Drupal::config('system.site');
   $siteName = $siteConfig->get('name');
@@ -680,7 +708,7 @@ function rir_interface_swiftmailer_alter(Swift_Mailer &$swiftMailer, Swift_Messa
  * @param FormStateInterface $form_state
  * @param $form_id
  */
-function rir_interface_form_system_site_information_settings_alter(&$form, FormStateInterface $form_state, $form_id)
+function rir_interface_form_system_site_information_settings_alter(&$form, FormStateInterface $form_state, $form_id): void
 {
 
   $form['site_phone'] = [
@@ -707,14 +735,12 @@ function rir_interface_form_system_site_information_settings_alter(&$form, FormS
  * @param array $form
  * @param FormStateInterface $formState
  */
-function rir_interface_site_information_submit(array &$form, FormStateInterface $formState)
+function rir_interface_site_information_submit(array &$form, FormStateInterface $formState): void
 {
   $config = Drupal::configFactory()->getEditable('system.site');
   $config->set('phone', $formState->getValue('site_phone'))->save();
-  $config->set('emailSender', $formState->getValue('site_default_email_sender'))
-    ->save();
-  $config->set('emailReplyTo', $formState->getValue('site_default_email_replyto'))
-    ->save();
+  $config->set('emailSender', $formState->getValue('site_default_email_sender'))->save();
+  $config->set('emailReplyTo', $formState->getValue('site_default_email_replyto'))->save();
 }
 
 /**
@@ -724,7 +750,7 @@ function rir_interface_site_information_submit(array &$form, FormStateInterface 
  * @param FormStateInterface $form_state
  * @param $form_id
  */
-function rir_interface_form_alter(&$form, FormStateInterface $form_state, $form_id)
+function rir_interface_form_alter(&$form, FormStateInterface $form_state, $form_id): void
 {
   if ($form_id == 'views_exposed_form') {
     $view = $form_state->get('view');
@@ -743,7 +769,7 @@ function rir_interface_form_alter(&$form, FormStateInterface $form_state, $form_
 /**
  * Implements hook_field_widget_form_alter().
  */
-function rir_interface_field_widget_form_alter(&$element, FormStateInterface $form_state, $context)
+function rir_interface_field_widget_form_alter(&$element, FormStateInterface $form_state, $context): void
 {
   $field_definition = $context['items']->getFieldDefinition();
   if (!$field_definition instanceof FieldConfig) {
@@ -867,7 +893,7 @@ function get_email_attachment_files(): array
 /**
  * Implements hook_block_access().
  */
-function rir_interface_block_access(Block $block, $operation, AccountInterface $account)
+function rir_interface_block_access(Block $block, $operation, AccountInterface $account): AccessResultForbidden|AccessResultNeutral|AccessResult
 {
   if ($operation === 'view') {
     if ($block->getPluginId() === 'views_block:single_advert-block_single_bid_advert') {
@@ -887,7 +913,7 @@ function rir_interface_block_access(Block $block, $operation, AccountInterface $
 /**
  * Implements hook_field_formatter_info_alter().
  */
-function rir_interface_field_formatter_info_alter(array &$info)
+function rir_interface_field_formatter_info_alter(array &$info): void
 {
   $info['string']['field_types'][] = 'advert_sector_string';
 }
@@ -895,7 +921,7 @@ function rir_interface_field_formatter_info_alter(array &$info)
 /**
  * Implements hook_field_widget_info_alter().
  */
-function rir_interface_field_widget_info_alter(array &$info)
+function rir_interface_field_widget_info_alter(array &$info): void
 {
   $info['string_textfield']['field_types'][] = 'advert_sector_string';
 }
