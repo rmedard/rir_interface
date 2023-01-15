@@ -43,7 +43,7 @@ function rir_interface_entity_create(EntityInterface $entity): void
     }
 
     $queryString = Drupal::request()->getQueryString();
-    $params = explode('&', $queryString);
+    $params = explode('&', $queryString, 3);
     foreach ($params as $param) {
       $assocParam = explode('=', $param);
       if ($assocParam[0] == 'field_advert_posting_plan') {
