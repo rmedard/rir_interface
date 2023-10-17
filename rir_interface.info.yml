@@ -3,7 +3,7 @@ type: module
 description: 'This RIR module handles all GUI manipulations.'
 package: RIR Custom Modules
 core: 8.x
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^9 || ^10
 
 dependencies:
   - smart_ip:smart_ip
@@ -12,5 +12,5 @@ dependencies:
   - fivestar:fivestar
   - votingapi
   - block
-version: '8.x-1.0'
+version: '9.x-1.0'
 project: 'rir_interface'
