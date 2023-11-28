@@ -37,7 +37,7 @@ class CopyrightBlock extends BlockBase {
      *
      * @see \Drupal\block\BlockViewBuilder
      */
-    public function build() {
+    public function build(): array {
         return [
           '#theme' => 'rir_copyright',
         ];
