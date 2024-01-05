@@ -12,7 +12,6 @@ namespace Drupal\rir_interface\Plugin\Block;
 use Drupal;
 use Drupal\Core\Block\Annotation\Block;
 use Drupal\Core\Block\BlockBase;
-use Drupal\rir_interface\Form\SocialMediaSettingsForm;
 use JetBrains\PhpStorm\ArrayShape;
 
 /**
