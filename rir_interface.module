@@ -22,6 +22,7 @@ use Drupal\image\Entity\ImageStyle;
 use Drupal\image\Plugin\ImageEffect\ScaleAndCropImageEffect;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\rir_interface\Form\SocialMediaSettingsForm;
 use Drupal\rir_interface\Utils\Constants;
 use Drupal\smart_ip\SmartIpLocation;
 use Drupal\taxonomy\TermInterface;
@@ -818,6 +819,10 @@ function rir_interface_token_info(): array
     'name' => 'Youtube Channel',
     'description' => t('The main youtube channel of the site'),
   ];
+  $info['tokens']['site']['whatsapp'] = [
+    'name' => 'Whatsapp Channels',
+    'description' => t('The main whatsapp channel of the site'),
+  ];
   $info['tokens']['site']['instagram'] = [
     'name' => 'Instagram Account',
     'description' => t('The main instagram account of the site'),
@@ -839,7 +844,7 @@ function rir_interface_token_info(): array
 function rir_interface_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata): array
 {
   $replacements = [];
-  $socialMediaConfig = Drupal::config('rir_interface.social_media');
+  $socialMediaConfig = Drupal::config(SocialMediaSettingsForm::SETTINGS);
   foreach ($tokens as $name => $original) {
     switch ($name) {
       case 'phone':
@@ -860,6 +865,10 @@ function rir_interface_tokens($type, $tokens, array $data, array $options, Bubbl
         break;
       case 'youtube':
         $text = $socialMediaConfig->get('youtube_page');
+        $replacements[$original] = $text;
+        break;
+      case 'whatsapp':
+        $text = $socialMediaConfig->get('whatsapp_call_link');
         $replacements[$original] = $text;
         break;
       case 'instagram':
