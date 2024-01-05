@@ -13,8 +13,8 @@
         <i class="fa-brands fa-twitter-square fa-2x mx-1" aria-hidden="true" style="color: #1A91DA;"></i>
     </a>
 {% endif %}
-{% if instagram is not empty %}
-    <a href="{{ instagram }}" target="_blank">
+{% if drupal_token('site:instagram') is not empty %}
+    <a href="{{ drupal_token('site:instagram') }}" target="_blank">
         <i class="fa-brands fa-instagram fa-2x mx-1" aria-hidden="true" style="color: #d62977;"></i>
     </a>
 {% endif %}
