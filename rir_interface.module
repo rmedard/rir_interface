@@ -380,6 +380,7 @@ function rir_interface_theme($existing, $type, $theme, $path): array
         'facebook' => '',
         'twitter' => '',
         'instagram' => '',
+        'whatsapp' => '',
         'youtube' => '',
       ],
     ],
