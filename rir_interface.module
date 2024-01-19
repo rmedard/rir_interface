@@ -125,6 +125,24 @@ function rir_interface_entity_insert(EntityInterface $entity): void
   if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
     Drupal::cache('render')->deleteAll();
 
+    /**
+     * Display meaningful message
+     */
+    $message = t('The advert has been successfully created. <br>
+                        <ul>
+                          <li><b>Title:</b> @title</li>
+                          <li><b>Reference:</b> @reference</li>
+                        </ul>',
+      [
+        '@title' => $entity->label(),
+        '@reference' => $entity->get('field_advert_reference')->getString(),
+      ]);
+    Drupal::messenger()->addStatus(Markup::create($message));
+
+    /**
+     * End
+     */
+
     $cc_recipients = $entity->get('field_visit_email_address1')->value;
     if (isset($entity->get('field_visit_email_address2')->value) and !empty($entity->get('field_visit_email_address2')->value)) {
       $cc_recipients .= ',' . $entity->get('field_visit_email_address2')->value;
