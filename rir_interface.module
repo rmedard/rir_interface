@@ -128,8 +128,7 @@ function rir_interface_entity_insert(EntityInterface $entity): void
     /**
      * Display meaningful message
      */
-    $message = t('The advert has been successfully created. <br>
-                        <ul>
+    $message = t('<ul>
                           <li><b>Title:</b> @title</li>
                           <li><b>Reference:</b> @reference</li>
                         </ul>',
