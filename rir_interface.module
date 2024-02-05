@@ -469,15 +469,15 @@ function rir_interface_entity_presave(EntityInterface $entity): void
     /**
      * Update price in RWF
      */
-    if ($entity->get('field_advert_currency')->value == 'usd') {
-      $rate = Drupal::service('rir_interface.currency_converter_service')
-        ->getUsdRwfRate();
-      if (isset($rate)) {
-        $entity->set('field_price_in_rwf', $entity->get('field_advert_price')->value * $rate);
-      }
-    } else {
-      $entity->set('field_price_in_rwf', $entity->get('field_advert_price')->value);
-    }
+ //   if ($entity->get('field_advert_currency')->value == 'usd') {
+ //     $rate = Drupal::service('rir_interface.currency_converter_service')
+ //     ->getUsdRwfRate();
+ //   if (isset($rate)) {
+ //     $entity->set('field_price_in_rwf', $entity->get('field_advert_price')->value * $rate);
+ //   }
+ // } else {
+ //   $entity->set('field_price_in_rwf', $entity->get('field_advert_price')->value);
+ // }
 
     /**
      * Check if advert is expired and trying to publish
