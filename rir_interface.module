@@ -489,8 +489,8 @@ function rir_interface_entity_presave(EntityInterface $entity): void
     if ($isAgent and $entity->get('field_advert_advertiser')->entity == null) {
       Drupal::logger('XX')->debug('Advert ID: ' . $entity->id());
     }
-    $isAgentNotPublished = intval($entity->get('field_advert_advertiser')->entity->get('status')->value) === NodeInterface::NOT_PUBLISHED;
-    if ($isAdvertPublished and $isAgent and $isAgentPublished) {
+    $isAgentNotPublished = $isAgent and intval($entity->get('field_advert_advertiser')->entity->get('status')->value) === NodeInterface::NOT_PUBLISHED;
+    if ($isAdvertPublished and $isAgentPublished) {
       $entity->set('status', NodeInterface::NOT_PUBLISHED);
       Drupal::logger('rir_interface')
         ->warning('Publishing failed: The agent of this advert is not published!');
