@@ -447,8 +447,14 @@ function rir_interface_entity_presave(EntityInterface $entity): void
     /**
      * Update address signature
      */
-    $village = str_replace(' ', '', strtolower($entity->get('field_advert_village')->value));
-    $cell = str_replace(' ', '', strtolower($entity->get('field_advert_cell')->value));
+    $village = '';
+    if(isset($entity->get('field_advert_village')->value)) {
+      $village = str_replace(' ', '', strtolower($entity->get('field_advert_village')->value)); 
+    }
+    $cell = '';
+    if($entity->get('field_advert_cell')->value) {
+       $cell = str_replace(' ', '', strtolower($entity->get('field_advert_cell')->value));
+    }
     $street = '';
     if (isset($entity->get('field_advert_street')->value)) {
       $street = str_replace(' ', '', strtolower($entity->get('field_advert_street')->value));
