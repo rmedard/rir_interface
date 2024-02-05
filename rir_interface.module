@@ -449,7 +449,10 @@ function rir_interface_entity_presave(EntityInterface $entity): void
      */
     $village = str_replace(' ', '', strtolower($entity->get('field_advert_village')->value));
     $cell = str_replace(' ', '', strtolower($entity->get('field_advert_cell')->value));
-    $street = str_replace(' ', '', strtolower($entity->get('field_advert_street')->value));
+    $street = '';
+    if (isset($entity->get('field_advert_street')->value)) {
+      $street = str_replace(' ', '', strtolower($entity->get('field_advert_street')->value));
+    }
     if (!empty($district) && !empty($sector) && !empty($village) && !empty($cell) && !empty($street)) {
       $signature = hash('md5', $province . '_' . $district . '_' . $sector . '_' . $village . '_' . $cell . '_' . $street);
       $entity->set('field_advert_signature', $signature);
