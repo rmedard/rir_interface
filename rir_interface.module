@@ -166,9 +166,8 @@ function rir_interface_entity_insert(EntityInterface $entity): void
     //        $params['attachments'][] = $attachments[0];
     //        $params['attachments'][] = $attachments[1];
 
-    $langcode = Drupal::currentUser()->getPreferredLangcode();
-    $send = TRUE;
-    $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
+    $langCode = Drupal::currentUser()->getPreferredLangcode();
+    $result = $mailManager->mail($module, $key, $to, $langCode, $params, $reply, TRUE);
     if (intval($result['result']) !== 1) {
       $message = t('There was a problem sending notification email to @email for creating advert id: @id.', [
         '@email' => $to,
@@ -205,9 +204,8 @@ function rir_interface_entity_insert(EntityInterface $entity): void
     //        $params['attachments'][] = $attachments[0];
     //        $params['attachments'][] = $attachments[1];
 
-    $langcode = Drupal::currentUser()->getPreferredLangcode();
-    $send = TRUE;
-    $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
+    $langCode = Drupal::currentUser()->getPreferredLangcode();
+    $result = $mailManager->mail($module, $key, $to, $langCode, $params, $reply, TRUE);
     if (intval($result['result']) !== 1) {
       $message = t('There was a problem sending notification email to @email after creating agent id: @id', [
         '@email' => $to,
@@ -248,7 +246,9 @@ function rir_interface_entity_update(EntityInterface $entity): void
         and isset($is_original_first_published)
         and intval($is_first_published) === NodeInterface::PUBLISHED
         and intval($is_original_first_published) === NodeInterface::NOT_PUBLISHED) {
-
+        /**
+         * @var \Drupal\rir_interface\Service\EmailService $emailService;
+         */
         $emailService = Drupal::service('rir_interface.email_service');
         $data = (object)[
           'notificationType' => Constants::ADVERT_VALIDATED,
@@ -267,6 +267,9 @@ function rir_interface_entity_update(EntityInterface $entity): void
 
   if ($entity instanceof NodeInterface and $entity->bundle() == 'agent') {
     if (!$entity->isPublished()) {
+      /**
+       * @var \Drupal\rir_interface\Service\AgentService $agentService;
+       */
       $agentService = Drupal::service('rir_interface.agent_service');
       $adverts = $agentService->loadAdverts($entity->id());
       if (count($adverts) > 0) {
@@ -439,7 +442,11 @@ function rir_interface_entity_presave(EntityInterface $entity): void
     $province = '';
     $locality = $entity->get('field_advert_locality')->entity;
     if ($locality instanceof TermInterface) {
-      $localityEntities = Drupal::service('rir_interface.locality_service')->getLocality($locality->id());
+      /**
+       * @var \Drupal\rir_interface\Service\LocalityService $localityService;
+       */
+      $localityService = Drupal::service('rir_interface.locality_service');
+      $localityEntities = $localityService->getLocality($locality->id());
       $sector = array_key_exists(Constants::SECTOR, $localityEntities) ? $localityEntities[Constants::SECTOR] : '';
       $district = array_key_exists(Constants::DISTRICT, $localityEntities) ? $localityEntities[Constants::DISTRICT] : '';
       $province = array_key_exists(Constants::PROVINCE, $localityEntities) ? $localityEntities[Constants::PROVINCE] : '';
@@ -473,15 +480,19 @@ function rir_interface_entity_presave(EntityInterface $entity): void
     /**
      * Update price in RWF
      */
- //   if ($entity->get('field_advert_currency')->value == 'usd') {
- //     $rate = Drupal::service('rir_interface.currency_converter_service')
- //     ->getUsdRwfRate();
- //   if (isset($rate)) {
- //     $entity->set('field_price_in_rwf', $entity->get('field_advert_price')->value * $rate);
- //   }
- // } else {
- //   $entity->set('field_price_in_rwf', $entity->get('field_advert_price')->value);
- // }
+    if ($entity->get('field_advert_currency')->getString() == 'usd') {
+
+      /**
+       * @var \Drupal\rir_interface\Service\CurrencyConverterService $currencyConverter;
+       */
+      $currencyConverter = Drupal::service('rir_interface.currency_converter_service');
+      $rate = $currencyConverter->getUsdRwfRate();
+      if (isset($rate)) {
+        $entity->set('field_price_in_rwf', $entity->get('field_advert_price')->value * $rate);
+      }
+    } else {
+      $entity->set('field_price_in_rwf', $entity->get('field_advert_price')->value);
+    }
 
     /**
      * Check if advert is expired and trying to publish
@@ -589,14 +600,13 @@ function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL, 
   $template_path = '';
   $variables = [];
   $twig_service = Drupal::service('twig');
+  $logger = Drupal::logger('rir_interface');
   switch ($email_type) {
     case Constants::ADVERT_VALIDATED:
       if ($emailPayload instanceof NodeInterface) {
-        $langcode = Drupal::languageManager()->getDefaultLanguage()->getId();
-        $nodePath = Drupal::service('path_alias.manager')
-          ->getAliasByPath('/node/' . $emailPayload->id(), $langcode);
-        Drupal::logger('rir_interface')
-          ->warning('Langcode : ' . $langcode . '|Node path: ' . $nodePath);
+        $langCode = Drupal::languageManager()->getDefaultLanguage()->getId();
+        $nodePath = Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $emailPayload->id(), $langCode);
+        $logger->warning('LangCode : ' . $langCode . '|Node path: ' . $nodePath);
         if ($nodePath == '/node/' . $emailPayload->id()) {
           $connection = Drupal::database();
           $result = $connection->select('url_alias', 'al')
@@ -604,9 +614,9 @@ function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL, 
             ->condition('source', '/node/' . $emailPayload->id())
             ->execute();
           if ($result and $result instanceof StatementInterface) {
-            Drupal::logger('rir_interface')->debug('Query string: ' . $result->getQueryString());
+            $logger->debug('Query string: ' . $result->getQueryString());
             while ($row = $result->fetchAssoc()) {
-              Drupal::logger('rir_interface')->debug('Query not empty: ' . $row['alias']);
+              $logger->debug('Query not empty: ' . $row['alias']);
               $nodePath = $row['alias'];
             }
           }

@@ -20,16 +20,15 @@ class EmailService
     /**
      * @param $data
      */
-    public function send($data)
-    {
+    public function send($data): void {
         $mailManager = Drupal::service('plugin.manager.mail');
         $module = 'rir_interface';
         if ($data->notificationType === Constants::ADVERT_VALIDATED) {
             $entity = $data->entity;
             if ($entity instanceof NodeInterface) {
-                $contact_email = $entity->get('field_advert_contact_email')->value;
-                $visit_email_1 = $entity->get('field_visit_email_address1')->value;
-                $visit_email_2 = $entity->get('field_visit_email_address2')->value;
+                $contact_email = $entity->get('field_advert_contact_email')->getString();
+                $visit_email_1 = $entity->get('field_visit_email_address1')->getString();
+                $visit_email_2 = $entity->get('field_visit_email_address2')->getString();
                 $recipients = $contact_email;
 
                 if (isset($visit_email_1) and !empty($visit_email_1)) {
@@ -45,7 +44,7 @@ class EmailService
                 $params['cc'] = Drupal::config('system.site')->get('mail');
                 $params['message'] = Markup::create(getEmailHtmlContent(Constants::ADVERT_VALIDATED, $entity));
                 $params['advert_title'] = $entity->label();
-                $params['contact_name'] = $entity->get('field_visit_contact_name')->value;
+                $params['contact_name'] = $entity->get('field_visit_contact_name')->getString();
 
 //                $attachments = get_email_attachment_files();
 //                $params['attachments'][] = $attachments[0];
@@ -53,8 +52,7 @@ class EmailService
 //                $params['attachments'][] = $attachments[2];
 
                 $langcode = Drupal::languageManager()->getDefaultLanguage()->getId();
-                $send = TRUE;
-                $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
+                $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, TRUE);
                 if (intval($result['result']) != 1) {
                     $message = t('There was a problem sending notification email after creating advert id: @id.', [
                         '@id' => $entity->id(),
@@ -76,9 +74,12 @@ class EmailService
             if ($entity instanceof NodeInterface) {
                 $key = Constants::ADVERT_VALIDATED_NOTIFY_PR;
 
+              /**
+               * @var \Drupal\rir_interface\Service\PropertyRequestsService $PRsService;
+               */
                 $PRsService = Drupal::service('rir_interface.property_requests_service');
                 $PRs = $PRsService->loadPRsForAdvert($entity);
-                if (isset($PRs) and !empty($PRs)) {
+                if (!empty($PRs)) {
                     $dummyDomains = array('@test.com', '@example.com', '@random.com');
                     foreach ($PRs as $pr) {
                         $email = $pr->get('field_pr_email')->value;
@@ -89,8 +90,7 @@ class EmailService
                             $params['message'] = Markup::create(getEmailHtmlContent(Constants::ADVERT_VALIDATED_NOTIFY_PR,
                                 $entity, $pr->get('field_pr_first_name')->value, ['prId' => $pr->id()]));
                             $langcode = Drupal::languageManager()->getDefaultLanguage()->getId();
-                            $send = TRUE;
-                            $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
+                            $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, TRUE);
                             if (intval($result['result']) != 1) {
                                 $message = t('There was a problem sending notification email to PR for advert: @id.', [
                                     '@id' => $entity->id(),
@@ -119,8 +119,7 @@ class EmailService
             $params['message'] = Markup::create(getEmailHtmlContent(Constants::PROPOSED_ADVERTS_TO_PR,
                 $adverts, $pr->get('field_pr_first_name')->value, ['prId' => $pr->id()]));
             $langcode = Drupal::languageManager()->getDefaultLanguage()->getId();
-            $send = TRUE;
-            $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
+            $result = $mailManager->mail($module, $key, $to, $langcode, $params, $reply, TRUE);
             if (intval($result['result']) != 1) {
                 $message = t('There was a problem sending notification email to PR.');
                 Drupal::logger('PR Notification')

@@ -45,6 +45,9 @@ class RiRSimilarAdverts extends BlockBase
         $output = [];
         $output[]['#cache']['max-age'] = 0; //No cache. Very important.
         if ($node and $node instanceof NodeInterface and $node->bundle() == 'advert') {
+          /**
+           * @var \Drupal\rir_interface\Service\AdvertsService $advertsService;
+           */
             $advertsService = Drupal::service('rir_interface.adverts_service');
             $output[] = [
                 '#theme' => 'hir_similar_adverts',

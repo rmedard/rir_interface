@@ -51,8 +51,7 @@ class AdvertsService
                 $query = $query->condition('field_price_in_rwf', array($min_price, $max_price), 'BETWEEN');
             }
             $advertsIds = $query->execute();
-
-            if ($advertsIds && !empty($advertsIds)) {
+            if (!empty($advertsIds)) {
                 $advertIds = array_diff($advertsIds, [$advert_node->id()]);
             }
         } catch (InvalidPluginDefinitionException $e) {
@@ -63,8 +62,7 @@ class AdvertsService
         return $advertIds;
     }
 
-    public function setProposedAdvertOnPR($advertId, $prId)
-    {
+    public function setProposedAdvertOnPR($advertId, $prId): void {
         try {
             $storage = $this->entityTypeManager->getStorage('node');
             $pr = $storage->load($prId);
