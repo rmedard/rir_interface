@@ -27,6 +27,7 @@ use Drupal\rir_interface\Utils\Constants;
 use Drupal\smart_ip\SmartIpLocation;
 use Drupal\taxonomy\TermInterface;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\Plugin\views\query\Sql;
 use Drupal\views\ViewEntityInterface;
 use Drupal\views\ViewExecutable;
 
@@ -527,40 +528,34 @@ function rir_interface_entity_presave(EntityInterface $entity): void
  * Implements hook_views_query_alter().
  *
  * @param ViewExecutable $view
- * @param QueryPluginBase $query
+ * @param Sql $query
  */
-function rir_interface_views_query_alter(ViewExecutable $view, QueryPluginBase $query): void
+function rir_interface_views_query_alter(ViewExecutable $view, Sql $query): void
 {
-  /**
-   * @var \Drupal\views\Plugin\views\query\Sql $sqlQuery;
-   */
-  $sqlQuery = $query;
-
   /**
    * @var ViewEntityInterface $viewInterface
    */
   $viewInterface = $view->storage;
   if ($viewInterface->id() === 'adverts') {
-
     switch ($view->current_display) {
       case 'block_advert_carousel':
       case 'block_advert_images_thumbnails':
         $node = Drupal::routeMatch()->getParameter('node');
         if (isset($node)) {
           // Sort images as they are arranged in the edit page
-          $sqlQuery->orderby[1] = [
+          $query->orderby[1] = [
             'field' => 'node__field_advert_picture.delta',
             'description' => 'ASC',
           ];
           // Limit number of images by posting plan
           $advert = Node::load($node->id());
           if ($advert->get('field_advert_posting_plan')->value === 'standard') {
-            $sqlQuery->setLimit(10);
+            $query->setLimit(10);
           }
         }
         break;
       case 'page_manage_adverts':
-        foreach ($sqlQuery->where as &$condition_group) {
+        foreach ($query->where as &$condition_group) {
           foreach ($condition_group['conditions'] as &$condition) {
             if (str_contains($condition['field'], 'node_field_data.created')) {
               $created_param = Drupal::request()->query->get('created');
