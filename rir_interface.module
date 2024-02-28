@@ -125,8 +125,10 @@ function rir_interface_views_pre_render(ViewExecutable $view): void
 function rir_interface_path_alias_insert(EntityInterface $entity): void {
   preg_match('/node\/(\d+)/', $entity->get('path')->value, $matches);
   $nodeId = $matches[1];
+  Drupal::logger('XXX')->debug('Detected NID: ' . $nodeId . ' | IsInt: ' . is_int($nodeId));
   if (is_int($nodeId)) {
     $alias = $entity->get('alias')->value;
+    Drupal::logger('XXX')->debug('Alias: ' . $alias);
     $node = Node::load($nodeId);
     try {
       switch ($node->bundle()) {
