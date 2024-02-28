@@ -132,15 +132,17 @@ function rir_interface_path_alias_insert(EntityInterface $entity): void {
       switch ($node->bundle()) {
         case 'advert':
           $node->set('field_advert_relative_path', $alias);
+          $node->save();
           break;
         case 'agent':
           $node->set('field_agent_relative_path', $alias);
+          $node->save();
           break;
         case 'property_request':
           $node->set('field_pr_relative_path', $alias);
+          $node->save();
           break;
       }
-      $node->save();
     }
     catch (EntityStorageException $e) {
       Drupal::logger('rir_interface')->error($e->getMessage());
