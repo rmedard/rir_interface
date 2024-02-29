@@ -121,6 +121,7 @@ function rir_interface_views_pre_render(ViewExecutable $view): void
  * Implements hook_ENTITY_TYPE_presave().
  */
 function rir_interface_path_alias_presave(EntityInterface $entity): void {
+  Drupal::logger('UrlAlias')->debug('Presave UrlAlias: ' . $entity->id());
   preg_match('/node\/(\d+)/', $entity->get('path')->value, $matches);
   $nodeId = $matches[1];
   $alias = $entity->get('alias')->value;
