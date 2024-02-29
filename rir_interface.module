@@ -27,11 +27,9 @@ use Drupal\rir_interface\Form\SocialMediaSettingsForm;
 use Drupal\rir_interface\Utils\Constants;
 use Drupal\smart_ip\SmartIpLocation;
 use Drupal\taxonomy\TermInterface;
-use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\Plugin\views\query\Sql;
 use Drupal\views\ViewEntityInterface;
 use Drupal\views\ViewExecutable;
-
 
 /**
  * Implements hook_entity_create().
@@ -263,8 +261,6 @@ function rir_interface_entity_insert(EntityInterface $entity): void
 function rir_interface_entity_update(EntityInterface $entity): void
 {
   if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
-    Drupal::cache('render')->deleteAll();
-
     /**
      * Send validation notification on first publishing
      */
