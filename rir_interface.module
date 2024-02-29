@@ -23,6 +23,7 @@ use Drupal\image\Entity\ImageStyle;
 use Drupal\image\Plugin\ImageEffect\ScaleAndCropImageEffect;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\path_alias\PathAliasInterface;
 use Drupal\rir_interface\Form\SocialMediaSettingsForm;
 use Drupal\rir_interface\Utils\Constants;
 use Drupal\smart_ip\SmartIpLocation;
@@ -118,26 +119,54 @@ function rir_interface_views_pre_render(ViewExecutable $view): void
 }
 
 /**
- * Implements hook_ENTITY_TYPE_presave().
+ * Implements hook_ENTITY_TYPE_insert().
  */
-function rir_interface_path_alias_presave(EntityInterface $entity): void {
-  Drupal::logger('UrlAlias')->debug('Presave UrlAlias: ' . $entity->id());
-  preg_match('/node\/(\d+)/', $entity->get('path')->value, $matches);
+function rir_interface_path_alias_insert(PathAliasInterface $entity): void {
+  Drupal::logger('UrlAlias')->debug('Inserting UrlAlias: ' . $entity->id());
+  preg_match('/node\/(\d+)/', $entity->getPath(), $matches);
   $nodeId = $matches[1];
-  $alias = $entity->get('alias')->value;
   $node = Node::load($nodeId);
   try {
     switch ($node->bundle()) {
       case 'advert':
-        $node->set('field_advert_relative_path', $alias);
+        $node->set('field_advert_relative_path', $entity->getAlias());
         $node->save();
         break;
       case 'agent':
-        $node->set('field_agent_relative_path', $alias);
+        $node->set('field_agent_relative_path', $entity->getAlias());
         $node->save();
         break;
       case 'property_request':
-        $node->set('field_pr_relative_path', $alias);
+        $node->set('field_pr_relative_path', $entity->getAlias());
+        $node->save();
+        break;
+    }
+  }
+  catch (EntityStorageException $e) {
+    Drupal::logger('rir_interface')->error($e->getMessage());
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function rir_interface_path_alias_update(PathAliasInterface $entity): void {
+  Drupal::logger('UrlAlias')->debug('Updating UrlAlias: ' . $entity->id());
+  preg_match('/node\/(\d+)/', $entity->getPath(), $matches);
+  $nodeId = $matches[1];
+  $node = Node::load($nodeId);
+  try {
+    switch ($node->bundle()) {
+      case 'advert':
+        $node->set('field_advert_relative_path', $entity->getAlias());
+        $node->save();
+        break;
+      case 'agent':
+        $node->set('field_agent_relative_path', $entity->getAlias());
+        $node->save();
+        break;
+      case 'property_request':
+        $node->set('field_pr_relative_path', $entity->getAlias());
         $node->save();
         break;
     }
