@@ -122,58 +122,23 @@ function rir_interface_views_pre_render(ViewExecutable $view): void
  * Implements hook_ENTITY_TYPE_insert().
  */
 function rir_interface_path_alias_insert(PathAliasInterface $entity): void {
-  Drupal::logger('UrlAlias')->debug('Inserting UrlAlias: ' . $entity->id());
-  preg_match('/node\/(\d+)/', $entity->getPath(), $matches);
-  $nodeId = $matches[1];
-  $node = Node::load($nodeId);
-  try {
-    switch ($node->bundle()) {
-      case 'advert':
-        $node->set('field_advert_relative_path', $entity->getAlias());
-        $node->save();
-        break;
-      case 'agent':
-        $node->set('field_agent_relative_path', $entity->getAlias());
-        $node->save();
-        break;
-      case 'property_request':
-        $node->set('field_pr_relative_path', $entity->getAlias());
-        $node->save();
-        break;
-    }
-  }
-  catch (EntityStorageException $e) {
-    Drupal::logger('rir_interface')->error($e->getMessage());
-  }
+  /*
+ * @var PathAliasInterface $pathAliasService
+ */
+  $pathAliasService = Drupal::service('rir_interface.path_alias_service');
+  $pathAliasService->updateNodeRelativePath($entity);
 }
 
 /**
- * Implements hook_ENTITY_TYPE_presave().
+ * Implements hook_ENTITY_TYPE_update().
  */
 function rir_interface_path_alias_update(PathAliasInterface $entity): void {
-  Drupal::logger('UrlAlias')->debug('Updating UrlAlias: ' . $entity->id());
-  preg_match('/node\/(\d+)/', $entity->getPath(), $matches);
-  $nodeId = $matches[1];
-  $node = Node::load($nodeId);
-  try {
-    switch ($node->bundle()) {
-      case 'advert':
-        $node->set('field_advert_relative_path', $entity->getAlias());
-        $node->save();
-        break;
-      case 'agent':
-        $node->set('field_agent_relative_path', $entity->getAlias());
-        $node->save();
-        break;
-      case 'property_request':
-        $node->set('field_pr_relative_path', $entity->getAlias());
-        $node->save();
-        break;
-    }
-  }
-  catch (EntityStorageException $e) {
-    Drupal::logger('rir_interface')->error($e->getMessage());
-  }
+
+  /*
+   * @var PathAliasInterface $pathAliasService
+   */
+  $pathAliasService = Drupal::service('rir_interface.path_alias_service');
+  $pathAliasService->updateNodeRelativePath($entity);
 }
 
 
