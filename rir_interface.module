@@ -120,13 +120,12 @@ function rir_interface_views_pre_render(ViewExecutable $view): void
 }
 
 /**
- * Implements hook_ENTITY_TYPE_insert().
+ * Implements hook_ENTITY_TYPE_presave().
  */
-function rir_interface_path_alias_insert(EntityInterface $entity): void {
+function rir_interface_path_alias_presave(EntityInterface $entity): void {
   preg_match('/node\/(\d+)/', $entity->get('path')->value, $matches);
   $nodeId = $matches[1];
   $alias = $entity->get('alias')->value;
-  Drupal::logger('XXX')->debug('Alias: ' . $alias);
   $node = Node::load($nodeId);
   try {
     switch ($node->bundle()) {
