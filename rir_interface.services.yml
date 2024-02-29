@@ -11,6 +11,8 @@ services:
     class: Drupal\rir_interface\Service\EmailService
   rir_interface.path_alias_service:
     class: Drupal\rir_interface\Service\PathAliasService
+    arguments:
+      - '@logger.factory'
   rir_interface.theming_service:
     class: Drupal\rir_interface\Service\ThemingService
   rir_interface.locality_service:

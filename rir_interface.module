@@ -12,7 +12,6 @@ use Drupal\Core\Database\StatementInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\Markup;
@@ -122,9 +121,9 @@ function rir_interface_views_pre_render(ViewExecutable $view): void
  * Implements hook_ENTITY_TYPE_insert().
  */
 function rir_interface_path_alias_insert(PathAliasInterface $entity): void {
-  /*
- * @var PathAliasInterface $pathAliasService
- */
+  /**
+   * @var \Drupal\rir_interface\Service\PathAliasService $pathAliasService
+   */
   $pathAliasService = Drupal::service('rir_interface.path_alias_service');
   $pathAliasService->updateNodeRelativePath($entity);
 }
@@ -134,8 +133,8 @@ function rir_interface_path_alias_insert(PathAliasInterface $entity): void {
  */
 function rir_interface_path_alias_update(PathAliasInterface $entity): void {
 
-  /*
-   * @var PathAliasInterface $pathAliasService
+  /**
+   * @var \Drupal\rir_interface\Service\PathAliasService $pathAliasService
    */
   $pathAliasService = Drupal::service('rir_interface.path_alias_service');
   $pathAliasService->updateNodeRelativePath($entity);

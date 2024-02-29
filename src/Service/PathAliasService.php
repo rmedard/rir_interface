@@ -2,12 +2,28 @@
 
 namespace Drupal\rir_interface\Service;
 
-use Drupal;
 use Drupal\Core\Entity\EntityStorageException;
+use Drupal\Core\Logger\LoggerChannelFactory;
+use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\node\Entity\Node;
 use Drupal\path_alias\PathAliasInterface;
 
 class PathAliasService {
+
+
+  /**
+   * Drupal\Core\Logger\LoggerChannelFactory definition.
+   *
+   * @var LoggerChannelInterface
+   */
+  protected LoggerChannelInterface $logger;
+
+  /**
+   * @param \Drupal\Core\Logger\LoggerChannelFactory $logger
+   */
+  public function __construct(LoggerChannelFactory $logger) {
+    $this->logger = $logger->get('path_alias_service');
+  }
 
   /**
    * @param \Drupal\path_alias\PathAliasInterface $pathAlias
@@ -34,7 +50,7 @@ class PathAliasService {
       }
     }
     catch (EntityStorageException $e) {
-      Drupal::logger('rir_interface')->error($e->getMessage());
+      $this->logger->error($e->getMessage());
     }
   }
 }
