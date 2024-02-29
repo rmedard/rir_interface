@@ -252,15 +252,15 @@ function rir_interface_entity_insert(EntityInterface $entity): void
 }
 
 /**
- * Implements hook_entity_update().
+ * Implements hook_ENTITY_TYPE_update().
  *
  * @param EntityInterface $entity
  *
  * @throws MissingDataException
  */
-function rir_interface_entity_update(EntityInterface $entity): void
+function rir_interface_node_update(NodeInterface $entity): void
 {
-  if ($entity instanceof NodeInterface and $entity->bundle() == 'advert') {
+  if ($entity->bundle() == 'advert') {
     /**
      * Send validation notification on first publishing
      */
@@ -292,7 +292,7 @@ function rir_interface_entity_update(EntityInterface $entity): void
     }
   }
 
-  if ($entity instanceof NodeInterface and $entity->bundle() == 'agent') {
+  if ($entity->bundle() == 'agent') {
     if (!$entity->isPublished()) {
       /**
        * @var \Drupal\rir_interface\Service\AgentService $agentService;
@@ -308,7 +308,7 @@ function rir_interface_entity_update(EntityInterface $entity): void
     }
   }
 
-  if ($entity instanceof NodeInterface and $entity->bundle() == 'property_request') {
+  if ($entity->bundle() == 'property_request') {
     $proposedAdverts = array_udiff(
       $entity->get('field_pr_proposed_properties')->referencedEntities(),
       $entity->original->get('field_pr_proposed_properties')->referencedEntities(),
