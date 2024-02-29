@@ -260,6 +260,7 @@ function rir_interface_entity_insert(EntityInterface $entity): void
  */
 function rir_interface_node_update(NodeInterface $entity): void
 {
+  Drupal::logger('xxx')->debug('Updating node: ' . $entity->id());
   if ($entity->bundle() == 'advert') {
     /**
      * Send validation notification on first publishing
@@ -442,13 +443,13 @@ function rir_interface_theme($existing, $type, $theme, $path): array
 }
 
 /**
- * Implements hook_entity_presave().
+ * Implements hook_ENTITY_TYPE_presave().
  *
- * @param EntityInterface $entity
+ * @param \Drupal\node\NodeInterface $entity
  */
-function rir_interface_entity_presave(EntityInterface $entity): void
+function rir_interface_node_presave(NodeInterface $entity): void
 {
-  if ($entity instanceof NodeInterface and $entity->bundle() === 'advert') {
+  if ($entity->bundle() === 'advert') {
 
     /**
      * In case of new entity: Set advert reference and creator location
