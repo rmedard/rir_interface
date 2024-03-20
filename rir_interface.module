@@ -1010,6 +1010,7 @@ function rir_interface_entity_bundle_field_info_alter(&$fields, EntityTypeInterf
       ->setName(t('Active adverts count'))
       ->setDescription(t('The number of active adverts of this agent'))
       ->setComputed(true)
+      ->setReadOnly(true)
       ->setClass(ActiveAgentJobsCountComputedField::class);
   }
 }
