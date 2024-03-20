@@ -12,6 +12,8 @@ use Drupal\Core\Database\StatementInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\Markup;
@@ -24,6 +26,7 @@ use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\path_alias\PathAliasInterface;
 use Drupal\rir_interface\Form\SocialMediaSettingsForm;
+use Drupal\rir_interface\Plugin\Field\ActiveAgentJobsCountComputedField;
 use Drupal\rir_interface\Utils\Constants;
 use Drupal\smart_ip\SmartIpLocation;
 use Drupal\taxonomy\TermInterface;
@@ -995,4 +998,18 @@ function rir_interface_field_formatter_info_alter(array &$info): void
 function rir_interface_field_widget_info_alter(array &$info): void
 {
   $info['string_textfield']['field_types'][] = 'advert_sector_string';
+}
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function rir_interface_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle): void {
+  if ($entity_type->id() == 'node' && $bundle == 'agent') {
+    $fields['field_agent_active_adverts_count__computed'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Active adverts count'))
+      ->setName(t('Active adverts count'))
+      ->setDescription(t('The number of active adverts of this agent'))
+      ->setComputed(true)
+      ->setClass(ActiveAgentJobsCountComputedField::class);
+  }
 }
