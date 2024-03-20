@@ -4,14 +4,17 @@ namespace Drupal\rir_interface\Plugin\Field;
 
 use Drupal;
 use Drupal\Core\Entity\Plugin\DataType\EntityAdapter;
-use Drupal\Core\Field\FieldItemList;
+use Drupal\Core\Field\Plugin\Field\FieldType\IntegerItem;
 use Drupal\Core\TypedData\ComputedItemListTrait;
 use Drupal\node\NodeInterface;
 
-class ActiveAgentJobsCountComputedField extends FieldItemList {
+class ActiveAgentJobsCountComputedField extends IntegerItem {
 
   use ComputedItemListTrait;
 
+  /**
+   * @throws \Drupal\Core\TypedData\Exception\ReadOnlyException
+   */
   protected function computeValue(): void {
     $advertsCount = 0;
     $adaptor = $this->parent;
@@ -27,7 +30,6 @@ class ActiveAgentJobsCountComputedField extends FieldItemList {
           ->execute();
       }
     }
-    $this->list[0] = $this->createItem(0, intval($advertsCount));
+    $this->setValue($advertsCount);
   }
-
 }

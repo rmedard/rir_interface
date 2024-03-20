@@ -1005,7 +1005,7 @@ function rir_interface_field_widget_info_alter(array &$info): void
  */
 function rir_interface_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle): void {
   if ($entity_type->id() == 'node' && $bundle == 'agent') {
-    $fields['field_agent_active_adverts_count__computed'] = BaseFieldDefinition::create('string')
+    $fields['field_agent_active_adverts_count__computed'] = BaseFieldDefinition::create('integer')
       ->setLabel(t('Active adverts count'))
       ->setName(t('Active adverts count'))
       ->setDescription(t('The number of active adverts of this agent'))
