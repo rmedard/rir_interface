@@ -999,18 +999,3 @@ function rir_interface_field_widget_info_alter(array &$info): void
 {
   $info['string_textfield']['field_types'][] = 'advert_sector_string';
 }
-
-/**
- * Implements hook_entity_bundle_field_info_alter().
- */
-function rir_interface_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle): void {
-  if ($entity_type->id() == 'node' && $bundle == 'agent') {
-    $fields['field_agent_active_adverts_count__computed'] = BaseFieldDefinition::create('integer')
-      ->setLabel(t('Active adverts count'))
-      ->setName(t('Active adverts count'))
-      ->setDescription(t('The number of active adverts of this agent'))
-      ->setComputed(true)
-      ->setReadOnly(true)
-      ->setClass(ActiveAgentJobsCountComputedField::class);
-  }
-}
