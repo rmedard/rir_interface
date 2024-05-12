@@ -399,6 +399,7 @@ function rir_interface_theme($existing, $type, $theme, $path): array
         'terms' => t('Terms of use'),
         'privacy' => t('Privacy policy'),
         'admin' => t('Site Management'),
+        'module_path' => \Drupal::service('extension.list.module')->getPath('rir_interface')
       ],
     ],
     'rir_address' => [

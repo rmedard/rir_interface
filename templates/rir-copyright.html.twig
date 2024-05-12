@@ -1,8 +1,12 @@
 <div class="container">
-    <div class="text-white">
+    <div class="col-8 text-white">
         Copyright <i class="far fa-copyright"></i> {{ year }} {{ drupal_token('site:name') }} - HiR Ltd. All Rights Reserved.
         <div class="site-details">
             <a href="/page/about-us">About us</a> | <a href="/news">News</a> | <a href="/page/terms-use">{{ terms }}</a> | <a href="/page/privacy-policy">{{ privacy }}</a> | <a href="/user">{{ admin }}</a>
         </div>
+    </div>
+    <div class="col-4">
+        <a href="#"><img src="{{ module_path }}/images/google-play-badge.png" alt="Download our app on android play"></a>
+        <a href="#"><img src="{{ module_path }}/images/app-store-badge.png" alt="Download our app on apple store"></a>
     </div>
 </div>
