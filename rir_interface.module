@@ -793,6 +793,16 @@ function rir_interface_form_system_site_information_settings_alter(&$form, FormS
     '#title' => t('Site default email \'reply to\''),
     '#default_value' => Drupal::config('system.site')->get('emailReplyTo'),
   ];
+  $form['site_default_android_play_link'] = [
+    '#type' => 'url',
+    '#title' => t('Android app: Play store link'),
+    '#default_value' => Drupal::config('system.site')->get('playStoreLink'),
+  ];
+  $form['site_default_apple_store_link'] = [
+    '#type' => 'url',
+    '#title' => t('IOS App: Apple Store link'),
+    '#default_value' => Drupal::config('system.site')->get('appleStoreLink'),
+  ];
   $form['#submit'][] = 'rir_interface_site_information_submit';
 }
 
@@ -808,6 +818,8 @@ function rir_interface_site_information_submit(array &$form, FormStateInterface 
   $config->set('phone', $formState->getValue('site_phone'))->save();
   $config->set('emailSender', $formState->getValue('site_default_email_sender'))->save();
   $config->set('emailReplyTo', $formState->getValue('site_default_email_replyto'))->save();
+  $config->set('playStoreLink', $formState->getValue('site_default_android_play_link'))->save();
+  $config->set('appleStoreLink', $formState->getValue('site_default_apple_store_link'))->save();
 }
 
 /**
@@ -891,6 +903,14 @@ function rir_interface_token_info(): array
   $info['tokens']['site']['instagram'] = [
     'name' => 'Instagram Account',
     'description' => t('The main instagram account of the site'),
+  ];
+  $info['tokens']['site']['android'] = [
+    'name' => 'Android Play Link',
+    'description' => t('Android app link'),
+  ];
+  $info['tokens']['site']['ios'] = [
+    'name' => 'Apple Store Link',
+    'description' => t('IOS app link'),
   ];
   return $info;
 }
