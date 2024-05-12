@@ -1033,7 +1033,7 @@ function rir_interface_field_widget_info_alter(array &$info): void
 /**
  * Implements hook_preprocess_HOOK().
  */
-function rir_interface_preprocess_node(&$variables): void {
+function rir_interface_preprocess_page(&$variables): void {
   if (!empty($vars['node'])) {
     $node = $vars['node'];
     if ($node  instanceof NodeInterface and $node->bundle() === 'agent') {
