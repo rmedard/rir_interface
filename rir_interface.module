@@ -930,10 +930,11 @@ function rir_interface_tokens($type, $tokens, array $data, array $options, Bubbl
 {
   $replacements = [];
   $socialMediaConfig = Drupal::config(SocialMediaSettingsForm::SETTINGS);
+  $systemConfig = Drupal::config('system.site');
   foreach ($tokens as $name => $original) {
     switch ($name) {
       case 'phone':
-        $text = Drupal::config('system.site')->get('phone');
+        $text = $systemConfig->get('phone');
         $replacements[$original] = $text;
         break;
       case 'facebook':
@@ -958,6 +959,14 @@ function rir_interface_tokens($type, $tokens, array $data, array $options, Bubbl
         break;
       case 'instagram':
         $text = $socialMediaConfig->get('instagram_page');
+        $replacements[$original] = $text;
+        break;
+      case 'android':
+        $text = $systemConfig->get('playStoreLink');
+        $replacements[$original] = $text;
+        break;
+      case 'ios':
+        $text = $systemConfig->get('appleStoreLink');
         $replacements[$original] = $text;
         break;
     }
