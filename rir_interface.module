@@ -399,7 +399,7 @@ function rir_interface_theme($existing, $type, $theme, $path): array
         'terms' => t('Terms of use'),
         'privacy' => t('Privacy policy'),
         'admin' => t('Site Management'),
-        'module_path' => \Drupal::service('extension.list.module')->getPath('rir_interface')
+        'module_path' => \Drupal::service('extension.list.module')->getPath('rir_interface'),
       ],
     ],
     'rir_address' => [
@@ -1028,4 +1028,16 @@ function rir_interface_field_formatter_info_alter(array &$info): void
 function rir_interface_field_widget_info_alter(array &$info): void
 {
   $info['string_textfield']['field_types'][] = 'advert_sector_string';
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function rir_interface_preprocess_node(&$variables): void {
+  if (!empty($vars['node'])) {
+    $node = $vars['node'];
+    if ($node  instanceof NodeInterface and $node->bundle() === 'agent') {
+      $variables['title'] = 'Bwahahaa';
+    }
+  }
 }
