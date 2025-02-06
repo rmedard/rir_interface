@@ -1031,13 +1031,12 @@ function rir_interface_field_widget_info_alter(array &$info): void
 }
 
 /**
- * Implements hook_preprocess_HOOK().
+ * Implements hook_entity_type_alter().
  */
-function rir_interface_preprocess_node(&$variables): void {
-  if (!empty($variables['node'])) {
-    $node = $variables['node'];
-    if ($node instanceof NodeInterface and $node->bundle() === 'agent') {
-      $variables['title'] = 'Bwahahaa';
-    }
+function rir_interface_entity_type_alter(array &$entity_types): void
+{
+  $nodeType = $entity_types['node'];
+  if ($nodeType instanceof EntityTypeInterface) {
+    $nodeType->addConstraint('MandatoryAdvertAgent');
   }
 }
