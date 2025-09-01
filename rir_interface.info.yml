@@ -6,7 +6,6 @@ core_version_requirement: ^9 || ^10
 
 dependencies:
   - smart_ip:smart_ip
-  - swiftmailer:swiftmailer
   - twig_tweak:twig_tweak
   - fivestar:fivestar
   - votingapi
