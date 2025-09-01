@@ -39,7 +39,7 @@ class AgentService {
     {
         $data = [];
         try {
-            $storage = $this->entityTypeManager->getStorage('node');
+            $storage = $this->entityTypeManager->getStorage('node')->accessCheck(true);
             $query = $storage->getQuery()
                 ->condition('type', 'advert')
                 ->condition('status', $status)
