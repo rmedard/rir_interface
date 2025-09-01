@@ -35,7 +35,7 @@ class AdvertsService
     {
         $advertIds = array();
         try {
-            $storage = $this->entityTypeManager->getStorage('node')->accessCheck(true);
+            $storage = $this->entityTypeManager->getStorage('node');
             $query = $storage->getQuery()->range(0, 5)
                 ->condition('type', 'advert')
                 ->condition('status', NodeInterface::PUBLISHED)
@@ -64,7 +64,7 @@ class AdvertsService
 
     public function setProposedAdvertOnPR($advertId, $prId): void {
         try {
-            $storage = $this->entityTypeManager->getStorage('node')->accessCheck(true);
+            $storage = $this->entityTypeManager->getStorage('node');
             $pr = $storage->load($prId);
             if (isset($pr) && $pr instanceof NodeInterface && $pr->bundle() == 'property_request') {
                 foreach ($pr->field_pr_proposed_properties->referencedEntities() as $advert) {
