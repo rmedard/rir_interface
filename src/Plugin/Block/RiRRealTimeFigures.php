@@ -42,29 +42,34 @@ class RiRRealTimeFigures extends BlockBase {
     public function build(): array
     {
         $rent = Drupal::entityQuery('node')
+          ->accessCheck(false)
           ->condition('type', 'advert')
           ->condition('field_advert_type', 'rent')
           ->count();
         $rent_count = $rent->execute();
 
         $sale = Drupal::entityQuery('node')
+          ->accessCheck(false)
           ->condition('type', 'advert')
           ->condition('field_advert_type', 'buy')
           ->count();
         $sale_count = $sale->execute();
 
         $auction = Drupal::entityQuery('node')
+          ->accessCheck(false)
           ->condition('type', 'advert')
           ->condition('field_advert_type', 'auction')
           ->count();
         $auction_count = $auction->execute();
 
         $agents = Drupal::entityQuery('node')
+          ->accessCheck(false)
           ->condition('type', 'agent')
           ->count();
         $agents_count = $agents->execute();
 
         $prs = Drupal::entityQuery('node')
+          ->accessCheck(false)
             ->condition('type', 'property_request')
             ->count();
         $prs_count = $prs->execute();
