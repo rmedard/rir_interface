@@ -32,7 +32,7 @@ class PropertyRequestsService
     {
         if ($advert instanceof NodeInterface) {
             try {
-                $storage = $this->entityTypeManager->getStorage('node')->accessCheck(true);
+                $storage = $this->entityTypeManager->getStorage('node');
                 return $storage->loadByProperties(
                     [
                         'type' => 'property_request',

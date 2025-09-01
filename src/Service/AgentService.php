@@ -39,8 +39,8 @@ class AgentService {
     {
         $data = [];
         try {
-            $storage = $this->entityTypeManager->getStorage('node')->accessCheck(true);
-            $query = $storage->getQuery()
+            $storage = $this->entityTypeManager->getStorage('node');
+            $query = $storage->getQuery()->accessCheck()
                 ->condition('type', 'advert')
                 ->condition('status', $status)
                 ->condition('field_advert_advertiser.target_id', $agent_id); // Could be field_advert_advertiser.entity.field_name (other than id)

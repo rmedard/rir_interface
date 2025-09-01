@@ -36,7 +36,7 @@ class AdvertsService
         $advertIds = array();
         try {
             $storage = $this->entityTypeManager->getStorage('node');
-            $query = $storage->getQuery()->range(0, 5)
+            $query = $storage->getQuery()->accessCheck()->range(0, 5)
                 ->condition('type', 'advert')
                 ->condition('status', NodeInterface::PUBLISHED)
                 ->condition('field_advert_type', $advert_node->get('field_advert_type')->value)
