@@ -514,10 +514,10 @@ function rir_interface_node_presave(NodeInterface $entity): void
       $currencyConverter = Drupal::service('rir_interface.currency_converter_service');
       $rate = $currencyConverter->getUsdRwfRate();
       if (isset($rate)) {
-        $entity->set('field_price_in_rwf', $entity->get('field_advert_price')->value * $rate);
+        $entity->set('field_advert_price_in_rwf', $entity->get('field_advert_price')->value * $rate);
       }
     } else {
-      $entity->set('field_price_in_rwf', $entity->get('field_advert_price')->value);
+      $entity->set('field_advert_price_in_rwf', $entity->get('field_advert_price')->value);
     }
 
     /**
