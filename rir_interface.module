@@ -686,7 +686,7 @@ function getEmailHtmlContent($email_type, $emailPayload, $recipientName = NULL, 
 
   }
   $themePath = Drupal::service('extension.list.theme')->getPath('houseinrwanda_theme');
-  return $twig_service->loadTemplate($themePath . $template_path)->render($variables);
+  return $twig_service->load($themePath . $template_path)->render($variables);
 }
 
 
