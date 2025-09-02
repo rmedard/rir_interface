@@ -519,6 +519,7 @@ function rir_interface_node_presave(NodeInterface $entity): void
     } else {
       $entity->set('field_advert_price_in_rwf', $entity->get('field_advert_price')->value);
     }
+    $entity->set('field_price_in_rwf', 0);
 
     /**
      * Check if advert is expired and trying to publish
